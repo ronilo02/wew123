@@ -9,4 +9,8 @@ class BookInformation extends Model
     protected $table = 'book_information';
     
     protected $fillable = ['author','book_title','genre','isbn','published_date','previous_publisher','book_reference'];
+
+    public function getPublisher(){
+        return $this->hasOne('App\Publisher','id','previous_publisher');
+    }
 }

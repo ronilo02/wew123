@@ -24,7 +24,7 @@
                     <h2><?php echo e(isset($sub_breadcrumb)?$sub_breadcrumb:$breadcrumb); ?></h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="index-2.html">Home</a>
+                            <a href="<?php echo e(url('/home')); ?>">Home</a>
                         </li>
                         
                         <li <?php if(isset($sub_breadcrumb)): ?> class="" <?php else: ?> class="active" <?php endif; ?>>

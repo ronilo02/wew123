@@ -20,39 +20,45 @@
                         <table class="table table-striped table-bordered table-hover dataTables-leads" >
                             <thead>
                                 <tr>
-                                    <th style="width:5%;"></th>
                                     <th>Author</th>
                                     <th>Book Title</th>
+                                    <th>Publisher</th>
                                     <th>Email</th>
+                                    <th>Genre</th>
                                     <th>Status</th>
                                     <th>Assigned to</th>
                                     <th>Researcher</th>
+                                    <th style="width:5%;"></th>
                                     
                                 </tr>
                             </thead>
                             <tbody>
                             @foreach($leads as $lead)
                                 <tr>
-                                   <td></td>
-                                   <td ><a href="{{ url('leads/'.$lead->id.'/edit') }}" style="color:#1ab394;">{{ $lead->fullname() }} </a></td>
+                                   
+                                   <td ><a href="{{ url('leads/'.$lead->id.'/profile') }}" style="color:#1ab394;">{{ $lead->fullname() }} </a></td>
                                    <td>{{ $lead->getBookInformation->book_title }}</td>
+                                   <td>{{ $lead->getBookInformation->getPublisher == null? " ":$lead->getBookInformation->getPublisher['name']}}</td>
                                    <td>{{ $lead->email }}</td>
+                                   <td>{{ $lead->getBookInformation->genre }}</td>
                                    <td>{{ $lead->getStatus->name }}</td>
-                                   <td></td>
+                                   <td>{{ $lead->getAssignee == null ? "" : $lead->getAssignee->fullname() }}</td>
                                    <td>{{ $lead->getResearcher->fullname() }}</td>
+                                   <td></td>
                                 </tr>
                             @endforeach    
-                           
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th style="width:5%;"></th>
                                     <th>Author</th>
                                     <th>Book Title</th>
+                                    <th>Publisher</th>
                                     <th>Email</th>
+                                    <th>Genre</th>
                                     <th>Status</th>
                                     <th>Assigned to</th>
                                     <th>Researcher</th>
+                                    <th style="width:5%;"></th>
                                 </tr>
                             </tfoot>
                         </table>

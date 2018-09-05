@@ -28,9 +28,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 /*----------------------------------------------Leads-----------------------------------------------------------*/
 
 Route::group(['prefix'=>''],function(){
+    
+   
     Route::get('/leads/export','LeadController@export');
+    Route::post('/leads/upload','LeadController@upload');
     Route::get('/leads/import','LeadController@import');
-    Route::post('/leads/import/store','LeadController@storefile');
+    Route::post('/leads/import/store','LeadController@storeimport');
+    Route::get('/leads/{lead}/profile','LeadController@profile');
+    Route::post('/leads/{lead}/update','LeadController@realtimeUpdate');
+    Route::post('/leads/store/notes','LeadController@storenotes');
+    Route::get('/leads/{note}/download','LeadController@download_notes_file');
+    Route::post('/leads/notes/{note}/update','LeadController@update_note');
     Route::resource('/leads','LeadController');
   
 });
@@ -70,3 +78,17 @@ Route::group(['prefix'=>''],function(){
 });
 
 /*------------------------------------------End of User Profile-------------------------------------------------*/
+
+
+
+/*----------------------------------------------Migration Routes-----------------------------------------------------------*/
+
+Route::group(['prefix'=>''],function(){
+    Route::get('/migration/import','MigrationController@import');
+    Route::post('/migration/upload','MigrationController@upload');
+    Route::post('/migration/import/store','MigrationController@storefile');
+    Route::get('/migration','MigrationController@import');  
+});
+
+/*------------------------------------------End of Leads-------------------------------------------------*/
+

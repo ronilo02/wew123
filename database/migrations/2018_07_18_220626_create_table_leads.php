@@ -30,10 +30,12 @@ class CreateTableLeads extends Migration
             $table->string('postal_code');
             $table->integer('country')->unsigned();
             $table->text('remarks')->nullable();
+            $table->integer('assigned_to')->unsigned();
             $table->integer('researcher')->unsigned();
             $table->integer('status')->unsigned();
             $table->timestamps();
 
+            $table->foreign('assigned_to')->references('id')->on('users');
             $table->foreign('country')->references('id')->on('countries');
             $table->foreign('researcher')->references('id')->on('users');
             $table->foreign('status')->references('id')->on('lead_status');

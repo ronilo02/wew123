@@ -28,6 +28,7 @@
                     $role="";
                     $payments="";
                     $reports="";
+                    $migration="";
 
                     if(request()->url() == "home"){
                         $dashboard="active";   
@@ -44,6 +45,9 @@
                     }elseif(request()->url() == url("reports")){
                         $reports="active";
                     }
+                    elseif(request()->url() == url("migration")){
+                        $migration="active";
+                    }
                 @endphp
 
                 
@@ -55,7 +59,9 @@
                     <li class = {{ $leads }}>
                         <a href="#"><i class="fa fa-child"></i> <span class="nav-label">Leads</span><span class="fa arrow"></span></a>                  
                         <ul class="nav nav-second-level collapse">
-                            <li><a href="{{ url('leads') }}">All</a></li>
+                            @if(auth()->user()->hasRole(['superadmin','lead.researcher','administrator','fulfillment']))
+                                <li><a href="{{ url('leads') }}">All</a></li>
+                            @endif    
                             <li><a href="#">Assigned Leads</a></li>
                             @if(auth()->user()->hasRole(['superadmin','lead.researcher']))
                                 <li><a href="{{ url('leads/create') }}">Add New Lead</a></li>
@@ -64,9 +70,17 @@
                              @endif
                         </ul>
                     </li>
-          
-
+                    @if(auth()->user()->hasRole(['superadmin']))
+                        <li class = {{ $migration }}>
+                            <a href="#"><i class="fa fa-upload"></i> <span class="nav-label">Migration</span><span class="fa arrow"></span></a>                  
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{{ url('migration/import') }}">Import</a></li>
+                            
+                            </ul>
+                        </li>
+                    @endif
                 @if(auth()->user()->hasRole(['superadmin','administrator']))
+                    
                     <li class = {{ $accounts }}>
                     <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Accounts</span><span class="fa arrow"></span></a>                  
                         <ul class="nav nav-second-level collapse">
@@ -74,10 +88,13 @@
                             <li><a href="{{ url('/user/create') }}">Add</a></li>                        
                         </ul>              
                     </li>
+                @endif
+                @if(auth()->user()->hasRole(['superadmin']))
                
                 <li class = {{ $permission }}>
                     <a href="{{ url('/permission')}}"><i class="fa fa-lock"></i> <span class="nav-label">Permissions</span></a>                  
                 </li>
+             
                 <li class = {{ $role }}>
                 <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Role</span><span class="fa arrow"></span></a>                  
                     <ul class="nav nav-second-level collapse">

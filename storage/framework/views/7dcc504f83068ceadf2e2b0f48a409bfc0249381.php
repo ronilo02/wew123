@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | Login</title>
+    <title>CRM | Login</title>
 
     <link href="<?php echo e(asset('inspinia_admin/css/bootstrap.min.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('inspinia_admin/font-awesome/css/font-awesome.css')); ?>" rel="stylesheet">

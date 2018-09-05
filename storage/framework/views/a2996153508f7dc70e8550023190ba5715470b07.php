@@ -28,6 +28,7 @@
                     $role="";
                     $payments="";
                     $reports="";
+                    $migration="";
 
                     if(request()->url() == "home"){
                         $dashboard="active";   
@@ -44,6 +45,9 @@
                     }elseif(request()->url() == url("reports")){
                         $reports="active";
                     }
+                    elseif(request()->url() == url("migration")){
+                        $migration="active";
+                    }
                 ?>
 
                 
@@ -55,7 +59,9 @@
                     <li class = <?php echo e($leads); ?>>
                         <a href="#"><i class="fa fa-child"></i> <span class="nav-label">Leads</span><span class="fa arrow"></span></a>                  
                         <ul class="nav nav-second-level collapse">
-                            <li><a href="<?php echo e(url('leads')); ?>">All</a></li>
+                            <?php if(auth()->user()->hasRole(['superadmin','lead.researcher','administrator','fulfillment'])): ?>
+                                <li><a href="<?php echo e(url('leads')); ?>">All</a></li>
+                            <?php endif; ?>    
                             <li><a href="#">Assigned Leads</a></li>
                             <?php if(auth()->user()->hasRole(['superadmin','lead.researcher'])): ?>
                                 <li><a href="<?php echo e(url('leads/create')); ?>">Add New Lead</a></li>
@@ -64,9 +70,17 @@
                              <?php endif; ?>
                         </ul>
                     </li>
-          
-
+                    <?php if(auth()->user()->hasRole(['superadmin'])): ?>
+                        <li class = <?php echo e($migration); ?>>
+                            <a href="#"><i class="fa fa-upload"></i> <span class="nav-label">Migration</span><span class="fa arrow"></span></a>                  
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="<?php echo e(url('migration/import')); ?>">Import</a></li>
+                            
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                 <?php if(auth()->user()->hasRole(['superadmin','administrator'])): ?>
+                    
                     <li class = <?php echo e($accounts); ?>>
                     <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Accounts</span><span class="fa arrow"></span></a>                  
                         <ul class="nav nav-second-level collapse">
@@ -74,10 +88,13 @@
                             <li><a href="<?php echo e(url('/user/create')); ?>">Add</a></li>                        
                         </ul>              
                     </li>
+                <?php endif; ?>
+                <?php if(auth()->user()->hasRole(['superadmin'])): ?>
                
                 <li class = <?php echo e($permission); ?>>
                     <a href="<?php echo e(url('/permission')); ?>"><i class="fa fa-lock"></i> <span class="nav-label">Permissions</span></a>                  
                 </li>
+             
                 <li class = <?php echo e($role); ?>>
                 <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Role</span><span class="fa arrow"></span></a>                  
                     <ul class="nav nav-second-level collapse">

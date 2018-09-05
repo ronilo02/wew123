@@ -18,6 +18,7 @@
     <link href="<?php echo e(asset('inspinia_admin/css/plugins/iCheck/custom.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('inspinia_admin/css/animate.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('inspinia_admin/css/style.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/style.css')); ?>" rel="stylesheet">
 
     <!-- Datepicker3 style -->
     <link href="<?php echo e(asset('inspinia_admin/css/plugins/datapicker/datepicker3.css')); ?>" rel="stylesheet">
@@ -27,7 +28,12 @@
 
    
     <link href="<?php echo e(asset('inspinia_admin/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')); ?>" rel="stylesheet">
-  
+   
+    <link href="<?php echo e(asset('inspinia_admin/css/plugins/dropzone/basic.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('inspinia_admin/css/plugins/dropzone/dropzone.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('vendor/upload-progress-bar/css/upload.css')); ?>" rel="stylesheet">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     <style type="text/css">
         #loading {
             position: fixed;
@@ -45,6 +51,8 @@
             height: 50px;
             margin: 30% auto;
         }
+
+        
 
     </style> 
 

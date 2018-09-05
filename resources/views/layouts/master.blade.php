@@ -24,7 +24,7 @@
                     <h2>{{ isset($sub_breadcrumb)?$sub_breadcrumb:$breadcrumb }}</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="index-2.html">Home</a>
+                            <a href="{{ url('/home') }}">Home</a>
                         </li>
                         
                         <li @if(isset($sub_breadcrumb)) class="" @else class="active" @endif>
