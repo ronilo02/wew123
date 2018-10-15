@@ -124,6 +124,12 @@
     </div>
 @endsection
 
+@section('custom_css')
+    .avia-data-table td {
+        font-size: 10px !important;
+    }
+@endsection
+
 @section('custom_js')
     <script>
         $(document).ready(function(){

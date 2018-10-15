@@ -99,7 +99,7 @@
                                     <td style="color:#1ab394;">{{ $role->display_name }}</td>
                                     <td>{{ $role->description }}</td>
                                 </tr>
-                           @endforeach
+                    @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

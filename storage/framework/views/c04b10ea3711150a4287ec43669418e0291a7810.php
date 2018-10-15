@@ -122,6 +122,12 @@
     </div>
 <?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('custom_css'); ?>
+    .avia-data-table td {
+        font-size: 10px !important;
+    }
+<?php $__env->stopSection(); ?>
+
 <?php $__env->startSection('custom_js'); ?>
     <script>
         $(document).ready(function(){

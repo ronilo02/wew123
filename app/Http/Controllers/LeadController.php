@@ -26,6 +26,7 @@ class LeadController extends Controller
             $this->publisher = Publisher::orderBy('name','asc')->pluck('name','id');
             $this->status    = LeadStatus::orderBy('name','asc')->pluck('name','id');
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
+            $this->users     = User::orderBy('username','asc')->pluck('username','id');
 
             return $next($request);
          });      
@@ -42,7 +43,9 @@ class LeadController extends Controller
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Lists']);
 
         return view('modules.leads.index')
-                ->with('leads',$this->leads);
+                ->with('leads',$this->leads)
+                ->with('status',$this->status)
+                ->with('users',$this->users);
     }
 
     /**
@@ -576,5 +579,27 @@ class LeadController extends Controller
         return redirect('leads/'.$author.'/profile')
         ->with('notes',$lead->getNotes);
             
+    }
+
+    public function filter(Request $request){
+
+        view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Filter']);
+
+       $status = $request->status;
+       $assigned_to = $request->assigned_to;
+        $leads = Leads::where(function($query) use ($status,$assigned_to){
+                            if($status != 0 && $assigned_to != 0){
+                                $query->where('status',$status)->where('assigned_to',$assigned_to);
+                            }elseif($status != 0 && $assigned_to == 0){
+                                $query->where('status',$status);
+                            }else{
+                                $query->where('assigned_to',$assigned_to);
+                            }
+                       })->get();
+
+        return view('modules.leads.index')
+                ->with('leads',$leads)
+                ->with('status',$this->status)
+                ->with('users',$this->users);
     }
 }

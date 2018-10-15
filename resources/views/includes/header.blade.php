@@ -32,6 +32,7 @@
     <link href="{{ asset('inspinia_admin/css/plugins/dropzone/basic.css') }}" rel="stylesheet">
     <link href="{{ asset('inspinia_admin/css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/upload-progress-bar/css/upload.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/dataTables.checkboxes.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     <style type="text/css">
@@ -51,7 +52,15 @@
             height: 50px;
             margin: 30% auto;
         }
-
+        .dataTables_wrapper {
+            font-family: tahoma;
+            font-size: 12px;
+            position: relative;
+            clear: both;
+            *zoom: 1;
+            zoom: 1;
+        }
+        
         
 
     </style> 

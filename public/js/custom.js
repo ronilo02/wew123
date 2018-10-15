@@ -13,10 +13,37 @@ $(document).ready(function() {
 
     });
 
+
+
     $('.dataTables-leads').DataTable({
-        pageLength: 25,
+        pageLength: 10,
         responsive: true,
+        ordering: false,
+        drawCallback: function() {
+            $('input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_square-green'
+            });
+        },
+        columnDefs: [{
+            'targets': 0,
+            'checkboxes': {
+                'selectRow': true,
+                'selectCallback': function(nodes, selected) {
+                    $('input[type="checkbox"]', nodes).iCheck('update');
+                },
+                'selectAllCallback': function(nodes, selected, indeterminate) {
+                    $('input[type="checkbox"]', nodes).iCheck('update');
+                }
+            }
+        }],
+        select: 'multi',
     });
+
+    // Handle iCheck change event for "select all" control
+
+
+
+
 
     $('.dataTables-notes').DataTable({
         pageLength: 25,
@@ -27,6 +54,8 @@ $(document).ready(function() {
     $('.dataTables-lead-import').DataTable({
         pageLength: 25,
         responsive: true,
+
+
     });
 
     /*
@@ -67,4 +96,4 @@ $(document).ready(function() {
         var ctx = document.getElementById("lineChart").getContext("2d");
         new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
        */
-})
+});

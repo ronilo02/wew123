@@ -39,6 +39,7 @@ Route::group(['prefix'=>''],function(){
     Route::post('/leads/store/notes','LeadController@storenotes');
     Route::get('/leads/{note}/download','LeadController@download_notes_file');
     Route::post('/leads/notes/{note}/update','LeadController@update_note');
+    Route::post('/leads/filter','LeadController@filter');
     Route::resource('/leads','LeadController');
   
 });
