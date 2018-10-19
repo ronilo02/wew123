@@ -62,7 +62,7 @@
                             @if(auth()->user()->hasRole(['superadmin','lead.researcher','administrator','fulfillment']))
                                 <li><a href="{{ url('leads') }}">All</a></li>
                             @endif    
-                            <li><a href="#">Assigned Leads</a></li>
+                        <li><a href="{{ url('/leads/bucket-lists') }}">Bucket Lists</a></li>
                             @if(auth()->user()->hasRole(['superadmin','lead.researcher']))
                                 <li><a href="{{ url('leads/create') }}">Add New Lead</a></li>
                                 <li><a href="{{ url('leads/import') }}">Import</a></li>

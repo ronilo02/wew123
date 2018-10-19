@@ -62,7 +62,7 @@
                             <?php if(auth()->user()->hasRole(['superadmin','lead.researcher','administrator','fulfillment'])): ?>
                                 <li><a href="<?php echo e(url('leads')); ?>">All</a></li>
                             <?php endif; ?>    
-                            <li><a href="#">Assigned Leads</a></li>
+                        <li><a href="<?php echo e(url('/leads/bucket-lists')); ?>">Bucket Lists</a></li>
                             <?php if(auth()->user()->hasRole(['superadmin','lead.researcher'])): ?>
                                 <li><a href="<?php echo e(url('leads/create')); ?>">Add New Lead</a></li>
                                 <li><a href="<?php echo e(url('leads/import')); ?>">Import</a></li>

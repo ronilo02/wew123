@@ -33,20 +33,16 @@
                                 </div>                            
                         </div>
                         <div class="row">
-                            <div class="col-sm-12">
-                            
-                            <div id="progress-div"><div id="progress-bar"></div></div>
-                                 
+                            <div class="col-sm-12">                            
+                            <div id="progress-div"><div id="progress-bar"></div></div>                                 
                             </div>
                         </div>                        
                     </div>
                 </div>               
             </div>
          </div>
-       </form>    
-       
-    <div id="targetLayer"></div>
-                  
+       </form>           
+    <div id="targetLayer"></div>                  
     </div>
 
 

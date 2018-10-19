@@ -29,7 +29,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix'=>''],function(){
     
-   
+    Route::get('/leads/bucket-lists','LeadController@bucket_list');
     Route::get('/leads/export','LeadController@export');
     Route::post('/leads/upload','LeadController@upload');
     Route::get('/leads/import','LeadController@import');
@@ -40,6 +40,7 @@ Route::group(['prefix'=>''],function(){
     Route::get('/leads/{note}/download','LeadController@download_notes_file');
     Route::post('/leads/notes/{note}/update','LeadController@update_note');
     Route::post('/leads/filter','LeadController@filter');
+    Route::post('/leads/assign','LeadController@assign_leads');
     Route::resource('/leads','LeadController');
   
 });

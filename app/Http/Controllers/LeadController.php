@@ -22,7 +22,8 @@ class LeadController extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request,$next){
            
-            $this->leads     = Leads::All();
+            $this->leads     = Leads::orderBy('assigned_to')->get();
+            $this->bucket_list = Leads::where('assigned_to',auth()->user()->id)->get();
             $this->publisher = Publisher::orderBy('name','asc')->pluck('name','id');
             $this->status    = LeadStatus::orderBy('name','asc')->pluck('name','id');
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
@@ -46,6 +47,14 @@ class LeadController extends Controller
                 ->with('leads',$this->leads)
                 ->with('status',$this->status)
                 ->with('users',$this->users);
+    }
+
+    public function bucket_list()
+    {
+        view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Bucket Lists']);
+
+         return view('modules.leads.bucket-lists')
+                ->with('bucket_list',$this->bucket_list);   
     }
 
     /**
@@ -255,8 +264,7 @@ class LeadController extends Controller
        $data = json_decode($request->get('data'));
       
        foreach($data as $d)
-       {  
-        
+       {          
 
         $lead = Leads::create([
                     'firstname'      => $d->first_name,
@@ -602,4 +610,49 @@ class LeadController extends Controller
                 ->with('status',$this->status)
                 ->with('users',$this->users);
     }
-}
+
+    public function assign_leads(Request $request)
+    {
+        $advance = $request->advance;
+        $leads = $request->leads;
+        $number_leads = $request->advance_number_leads;
+        $advance_bucket = $request->advance_bucket;
+        $advance_status = $request->advance_status;
+        
+        $advance_assigned_to = $request->advance_assigned_to;
+        
+        if($advance == null){
+            foreach($leads as $lead){
+                $update = Leads::find($lead);
+
+                $update->assigned_to = $advance_assigned_to;
+                $update->save();
+            }
+
+                session()->flash('message','Leads successfully transferred!');      
+    
+                return redirect()->back();
+            
+        }else{
+            $leads = Leads::where('status',$advance_status)
+                     ->where('assigned_to',$advance_bucket);
+
+            if($advance_status != 0){
+                $leads = $leads->limit((int) $number_leads)->get();
+            
+            }else{
+                $leads = $leads->get();
+            }         
+                  
+            foreach($leads as $lead){
+                $lead->assigned_to = $advance_assigned_to;
+                $lead->save();
+            }         
+            
+            session()->flash('message','Leads successfully transferred!');      
+
+            return redirect()->back();
+        }
+    }
+}      
+          
