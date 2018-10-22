@@ -15,7 +15,7 @@ $(document).ready(function() {
 
 
 
-    $('.dataTables-leads').DataTable({
+   var tleads = $('.dataTables-leads').DataTable({
         pageLength: 10,
         responsive: true,
         ordering: false,
@@ -40,9 +40,6 @@ $(document).ready(function() {
     });
 
     // Handle iCheck change event for "select all" control
-
-
-
 
 
     $('.dataTables-notes').DataTable({

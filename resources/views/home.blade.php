@@ -72,69 +72,24 @@
                             </div>
 
                             <div class="ibox-content inspinia-timeline">
+                                @foreach($activity_logs as $activity_log)
+                                    <div class="timeline-item">
+                                        <div class="row">
+                                            <div class="col-xs-3 date">
+                                                <i class="fa fa-briefcase"></i>
+                                                6:00 am
+                                                <br/>
+                                                <small class="text-navy">{{ $activity_log->created_at->diffForHumans() }}</small>
+                                            </div>
+                                            <div class="col-xs-7 content no-top-border">
+                                                <p class="m-b-xs"><small>{{ $activity_log->causer->fullname() }}</small></p>
 
-                                <div class="timeline-item">
-                                    <div class="row">
-                                        <div class="col-xs-3 date">
-                                            <i class="fa fa-briefcase"></i>
-                                            6:00 am
-                                            <br/>
-                                            <small class="text-navy">2 hour ago</small>
-                                        </div>
-                                        <div class="col-xs-7 content no-top-border">
-                                            <p class="m-b-xs"><strong>New Leads Uploaded</strong><small> by Rom Geraldizo</small></p>
+                                                <p>{{ $activity_log->description }}</p>
 
-                                            <p>Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products.</p>
-
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="row">
-                                        <div class="col-xs-3 date">
-                                            <i class="fa fa-file-text"></i>
-                                            7:00 am
-                                            <br/>
-                                            <small class="text-navy">3 hour ago</small>
-                                        </div>
-                                        <div class="col-xs-7 content">
-                                            <p class="m-b-xs"><strong>New Payments Received</strong><small> author Jay Rameriz</small></p>
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="row">
-                                        <div class="col-xs-3 date">
-                                            <i class="fa fa-coffee"></i>
-                                            8:00 am
-                                            <br/>
-                                        </div>
-                                        <div class="col-xs-7 content">
-                                            <p class="m-b-xs"><strong>Team John Reached Monthly Qouta</strong></p>
-                                            <p>
-                                                Go to shop and find some products.
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="row">
-                                        <div class="col-xs-3 date">
-                                            <i class="fa fa-phone"></i>
-                                            11:00 am
-                                            <br/>
-                                            <small class="text-navy">21 hour ago</small>
-                                        </div>
-                                        <div class="col-xs-7 content">
-                                            <p class="m-b-xs"><strong>Ricky Has been Added to CRM</strong></p>
-                                            <p>
-                                                Lorem Ipsum has been the industry's standard dummy text ever since.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

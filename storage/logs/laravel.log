@@ -7970,9 +7970,9 @@ PUB DATE:June 28, 2012
 #58 C:\\xampp\\htdocs\\crm\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
 #59 {main}
 "} 
-[2018-08-13 15:23:26] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
- (SQL: select * from `users` where `username` = ricky limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
- (SQL: select * from `users` where `username` = ricky limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+[2018-08-13 15:23:26] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` where `username` = ricky limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` where `username` = ricky limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
  at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:68)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
@@ -9419,9 +9419,9 @@ PUB DATE:June 28, 2012
 #58 C:\\xampp\\htdocs\\crm\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
 #59 {main}
 "} 
-[2018-08-13 20:31:06] local.ERROR: SQLSTATE[HY000] [2002] Only one usage of each socket address (protocol/network address/port) is normally permitted.
- (SQL: select * from `users` where `id` = 1 limit 1) {"userId":1,"email":"folioavenue.rickymillang@gmail.com","exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] Only one usage of each socket address (protocol/network address/port) is normally permitted.
- (SQL: select * from `users` where `id` = 1 limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] Only one usage of each socket address (protocol/network address/port) is normally permitted.
+[2018-08-13 20:31:06] local.ERROR: SQLSTATE[HY000] [2002] Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ (SQL: select * from `users` where `id` = 1 limit 1) {"userId":1,"email":"folioavenue.rickymillang@gmail.com","exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ (SQL: select * from `users` where `id` = 1 limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] Only one usage of each socket address (protocol/network address/port) is normally permitted.
  at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:68)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
@@ -14337,9 +14337,9 @@ Did you mean one of these?
 #4 C:\\xampp\\htdocs\\crm\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #5 {main}
 "} 
-[2018-08-23 14:09:26] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
- (SQL: select * from `users` where `username` = ricky limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
- (SQL: select * from `users` where `username` = ricky limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+[2018-08-23 14:09:26] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` where `username` = ricky limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` where `username` = ricky limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
  at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:68)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
@@ -15398,9 +15398,9 @@ Did you mean one of these?
 #61 C:\\xampp\\htdocs\\crm\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
 #62 {main}
 "} 
-[2018-09-05 14:39:10] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
- (SQL: select * from `users` where `username` = ricky limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
- (SQL: select * from `users` where `username` = ricky limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+[2018-09-05 14:39:10] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` where `username` = ricky limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` where `username` = ricky limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
  at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:68)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
@@ -18156,9 +18156,9 @@ Did you mean one of these?
 #57 C:\\xampp\\htdocs\\crm\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
 #58 {main}
 "} 
-[2018-10-11 21:16:14] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
- (SQL: select * from `users` where `username` = ricky limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
- (SQL: select * from `users` where `username` = ricky limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+[2018-10-11 21:16:14] local.ERROR: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` where `username` = ricky limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+ (SQL: select * from `users` where `username` = ricky limit 1) at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:664, PDOException(code: 2002): SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
  at C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:68)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\crm\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))

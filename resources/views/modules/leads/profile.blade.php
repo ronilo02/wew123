@@ -402,8 +402,7 @@
                               };
 
                   $('#edit-submit').on('click',function(e){
-                        e.PreventDefault();
-                        alert(1);
+                        e.PreventDefault();                    
                         $('#edit-lead-form').submit();
                   });
 
