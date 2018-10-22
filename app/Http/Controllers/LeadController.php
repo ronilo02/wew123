@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\LeadStatus;
-use App\Publisher;
-use App\Countries;
-use App\leads;
-use App\User;
 use App\BookInformation;
-use App\Notes;
-use DB;
-use Storage;
+use App\Countries;
 use App\Exports\FileExport;
+use App\LeadStatus;
+use App\Notes;
+use App\Notifications\LeadsImported;
+use App\Notifications\LeadsTransferred;
+use App\Publisher;
+use App\User;
+use App\leads;
+use DB;
+use Excel;
 use Illuminate\Http\Request;
-use Excel; 
+use Illuminate\Support\Facades\Notification;
+use Storage; 
 class LeadController extends Controller
 {
     public function __construct()
@@ -304,8 +307,12 @@ class LeadController extends Controller
 
        if ($flag) {
             $user = auth()->user();
-            activity()->causedBy($user)->withProperties(['icon' => count($data)])->log(':causer.firstname has imported ' . count($data) . ' leads.');
-
+            activity()->causedBy($user)->withProperties(['icon' => count($data)])->log(':causer.firstname :causer.lastname has imported ' . count($data) . ' leads.');
+            $admin_users = User::withRole('admin')->where('id', '!=', $user->id)->get();
+            $lead_researcher_users = User::withRole('lead.researcher')->where('id', '!=', $user->id)->get();
+            $message = $user->fullname() . ' has imported ' . count($data) . ' leads.';
+            Notification::send($admin_users, new LeadsImported($message));
+            Notification::send($lead_researcher_users, new LeadsImported($message));
             session()->flash('message','New Leads Successfully saved!');          
         } else {            
             session()->flash('error_message','Fail to save new leads!');  
@@ -495,7 +502,9 @@ class LeadController extends Controller
                     ]);
 
         if($notes){
-
+            $user = auth()->user();
+            $notes_author = Leads::find($author);
+            activity()->causedBy($user)->log(':causer.firstname :causer.lastname has stored notes to ' . $notes_author->fullname() . '.');
             session()->flash('message','Notes successfully added!');          
 
         }else{            
@@ -622,7 +631,11 @@ class LeadController extends Controller
                 $update->assigned_to = $advance_assigned_to;
                 $update->save();
             }
-
+                $user = auth()->user();
+                $assigned_user = User::find($advance_assigned_to);
+                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
+                $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
+                Notification::send($assigned_user, new LeadsTransferred($message));
                 session()->flash('message','Leads successfully transferred!');      
     
                 return redirect()->back();

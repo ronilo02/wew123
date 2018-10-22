@@ -24,6 +24,15 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/notifications', 'NotificationController@index');
+Route::delete('profile/{user}/notifications', function(App\User $user) {
+    $user->notifications->map(function($n) {
+        $n->markAsRead();
+    });
+
+    return back();
+});
+
 
 /*----------------------------------------------Leads-----------------------------------------------------------*/
 
