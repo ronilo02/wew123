@@ -261,10 +261,7 @@ class LeadController extends Controller
     {
         $flag = [];
        
-       $data = json_decode($request->get('data'));
-      
-       foreach($data as $d)
-       {          
+       $data = json_decode($request->get('data'));    
 
         foreach ($data as $d) {  
             $lead = Leads::create([
