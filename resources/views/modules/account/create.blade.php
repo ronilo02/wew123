@@ -3,7 +3,7 @@
 @section('content')
     <div class="wrapper wrapper-content animated fadeInRight">
      @if(isset($userdata))
-     <form role="form" action="{{ url('user/'.$userdata->id) }}" id="user-form" method="POST">
+     <form role="form" action="{{ url('user/'.$userdata->id) }}" id="user-form" method="POST" enctype="multipart/form-data">
      <input type="hidden" name="_method" value="PUT">
      @else
         <form role="form" action="{{ route('user.store') }}" id="user-form" method="POST">
@@ -30,6 +30,7 @@
                                     <div class="form-group"><label>Firstname</label> <input type="text" name="firstname" value="@if(isset($userdata)){{ ucfirst($userdata->firstname) }}@endif" placeholder="Enter Firstname" class="form-control" required> </div>
                                     <div class="form-group"><label>Lastname</label> <input type="text" name="lastname" value="@if(isset($userdata)){{ ucfirst($userdata->lastname) }}@endif" placeholder="Enter Lastname" class="form-control" required></div>
                                     <div class="form-group"><label>Primary Email</label> <input type="email" name="email" value="@if(isset($userdata)){{ $userdata->email }}@endif" placeholder="Enter Primary Email" class="form-control" required></div>
+                                    <div class="form-group"><label>Profile Picture</label> <input type="file" name="profile"   class="form-control" ></div>
                             </div>
                             <div class="col-sm-6"><h4>User Credentials</h4>
                                    <p style="color:#1ab394;">*Updating credentials require to input your current password.</p>

@@ -139,11 +139,28 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validate = $request->validate([
+                'profile'=>'image'
+            ]);
+
         $user = User::find($id);
 
         $user->firstname = $request->get('firstname');
         $user->lastname = $request->get('lastname');
         $user->email = $request->get('email');
+
+
+        if($request->hasFile('profile')){
+      
+             $profile = $request->file('profile');
+
+             $profile_name = $profile->getClientOriginalName();
+
+             $profile->move('storage/files/users/',$profile_name);
+
+             $user->avatar = $profile_name;
+         
+        }
 
         if($request->get('current-password') != null){
             if($request->get('current-password') == $user->password){
@@ -153,6 +170,7 @@ class UserController extends Controller
                             $user->password  = md5($request->get('password'));
                         }else{
                             session()->flash('message','New password and new confirm password did not match!');
+                            return redirect()->back();
                         }
                 }
             }else{
@@ -171,9 +189,12 @@ class UserController extends Controller
             }        
         }
 
+        $user->save();
+
+
         session()->flash('message','Profile settings has been updated!');
 
-        return redirect('user');
+        return redirect()->back();
     }
 
     /**

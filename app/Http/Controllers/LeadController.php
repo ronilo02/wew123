@@ -32,6 +32,7 @@ class LeadController extends Controller
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
             $this->users     = User::orderBy('username','asc')->pluck('username','id');
 
+
             return $next($request);
          });      
 
@@ -45,7 +46,7 @@ class LeadController extends Controller
     public function index()
     {
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Lists']);
-
+ 
         return view('modules.leads.index')
                 ->with('leads',$this->leads)
                 ->with('status',$this->status)
@@ -621,7 +622,7 @@ class LeadController extends Controller
         $number_leads = $request->advance_number_leads;
         $advance_bucket = $request->advance_bucket;
         $advance_status = $request->advance_status;
-        
+       
         $advance_assigned_to = $request->advance_assigned_to;
         
         if($advance == null){
@@ -633,8 +634,8 @@ class LeadController extends Controller
             }
                 $user = auth()->user();
                 $assigned_user = User::find($advance_assigned_to);
-                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
-                $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
+                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
+                $message = $user->fullname() . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
                 Notification::send($assigned_user, new LeadsTransferred($message));
                 session()->flash('message','Leads successfully transferred!');      
     
@@ -654,7 +655,13 @@ class LeadController extends Controller
             foreach($leads as $lead){
                 $lead->assigned_to = $advance_assigned_to;
                 $lead->save();
-            }         
+            } 
+
+            $user = auth()->user();
+                $assigned_user = User::find($advance_assigned_to);
+                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
+                $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
+                Notification::send($assigned_user, new LeadsTransferred($message));        
             
             session()->flash('message','Leads successfully transferred!');      
 

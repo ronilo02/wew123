@@ -43,7 +43,7 @@
                             <tbody>
                              @foreach($users as $user)
                                 <tr>
-                                    <td><img src="{{ asset('images/user/'.$user->avatar) }}" alt="" class="img-circle" width="30px" height="30px"></td>
+                                    <td><img src="{{ asset('storage/files/users/'.$user->avatar) }}" alt="" class="img-circle" width="30px" height="30px"></td>
                                     <td style="color:#1ab394;"><a href="{{ url('user/'.$user->id.'/edit') }}">{{ $user->fullname() }}</a></td>            
                                     <td>{{ $user->username }}  </td>
                                     <td>{{ $user->email }}</td>

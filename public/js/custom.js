@@ -10,9 +10,36 @@ $(document).ready(function() {
         pageLength: 25,
         responsive: true,
 
+        ordering: false,
 
     });
 
+    
+ 
+        $('.dataTables-bucket-list').DataTable({         
+             pageLength: 10,
+        responsive: true,
+        ordering: false,
+        drawCallback: function() {
+            $('input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_square-green'
+            });
+        },
+        columnDefs: [{
+            'targets': 0,
+            'checkboxes': {
+                'selectRow': true,
+                'selectCallback': function(nodes, selected) {
+                    $('input[type="checkbox"]', nodes).iCheck('update');
+                },
+                'selectAllCallback': function(nodes, selected, indeterminate) {
+                    $('input[type="checkbox"]', nodes).iCheck('update');
+                }
+            }
+        }],
+        select: 'multi',
+
+        });
 
 
    var tleads = $('.dataTables-leads').DataTable({
