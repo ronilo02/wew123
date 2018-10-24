@@ -27,7 +27,9 @@
                                                       
                                                         <th>Author</th>
                                                         <th>Book Title</th>
-                                                        <th>Publisher</th>                                   
+                                                        <th>Publisher</th>            
+                                                        <th>Home Phone</th> 
+                                                        <th>office Phone</th>                
                                                         <th>Genre</th>
                                                         <th>Status</th>
                                                         <th>Assigned</th>
@@ -42,6 +44,8 @@
                                                     <td ><a href="<?php echo e(url('leads/'.$b->id.'/profile')); ?>" style="color:#1ab394;"><?php echo e($b->fullname()); ?> </a></td>
                                                     <td><?php echo e($b->getBookInformation->book_title); ?></td>
                                                     <td><?php echo e($b->getBookInformation->getPublisher == null? " ":$b->getBookInformation->getPublisher['name']); ?></td>
+                                                    <td><?php echo e($b->home_phone); ?></td>
+                                                    <td><?php echo e($b->office_phone); ?></td>
                                                     <td><?php echo e($b->getBookInformation->genre); ?></td>
                                                     <td><?php echo e($b->getStatus->name); ?></td>
                                                     <td><?php echo e($b->getAssignee == null ? "" : $b->getAssignee->fullname()); ?></td>
@@ -55,7 +59,9 @@
                                                                                  
                                                         <th>Author</th>
                                                         <th>Book Title</th>
-                                                        <th>Publisher</th>                                    
+                                                        <th>Publisher</th>  
+                                                        <th>Home Phone</th> 
+                                                        <th>office Phone</th>           
                                                         <th>Genre</th>
                                                         <th>Status</th>
                                                         <th>Assigned</th>

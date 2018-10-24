@@ -29,7 +29,9 @@
                                                       
                                                         <th>Author</th>
                                                         <th>Book Title</th>
-                                                        <th>Publisher</th>                                   
+                                                        <th>Publisher</th>            
+                                                        <th>Home Phone</th> 
+                                                        <th>office Phone</th>                
                                                         <th>Genre</th>
                                                         <th>Status</th>
                                                         <th>Assigned</th>
@@ -44,6 +46,8 @@
                                                     <td ><a href="{{ url('leads/'.$b->id.'/profile') }}" style="color:#1ab394;">{{ $b->fullname() }} </a></td>
                                                     <td>{{ $b->getBookInformation->book_title }}</td>
                                                     <td>{{ $b->getBookInformation->getPublisher == null? " ":$b->getBookInformation->getPublisher['name']}}</td>
+                                                    <td>{{ $b->home_phone }}</td>
+                                                    <td>{{ $b->office_phone }}</td>
                                                     <td>{{ $b->getBookInformation->genre }}</td>
                                                     <td>{{ $b->getStatus->name }}</td>
                                                     <td>{{ $b->getAssignee == null ? "" : $b->getAssignee->fullname() }}</td>
@@ -57,7 +61,9 @@
                                                                                  
                                                         <th>Author</th>
                                                         <th>Book Title</th>
-                                                        <th>Publisher</th>                                    
+                                                        <th>Publisher</th>  
+                                                        <th>Home Phone</th> 
+                                                        <th>office Phone</th>           
                                                         <th>Genre</th>
                                                         <th>Status</th>
                                                         <th>Assigned</th>

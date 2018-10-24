@@ -127,9 +127,6 @@ class MigrationController extends Controller
         foreach($data as $d)
         {
 
-        
-          
-
                 $lead = Leads::create([
                     'firstname'=> $d->first_name,
                     'middlename'=> null,

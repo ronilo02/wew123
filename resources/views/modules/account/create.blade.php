@@ -42,7 +42,7 @@
                                     <div class="form-group"><label>@if(isset($userdata)) New @endif Password</label> <input type="password" name="password" placeholder="Enter @if(isset($userdata)) New @endif Password" class="form-control" required></div>
                                     <div class="form-group"><label>Confirm @if(isset($userdata)) New @endif Password</label> <input type="password" name="confirm-password" placeholder="Confirm @if(isset($userdata)) New @endif Password" class="form-control" required></div>
                                     <div>
-                                    <button type="button" class="ladda-button btn btn-primary pull-right" data-style="slide-right" id="submit-user">@if(isset($userdata)) Update @else Create @endif</button>
+                                    <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" @if(auth()->user()->hasRole(['administrator','superadmin','lead.researcher'])) id="submit-user"  type="button" @else type="submit]"  @endif >@if(isset($userdata)) Update @else Create @endif</button>
                                     </div>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                 </div>
             </div>
             </div>
-            @if(auth()->user()->hasRole(['superadmin','admin']))
+            @if(auth()->user()->hasRole(['superadmin','administrator']))
             <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">

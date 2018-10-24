@@ -40,7 +40,7 @@
                                     <div class="form-group"><label><?php if(isset($userdata)): ?> New <?php endif; ?> Password</label> <input type="password" name="password" placeholder="Enter <?php if(isset($userdata)): ?> New <?php endif; ?> Password" class="form-control" required></div>
                                     <div class="form-group"><label>Confirm <?php if(isset($userdata)): ?> New <?php endif; ?> Password</label> <input type="password" name="confirm-password" placeholder="Confirm <?php if(isset($userdata)): ?> New <?php endif; ?> Password" class="form-control" required></div>
                                     <div>
-                                    <button type="button" class="ladda-button btn btn-primary pull-right" data-style="slide-right" id="submit-user"><?php if(isset($userdata)): ?> Update <?php else: ?> Create <?php endif; ?></button>
+                                    <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" <?php if(auth()->user()->hasRole(['administrator','superadmin','lead.researcher'])): ?> id="submit-user"  type="button" <?php else: ?> type="submit]"  <?php endif; ?> ><?php if(isset($userdata)): ?> Update <?php else: ?> Create <?php endif; ?></button>
                                     </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             </div>
-            <?php if(auth()->user()->hasRole(['superadmin','admin'])): ?>
+            <?php if(auth()->user()->hasRole(['superadmin','administrator'])): ?>
             <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">

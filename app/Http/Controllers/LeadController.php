@@ -46,7 +46,17 @@ class LeadController extends Controller
     public function index()
     {
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Lists']);
- 
+
+        // foreach ($this->leads as $l) {
+        //     try{
+        //        if($l->getBookInformation->getPublisher->name == null){
+        //             dd($l->id);
+        //        }
+        //    }catch(\Exception $e){
+        //       return $l->id;
+        //    }
+        // }
+
         return view('modules.leads.index')
                 ->with('leads',$this->leads)
                 ->with('status',$this->status)
@@ -267,6 +277,8 @@ class LeadController extends Controller
        
        $data = json_decode($request->get('data'));    
 
+        DB::beginTransaction();
+
         foreach ($data as $d) {  
             $lead = Leads::create([
                 'firstname'      => $d->first_name,
@@ -285,14 +297,16 @@ class LeadController extends Controller
                 'country'        => $d->country,
                 'remarks'        => $d->remarks,
                 'assigned_to'    => null,
-                'researcher'     => auth()->user()->id,
+                'researcher'     => $this->ReplaceResearcherToId($d->researcher),
                 'status'         => $this->checkStatus($d->status)
             ]);
+
+            $date = $d->published_date;
 
             $book_information = BookInformation::create([ 
                 'author' => $lead->id,                          
                 'book_title' => $d->book_title,
-                'published_date' => date('y-m-d', strtotime($d->published_date)),
+                'published_date' => date('y-m-d', strtotime((string) $date)),
                 'previous_publisher' => $this->checkPublisherIfExist($d->previous_publisher),
                 'book_reference' => $d->book_reference,
                 'genre' => $d->genre,
@@ -314,10 +328,15 @@ class LeadController extends Controller
             $message = $user->fullname() . ' has imported ' . count($data) . ' leads.';
             Notification::send($admin_users, new LeadsImported($message));
             Notification::send($lead_researcher_users, new LeadsImported($message));
+            
             session()->flash('message','New Leads Successfully saved!');          
-        } else {            
-            session()->flash('error_message','Fail to save new leads!');  
 
+            DB::rollBack();
+            
+        } else {            
+
+            session()->flash('error_message','Fail to save new leads!');  
+            DB::commit();
             return redirect()->back();
         }
 
@@ -328,7 +347,7 @@ class LeadController extends Controller
     {
             $publisher = Publisher::where('name',$name)->get();
 
-            if(count($publisher) == 0){
+            if(count($publisher) == 0){     
                 $publisher = Publisher::create(['name' => $name]);
 
                 return $publisher->id;
@@ -398,18 +417,22 @@ class LeadController extends Controller
 
     public function checkEmailDuplication($email)
     {
-        $lead = Leads::where('email',$email)->first();
+        if($email != null){
+            $lead = Leads::where('email',$email)->first();
 
-        if($lead){
-            $details = [
-                'error' => true,
-                'id'    => $lead->id,
-                'name'  => $lead->fullname(),
-                'description' => "This author has same email address('".$lead->email."') with ".$lead->fullname()
-            ];           
+            if($lead){
+                $details = [
+                    'error' => true,
+                    'id'    => $lead->id,
+                    'name'  => $lead->fullname(),
+                    'description' => "This author has same email address('".$lead->email."') with ".$lead->fullname()
+                ];           
+            }else{
+                $details =  ['error' => false ];
+            }
         }else{
-            $details =  ['error' => false ];
-        }
+                $details =  ['error' => false ];
+            }
 
         return $details;
 
@@ -667,6 +690,17 @@ class LeadController extends Controller
 
             return redirect()->back();
         }
+    }
+
+     public function ReplaceResearcherToId($username)
+    {
+        $user = User::where('username',$username)->first();
+
+        if($user == null){
+            return null;
+        }
+
+        return $user->id;
     }
 }      
           
