@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\LeadStatus;
-use App\Publisher;
-use App\Countries;
-use App\leads;
-use App\User;
 use App\BookInformation;
-use App\Notes;
-use DB;
-use Storage;
+use App\Countries;
 use App\Exports\FileExport;
+use App\LeadStatus;
+use App\Notes;
+use App\Notifications\LeadsImported;
+use App\Notifications\LeadsTransferred;
+use App\Publisher;
+use App\User;
+use App\leads;
+use DB;
+use Excel;
 use Illuminate\Http\Request;
-use Excel; 
+use Illuminate\Support\Facades\Notification;
+use Storage; 
 class LeadController extends Controller
 {
     public function __construct()
@@ -29,6 +32,7 @@ class LeadController extends Controller
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
             $this->users     = User::orderBy('username','asc')->pluck('username','id');
 
+
             return $next($request);
          });      
 
@@ -42,6 +46,16 @@ class LeadController extends Controller
     public function index()
     {
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Lists']);
+
+        // foreach ($this->leads as $l) {
+        //     try{
+        //        if($l->getBookInformation->getPublisher->name == null){
+        //             dd($l->id);
+        //        }
+        //    }catch(\Exception $e){
+        //       return $l->id;
+        //    }
+        // }
 
         return view('modules.leads.index')
                 ->with('leads',$this->leads)
@@ -259,74 +273,81 @@ class LeadController extends Controller
 
     public function storeimport(Request $request)
     {
-       $flag = [];
+        $flag = [];
        
-       $data = json_decode($request->get('data'));
-      
-       foreach($data as $d)
-       {          
+       $data = json_decode($request->get('data'));    
 
-        $lead = Leads::create([
-                    'firstname'      => $d->first_name,
-                    'middlename'     => $d->middle_name,
-                    'lastname'       => $d->last_name,
-                    'email'          => $d->email_address,
-                    'website'        => $d->website,
-                    'mobile_phone'   => $d->mobile_phone,
-                    'office_phone'   => $d->office_phone,
-                    'home_phone'     => $d->home_phone,
-                    'other_phone'    => $d->other_phone,
-                    'street'         => $d->street,
-                    'city'           => $d->city,
-                    'state'          => $d->state,
-                    'postal_code'    => $d->postal_code, 
-                    'country'        => $d->country,
-                    'remarks'        => $d->remarks,
-                    'assigned_to'    => null,
-                    'researcher'     => auth()->user()->id,
-                    'status'         => $this->checkStatus($d->status)
-                 ]);
+        DB::beginTransaction();
 
-       
+        foreach ($data as $d) {  
+            $lead = Leads::create([
+                'firstname'      => $d->first_name,
+                'middlename'     => $d->middle_name,
+                'lastname'       => $d->last_name,
+                'email'          => $d->email_address,
+                'website'        => $d->website,
+                'mobile_phone'   => $d->mobile_phone,
+                'office_phone'   => $d->office_phone,
+                'home_phone'     => $d->home_phone,
+                'other_phone'    => $d->other_phone,
+                'street'         => $d->street,
+                'city'           => $d->city,
+                'state'          => $d->state,
+                'postal_code'    => $d->postal_code, 
+                'country'        => $d->country,
+                'remarks'        => $d->remarks,
+                'assigned_to'    => null,
+                'researcher'     => $this->ReplaceResearcherToId($d->researcher),
+                'status'         => $this->checkStatus($d->status)
+            ]);
 
-        $book_information = BookInformation::create([ 
-                    'author'   => $lead->id,                          
-                    'book_title'=> $d->book_title,
-                    'published_date'=> date('y-m-d', strtotime($d->published_date)),
-                    'previous_publisher'=> $this->checkPublisherIfExist($d->previous_publisher),
-                    'book_reference'=>$d->book_reference,
-                    'genre'=>$d->genre,
-                    'isbn'=>$d->isbn
-                    ]);
+            $date = $d->published_date;
+
+            $book_information = BookInformation::create([ 
+                'author' => $lead->id,                          
+                'book_title' => $d->book_title,
+                'published_date' => date('y-m-d', strtotime((string) $date)),
+                'previous_publisher' => $this->checkPublisherIfExist($d->previous_publisher),
+                'book_reference' => $d->book_reference,
+                'genre' => $d->genre,
+                'isbn' => $d->isbn
+            ]);
 
             if($lead && $book_information){
                 $flag[] = true;
-            }else{
+            } else {
                 $flag[] = false;
             }
-       }
+        }
 
-       if($flag){
-
-             session()->flash('message','New Leads Successfully saved!');          
-
-        }else{            
+       if ($flag) {
+            $user = auth()->user();
+            activity()->causedBy($user)->withProperties(['icon' => count($data)])->log(':causer.firstname :causer.lastname has imported ' . count($data) . ' leads.');
+            $admin_users = User::withRole('admin')->where('id', '!=', $user->id)->get();
+            $lead_researcher_users = User::withRole('lead.researcher')->where('id', '!=', $user->id)->get();
+            $message = $user->fullname() . ' has imported ' . count($data) . ' leads.';
+            Notification::send($admin_users, new LeadsImported($message));
+            Notification::send($lead_researcher_users, new LeadsImported($message));
             
-            session()->flash('error_message','Fail to save new leads!');  
+            session()->flash('message','New Leads Successfully saved!');          
 
+            DB::rollBack();
+            
+        } else {            
+
+            session()->flash('error_message','Fail to save new leads!');  
+            DB::commit();
             return redirect()->back();
         }
 
-
         return redirect('leads/import');
-      
     }
 
     public function checkPublisherIfExist($name)
     {
             $publisher = Publisher::where('name',$name)->get();
 
-            if(count($publisher) == 0){
+            if(count($publisher) == 0){     
                 $publisher = Publisher::create(['name' => $name]);
 
                 return $publisher->id;
@@ -396,18 +417,22 @@ class LeadController extends Controller
 
     public function checkEmailDuplication($email)
     {
-        $lead = Leads::where('email',$email)->first();
+        if($email != null){
+            $lead = Leads::where('email',$email)->first();
 
-        if($lead){
-            $details = [
-                'error' => true,
-                'id'    => $lead->id,
-                'name'  => $lead->fullname(),
-                'description' => "This author has same email address('".$lead->email."') with ".$lead->fullname()
-            ];           
+            if($lead){
+                $details = [
+                    'error' => true,
+                    'id'    => $lead->id,
+                    'name'  => $lead->fullname(),
+                    'description' => "This author has same email address('".$lead->email."') with ".$lead->fullname()
+                ];           
+            }else{
+                $details =  ['error' => false ];
+            }
         }else{
-            $details =  ['error' => false ];
-        }
+                $details =  ['error' => false ];
+            }
 
         return $details;
 
@@ -501,7 +526,9 @@ class LeadController extends Controller
                     ]);
 
         if($notes){
-
+            $user = auth()->user();
+            $notes_author = Leads::find($author);
+            activity()->causedBy($user)->log(':causer.firstname :causer.lastname has stored notes to ' . $notes_author->fullname() . '.');
             session()->flash('message','Notes successfully added!');          
 
         }else{            
@@ -618,7 +645,7 @@ class LeadController extends Controller
         $number_leads = $request->advance_number_leads;
         $advance_bucket = $request->advance_bucket;
         $advance_status = $request->advance_status;
-        
+       
         $advance_assigned_to = $request->advance_assigned_to;
         
         if($advance == null){
@@ -628,7 +655,11 @@ class LeadController extends Controller
                 $update->assigned_to = $advance_assigned_to;
                 $update->save();
             }
-
+                $user = auth()->user();
+                $assigned_user = User::find($advance_assigned_to);
+                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
+                $message = $user->fullname() . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
+                Notification::send($assigned_user, new LeadsTransferred($message));
                 session()->flash('message','Leads successfully transferred!');      
     
                 return redirect()->back();
@@ -647,12 +678,29 @@ class LeadController extends Controller
             foreach($leads as $lead){
                 $lead->assigned_to = $advance_assigned_to;
                 $lead->save();
-            }         
+            } 
+
+            $user = auth()->user();
+                $assigned_user = User::find($advance_assigned_to);
+                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
+                $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
+                Notification::send($assigned_user, new LeadsTransferred($message));        
             
             session()->flash('message','Leads successfully transferred!');      
 
             return redirect()->back();
         }
+    }
+
+     public function ReplaceResearcherToId($username)
+    {
+        $user = User::where('username',$username)->first();
+
+        if($user == null){
+            return null;
+        }
+
+        return $user->id;
     }
 }      
           

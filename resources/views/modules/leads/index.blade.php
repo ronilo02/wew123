@@ -71,9 +71,9 @@
                                             <tr>
                                             <td ><div class="i-checks assign-check"><label><input type="checkbox"  name="leads[]"  value="{{ $lead->id }}"/></label></div></td> 
                                             <td ><a href="{{ url('leads/'.$lead->id.'/profile') }}" style="color:#1ab394;">{{ $lead->fullname() }} </a></td>
-                                            <td>{{ $lead->getBookInformation->book_title }}</td>
-                                            <td>{{ $lead->getBookInformation->getPublisher == null? " ":$lead->getBookInformation->getPublisher['name']}}</td>
-                                            <td>{{ $lead->getBookInformation->genre }}</td>
+                                            <td>{{ $lead->getBookInformation['book_title'] }}</td>
+                                            <td>{{ $lead->getBookInformation->getPublisher->name == null? " ":$lead->getBookInformation->getPublisher->name }}</td>
+                                            <td>{{ $lead->getBookInformation['genre'] }}</td>
                                             <td>{{ $lead->getStatus->name }}</td>
                                             <td>{{ $lead->getAssignee == null ? "" : $lead->getAssignee->fullname() }}</td>
                                             <td>{{ $lead->getResearcher->fullname() }}</td>
@@ -229,6 +229,7 @@
                             );
                         }
                     });
+                    
                    if(advance != 0){
                          if(advance_bucket != 0){
                              

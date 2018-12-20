@@ -164,7 +164,7 @@
                                           <li class="list-group-item">                                               
                                                 Book Reference
                                                 <span class="pull-right" style="color:#b1aeae;">
-                                                <a href="{{ $lead->getBookInformation->book_reference }}">{{ $lead->getBookInformation->book_reference }}</a>
+                                                <a href="{{ $lead->getBookInformation->book_reference }}" target="_blank">{{ $lead->getBookInformation->book_reference }}</a>
                                                 </span>
                                           </li>                                        
                                     </ul>

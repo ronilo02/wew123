@@ -122,32 +122,10 @@ class MigrationController extends Controller
 
         $data   = Excel::selectSheetsByIndex(0)->Load($uploadedFile)->get();
 
-        return view('modules.migration.leadimporttable')
-                ->with('data',$data)
-                ->with('invalid_data',[]);
-    }
+        DB::beginTransaction();
 
-    public function storefile(Request $request)
-    {
-        $flag = [];
-
-        $file = $request->file('leads');
-
-        $file_name = date('Ymd_hhmmss').'.'.$file->getClientOriginalExtension();
-
-        $file->move('storage/files/migration/',$file_name);
-
-        $uploadedFile = 'storage/files/migration/'.$file_name;
-
-        $data   = Excel::selectSheetsByIndex(0)->Load($uploadedFile)->get();
-
-
-        
         foreach($data as $d)
         {
-
-         if($d->researcher != '' && $d->previous_publisher != '' && $d->assigned_to != '' ){   
-          
 
                 $lead = Leads::create([
                     'firstname'=> $d->first_name,
@@ -179,6 +157,96 @@ class MigrationController extends Controller
                     'genre'=>$d->genre,
                     'isbn'=>$d->isbn
                     ]);
+              
+
+ 
+
+              if($lead && $book_information){
+                  $flag[] = true;
+              }else{
+                  $flag[] = false;
+              }
+                
+
+        }
+
+        
+        
+
+        if($flag){
+            session()->flash('message','Migration successfully updated!');            
+            DB::commit();
+        }else{
+            
+            
+            session()->flash('error_message','Fail to migrate data!');  
+            DB::rollBack();
+
+            return redirect()->back();
+        }
+
+    
+       return redirect()->back();
+        // return view('modules.migration.leadimporttable')
+        //         ->with('data',$data)
+        //         ->with('invalid_data',[]);
+    }
+
+    public function storefile(Request $request)
+    {
+        $flag = [];
+
+        $file = $request->file('leads');
+
+        $file_name = date('Ymd_hhmmss').'.'.$file->getClientOriginalExtension();
+
+        $file->move('storage/files/migration/',$file_name);
+
+        $uploadedFile = 'storage/files/migration/'.$file_name;
+
+        $data   = Excel::selectSheetsByIndex(0)->Load($uploadedFile)->get();
+
+
+        foreach($data as $d)
+        {
+
+         if($d->researcher != '' && $d->previous_publisher != '' && $d->assigned_to != '' ){   
+          
+
+                $lead = Leads::create([
+                    'firstname'=> $d->first_name,
+                    'middlename'=> null,
+                    'lastname' =>  $d->last_name,
+                    'email'     => $d->email_address == ""? $d->non_primary_e_mails : $d->email_address, 
+                    'website'   => $d->website,
+                    'mobile_phone' => $d->mobile,
+                    'office_phone' => $d->office_phone,
+                    'home_phone' => $d->home_phone,
+                    'other_phone' =>$d->other_phone,
+                    'street'     => $d->primary_address_street,
+                    'city'       => $d->primary_address_city,
+                    'state'      => $d->primary_address_state,
+                    'postal_code'=> $d->primary_address_postalcode,
+                    'country'    => $d->primary_address_country,
+                    'remarks'    => $d->remarks,
+                    'assigned_to'=> $this->ReplaceAssignedUserToId($d->assigned_to),
+                    'researcher' => $d->researcher,
+                    'status'     => $this->checkStatus($d->status)        
+                    ]);
+
+
+
+              if($lead){
+                  $book_information = BookInformation::create([ 
+                        'author'   => $lead->id,                          
+                        'book_title'=> $d->book_title,
+                        'published_date'=> date('y-m-d', strtotime($d->published_date)),
+                        'previous_publisher'=> $this->checkPublisherIfExist($d->previous_publisher),
+                        'book_reference'=>$d->book_reference,
+                        'genre'=>$d->genre,
+                        'isbn'=>$d->isbn
+                        ]);
+                  }
               }
 
               if($lead && $book_information){
@@ -211,35 +279,50 @@ class MigrationController extends Controller
 
     public function checkPublisherIfExist($name)
     {
+       
             $publisher = Publisher::where('name',$name)->get();
 
             if(count($publisher) == 0){
+                
+                if($name == "" || $name == null){
+
+                   $name = "No Publisher From Data Migration";
+                }   
+
                 $publisher = Publisher::create(['name' => $name]);
 
                 return $publisher->id;
             }
 
             return $publisher[0]->id;
+      
     }
 
     public function ReplaceAssignedUserToId($username)
     {
-        $user = User::where('username',$username)->get();
+        $user = User::where('username',$username)->first();
 
-        if(count($user) == 0){
+        if($user == null){
             return null;
         }
 
-        return $user[0]->id;
+        return $user->id;
     }
 
     public function checkStatus($status)
     {
+
+        if($status != null){
+
             $leadStatus = LeadStatus::where('name',$status)->first();
 
             if($leadStatus == null){
                 $leadStatus = LeadStatus::create(['name' => $status]);
             }
+        }else{
+            $leadStatus = LeadStatus::create(['name' => 'No Status']);
+        }
+
 
             return $leadStatus->id;
     }

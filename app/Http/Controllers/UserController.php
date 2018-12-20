@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Role;
 use App\RoleUser;
+use Hash;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -63,7 +64,7 @@ class UserController extends Controller
                         'firstname' => $request->get('firstname'),
                         'lastname'  => $request->get('lastname'),
                         'email'     => $request->get('email'),
-                        'password'  => md5($request->get('password')),
+                        'password'  => bcrypt($request->get('password')),
                         'avatar'    => 'avatar.jpg',
                         'status'    => null
                     ]);
@@ -139,20 +140,38 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validate = $request->validate([
+                'profile'=>'image'
+            ]);
+
         $user = User::find($id);
 
         $user->firstname = $request->get('firstname');
         $user->lastname = $request->get('lastname');
         $user->email = $request->get('email');
 
-        if($request->get('current-password') != null){
-            if($request->get('current-password') == $user->password){
+
+        if($request->hasFile('profile')){
+      
+             $profile = $request->file('profile');
+
+             $profile_name = $profile->getClientOriginalName();
+
+             $profile->move('storage/files/users/',$profile_name);
+
+             $user->avatar = $profile_name;
+         
+        }
+               
+         if($request->get('current-password') != null){
+            if(Hash::check($request->get('current-password') , $user->password)){
                 if($request->get('password') != null && $request->get('confirm-password') != null){
                         if($request->get('password') == $request->get('confirm-password'))
                         {
-                            $user->password  = md5($request->get('password'));
+                            $user->password  = bcrypt($request->get('password'));
                         }else{
                             session()->flash('message','New password and new confirm password did not match!');
+                            return redirect()->back();
                         }
                 }
             }else{
@@ -171,9 +190,12 @@ class UserController extends Controller
             }        
         }
 
+        $user->save();
+
+
         session()->flash('message','Profile settings has been updated!');
 
-        return redirect('user');
+        return redirect()->back();
     }
 
     /**

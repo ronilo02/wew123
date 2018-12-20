@@ -3,7 +3,7 @@
 @section('content')
     <div class="wrapper wrapper-content animated fadeInRight">
      @if(isset($userdata))
-     <form role="form" action="{{ url('user/'.$userdata->id) }}" id="user-form" method="POST">
+     <form role="form" action="{{ url('user/'.$userdata->id) }}" id="user-form" method="POST" enctype="multipart/form-data">
      <input type="hidden" name="_method" value="PUT">
      @else
         <form role="form" action="{{ route('user.store') }}" id="user-form" method="POST">
@@ -30,6 +30,7 @@
                                     <div class="form-group"><label>Firstname</label> <input type="text" name="firstname" value="@if(isset($userdata)){{ ucfirst($userdata->firstname) }}@endif" placeholder="Enter Firstname" class="form-control" required> </div>
                                     <div class="form-group"><label>Lastname</label> <input type="text" name="lastname" value="@if(isset($userdata)){{ ucfirst($userdata->lastname) }}@endif" placeholder="Enter Lastname" class="form-control" required></div>
                                     <div class="form-group"><label>Primary Email</label> <input type="email" name="email" value="@if(isset($userdata)){{ $userdata->email }}@endif" placeholder="Enter Primary Email" class="form-control" required></div>
+                                    <div class="form-group"><label>Profile Picture</label> <input type="file" name="profile"   class="form-control" ></div>
                             </div>
                             <div class="col-sm-6"><h4>User Credentials</h4>
                                    <p style="color:#1ab394;">*Updating credentials require to input your current password.</p>
@@ -41,7 +42,7 @@
                                     <div class="form-group"><label>@if(isset($userdata)) New @endif Password</label> <input type="password" name="password" placeholder="Enter @if(isset($userdata)) New @endif Password" class="form-control" required></div>
                                     <div class="form-group"><label>Confirm @if(isset($userdata)) New @endif Password</label> <input type="password" name="confirm-password" placeholder="Confirm @if(isset($userdata)) New @endif Password" class="form-control" required></div>
                                     <div>
-                                    <button type="button" class="ladda-button btn btn-primary pull-right" data-style="slide-right" id="submit-user">@if(isset($userdata)) Update @else Create @endif</button>
+                                    <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" @if(auth()->user()->hasRole(['administrator','superadmin','lead.researcher'])) id="submit-user"  type="button" @else type="submit]"  @endif >@if(isset($userdata)) Update @else Create @endif</button>
                                     </div>
                             </div>
                         </div>
@@ -49,7 +50,7 @@
                 </div>
             </div>
             </div>
-            @if(auth()->user()->hasRole(['superadmin','admin']))
+            @if(auth()->user()->hasRole(['superadmin','administrator']))
             <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
