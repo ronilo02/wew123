@@ -74,7 +74,7 @@
                             
 
                             <div class="col-md-12">
-                                <input id="username" type="text" class="form-control<?php echo e($errors->has('username') ? ' is-invalid' : ''); ?>" name="username" value="<?php echo e(old('username')); ?>" required autofocus>
+                                <input id="username" type="text" class="form-control<?php echo e($errors->has('username') ? ' is-invalid' : ''); ?>" name="username" value="<?php echo e(old('username')); ?>" required autofocus placeholder="Username">
 
                                 <?php if($errors->has('username')): ?>
                                     <span class="invalid-feedback" role="alert">
@@ -88,7 +88,7 @@
                             
 
                             <div class="col-md-12">
-                                <input id="password" type="password" class="form-control<?php echo e($errors->has('password') ? ' is-invalid' : ''); ?>" name="password" required>
+                                <input id="password" type="password" class="form-control<?php echo e($errors->has('password') ? ' is-invalid' : ''); ?>" name="password" required placeholder="Password">
 
                                 <?php if($errors->has('password')): ?>
                                     <span class="invalid-feedback" role="alert">

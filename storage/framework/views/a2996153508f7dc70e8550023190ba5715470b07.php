@@ -3,14 +3,14 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="<?php echo e(asset('images/user/'.auth()->user()->avatar)); ?>" width="70px" height="70px"/>
+                            <img alt="image" class="img-circle" src="<?php echo e(asset('storage/files/users/'.auth()->user()->avatar)); ?>" width="70px" height="70px"/>
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"><?php echo e(auth()->user()->fullname()); ?></strong>
-                             </span> <span class="text-muted text-xs block">SuperAdmin <b class="caret"></b></span> </span> </a>
+                             </span> <span class="text-muted text-xs block"><?php echo e(auth()->user()->getRoles[0]->getRole->name); ?> <b class="caret"></b></span> </span> </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="<?php echo e(url('/profile')); ?>">Profile</a></li>
-                            <li><a href="<?php echo e(url('/Edit')); ?>">Edit</a></li>
+                            <li><a href="<?php echo e(url('/user/'.auth()->user()->id.'/edit')); ?>">Edit</a></li>
                             <li class="divider"></li>
                             <li><a href="<?php echo e(url('/logout')); ?>">Logout</a></li>
                         </ul>

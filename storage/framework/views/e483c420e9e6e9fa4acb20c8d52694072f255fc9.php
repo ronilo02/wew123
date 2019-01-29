@@ -173,7 +173,7 @@
                                           <li class="list-group-item">                                               
                                                 Book Reference
                                                 <span class="pull-right" style="color:#b1aeae;">
-                                                <a href="<?php echo e($lead->getBookInformation->book_reference); ?>"><?php echo e($lead->getBookInformation->book_reference); ?></a>
+                                                <a href="<?php echo e($lead->getBookInformation->book_reference); ?>" target="_blank"><?php echo e($lead->getBookInformation->book_reference); ?></a>
                                                 </span>
                                           </li>                                        
                                     </ul>
@@ -546,6 +546,9 @@
                   Mousetrap.bind('N', function(){
                         $('#notesModal').modal('toggle');
                   });
+
+                 
+
 
 
 

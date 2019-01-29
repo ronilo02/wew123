@@ -69,9 +69,9 @@
                                             <tr>
                                             <td ><div class="i-checks assign-check"><label><input type="checkbox"  name="leads[]"  value="<?php echo e($lead->id); ?>"/></label></div></td> 
                                             <td ><a href="<?php echo e(url('leads/'.$lead->id.'/profile')); ?>" style="color:#1ab394;"><?php echo e($lead->fullname()); ?> </a></td>
-                                            <td><?php echo e($lead->getBookInformation->book_title); ?></td>
-                                            <td><?php echo e($lead->getBookInformation->getPublisher == null? " ":$lead->getBookInformation->getPublisher['name']); ?></td>
-                                            <td><?php echo e($lead->getBookInformation->genre); ?></td>
+                                            <td><?php echo e($lead->getBookInformation['book_title']); ?></td>
+                                            <td><?php echo e($lead->getBookInformation->getPublisher->name == null? " ":$lead->getBookInformation->getPublisher->name); ?></td>
+                                            <td><?php echo e($lead->getBookInformation['genre']); ?></td>
                                             <td><?php echo e($lead->getStatus->name); ?></td>
                                             <td><?php echo e($lead->getAssignee == null ? "" : $lead->getAssignee->fullname()); ?></td>
                                             <td><?php echo e($lead->getResearcher->fullname()); ?></td>
@@ -227,6 +227,7 @@
                             );
                         }
                     });
+                    
                    if(advance != 0){
                          if(advance_bucket != 0){
                              
