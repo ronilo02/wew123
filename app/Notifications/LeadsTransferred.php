@@ -16,8 +16,9 @@ class LeadsTransferred extends Notification
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($user,$message)
     {
+        $this->user    = $user;
         $this->message = $message;
     }
 
@@ -35,6 +36,7 @@ class LeadsTransferred extends Notification
     public function toDatabase($notifiable)
     {
         return [
+            'user'    => $this->user,
             'message' => $this->message
         ];
     }

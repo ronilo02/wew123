@@ -10,32 +10,29 @@
             <ul class="nav navbar-top-links navbar-right">
                 <li>
                     <span class="m-r-sm text-muted welcome-message">Welcome to CRM.</span>
-                </li>
-                
+                </li>               
+              
                 <li class="dropdown">
-                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell"></i>
-                        <?php if(count(Auth::user()->unreadNotifications)): ?>
-                            <span class="label label-danger"><?php echo e(count(Auth::user()->unreadNotifications)); ?></span>
-                        <?php endif; ?>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <?php $__currentLoopData = Auth::user()->unreadNotifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <?php echo $__env->make('modules.notifications.' . snake_case(class_basename($notification->type)), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                        <li>
-                            <div class="text-center link-block">
-                                <a href="/notifications">
-                                    <strong>See All Notifications</strong>
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                
-
+                        <a class="dropdown-toggle count-info"  <?php if(url()->current() != url('notifications')): ?> data-toggle="dropdown" <?php endif; ?> href="#">
+                            <i class="fa fa-bell"></i>
+                            <?php if(count(Auth::user()->unreadNotifications)): ?>
+                                <span class="label label-danger"><?php echo e(count(Auth::user()->unreadNotifications)); ?></span>
+                            <?php endif; ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                                <?php $__currentLoopData = Auth::user()->unreadNotifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php echo $__env->make('modules.notifications.' . snake_case(class_basename($notification->type)), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>                      
+                            <li>
+                                <div class="text-center ">
+                                        <a href="/notifications" style="font-size:12px;color:#1ab394;">
+                                           See All Notifications
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>         
                 <li>
                     <a href="<?php echo e(url('/logout')); ?>">
                         <i class="fa fa-sign-out"></i> Log out

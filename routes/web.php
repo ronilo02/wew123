@@ -14,13 +14,14 @@
 /*------------------------------------------ AUTH ROUTE SECTION -------------------------------------------------*/
 
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect('/home');
 });
 
 Route::get('/logout', 'Auth\LoginController@logout');
 Auth::routes();
 
 /*-------------------------------------------END OF ROUTE SECTION---------------------------------------------------*/
+Route::group(['middleware'=>'auth'],function(){
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -103,3 +104,9 @@ Route::group(['prefix'=>''],function(){
 
 /*------------------------------------------End of Leads-------------------------------------------------*/
 
+/*------------------------------------------Quota Routes-----------------------------------------------------------*/
+    
+    Route::resource('/quota','QuotaController');
+/*------------------------------------------End of Leads-------------------------------------------------*/
+
+}); //End of Middleware group

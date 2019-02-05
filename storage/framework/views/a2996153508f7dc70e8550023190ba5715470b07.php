@@ -29,7 +29,7 @@
                     $payments="";
                     $reports="";
                     $migration="";
-
+                    $quota = "";
                     if(request()->url() == "home"){
                         $dashboard="active";   
                     }elseif(request()->url() == url("leads")){
@@ -42,6 +42,8 @@
                         $role="active";
                     }elseif(request()->url() == url("payments")){
                         $payments="active";
+                    }elseif(request()->url() == url("quota")){
+                        $quota="active";
                     }elseif(request()->url() == url("reports")){
                         $reports="active";
                     }
@@ -88,6 +90,13 @@
                             <li><a href="<?php echo e(url('/user/create')); ?>">Add</a></li>                        
                         </ul>              
                     </li>
+                    
+                    <li class = <?php echo e($quota); ?>>
+                            <a href="<?php echo e(url('/quota')); ?>"><i class="fa fa-usd"></i> <span class="nav-label">Quota</span></a>                  
+                        </li>
+                        <li class = <?php echo e($reports); ?>>
+                            <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports</span></a>                  
+                        </li>
                 <?php endif; ?>
                 <?php if(auth()->user()->hasRole(['superadmin'])): ?>
                
@@ -103,12 +112,6 @@
                     </ul>   
                 </li>
                 <?php endif; ?>
-                <li class = <?php echo e($payments); ?>>
-                    <a href="#"><i class="fa fa-money"></i> <span class="nav-label">Payments</span></a>                  
-                </li>
-                <li class = <?php echo e($reports); ?>>
-                    <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports</span></a>                  
-                </li>
                 
                 <!--<li>
                     <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">Gallery</span><span class="fa arrow"></span></a>

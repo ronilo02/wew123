@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Leads;
+use App\Quota;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 
@@ -31,6 +32,7 @@ class HomeController extends Controller
 
         $leads_count = Leads::count();
         $assigned_leads_count = Leads::where('assigned_to',auth()->user()->id)->count();
-        return view('home', compact('activity_logs', 'leads_count', 'assigned_leads_count'));
+        $quota  = Quota::where('status',1)->first();
+        return view('home', compact('activity_logs', 'leads_count', 'assigned_leads_count','quota'));
     }
 }

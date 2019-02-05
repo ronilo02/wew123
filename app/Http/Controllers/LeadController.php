@@ -326,17 +326,18 @@ class LeadController extends Controller
             $admin_users = User::withRole('admin')->where('id', '!=', $user->id)->get();
             $lead_researcher_users = User::withRole('lead.researcher')->where('id', '!=', $user->id)->get();
             $message = $user->fullname() . ' has imported ' . count($data) . ' leads.';
-            Notification::send($admin_users, new LeadsImported($message));
-            Notification::send($lead_researcher_users, new LeadsImported($message));
+            Notification::send($admin_users, new LeadsImported($user,$message));
+            Notification::send($lead_researcher_users, new LeadsImported($user,$message));
             
-            session()->flash('message','New Leads Successfully saved!');          
+            session()->flash('message','New Leads Successfully saved!');           
 
-            DB::rollBack();
+            DB::commit();
             
         } else {            
 
             session()->flash('error_message','Fail to save new leads!');  
-            DB::commit();
+           
+            DB::rollBack();
             return redirect()->back();
         }
 
@@ -659,7 +660,7 @@ class LeadController extends Controller
                 $assigned_user = User::find($advance_assigned_to);
                 activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
                 $message = $user->fullname() . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
-                Notification::send($assigned_user, new LeadsTransferred($message));
+                Notification::send($assigned_user, new LeadsTransferred($user,$message));
                 session()->flash('message','Leads successfully transferred!');      
     
                 return redirect()->back();
@@ -684,7 +685,7 @@ class LeadController extends Controller
                 $assigned_user = User::find($advance_assigned_to);
                 activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
                 $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
-                Notification::send($assigned_user, new LeadsTransferred($message));        
+                Notification::send($assigned_user, new LeadsTransferred($user,$message));        
             
             session()->flash('message','Leads successfully transferred!');      
 

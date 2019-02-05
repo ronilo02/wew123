@@ -63,27 +63,33 @@
 
      <!-- iCheck -->
      <script src="{{ asset('inspinia_admin/js/plugins/iCheck/icheck.min.js') }}"></script>    
-  
+     <script src="{{ asset('js/timeAgo.min.js') }}"></script>
 
      <script src="{{ asset('vendor/upload-progress-bar/js/upload.js') }}"></script>
+     <script src="{{ asset('vendor/cleave/cleave.min.js') }}"></script>
      <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>   
      <script src="https://craig.global.ssl.fastly.net/js/mousetrap/mousetrap.min.js?a4098"></script>
      
-    <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+     <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
      <script src="{{ asset('js/custom.js') }}"></script>   
-
+     
+     <script src="{{ asset('vendor/number/jquery.number.js') }}"></script>
   
     
      <script src="http://malsup.github.com/jquery.form.js"></script> 
      <script>
             $(document).ready(function () {
-              
+               
+                $("time.timeago").timeago();
                
                 $('input[type=checkbox]').iCheck({
                     checkboxClass: 'icheckbox_square-green',
                     radioClass: 'iradio_square-green',
                 });
-           
+                
+                
+            $('#quota').number( true, 2 );
+       
                 
             });
     </script>
@@ -93,6 +99,7 @@
     <script type="text/javascript">
         $(window).on('load', function () {                
                 $("#loading").hide("fade");
+                
         });
     </script>
     

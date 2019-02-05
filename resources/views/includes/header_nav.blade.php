@@ -10,32 +10,29 @@
             <ul class="nav navbar-top-links navbar-right">
                 <li>
                     <span class="m-r-sm text-muted welcome-message">Welcome to CRM.</span>
-                </li>
-                
+                </li>               
+              
                 <li class="dropdown">
-                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell"></i>
-                        @if (count(Auth::user()->unreadNotifications))
-                            <span class="label label-danger">{{ count(Auth::user()->unreadNotifications) }}</span>
-                        @endif
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        @foreach(Auth::user()->unreadNotifications as $notification)
-                            @include ('modules.notifications.' . snake_case(class_basename($notification->type)))
-                        @endforeach
-
-                        <li>
-                            <div class="text-center link-block">
-                                <a href="/notifications">
-                                    <strong>See All Notifications</strong>
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                
-
+                        <a class="dropdown-toggle count-info"  @if(url()->current() != url('notifications')) data-toggle="dropdown" @endif href="#">
+                            <i class="fa fa-bell"></i>
+                            @if (count(Auth::user()->unreadNotifications))
+                                <span class="label label-danger">{{ count(Auth::user()->unreadNotifications) }}</span>
+                            @endif
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                                @foreach(Auth::user()->unreadNotifications as $notification)
+                                    @include ('modules.notifications.' . snake_case(class_basename($notification->type)))
+                                @endforeach                      
+                            <li>
+                                <div class="text-center ">
+                                        <a href="/notifications" style="font-size:12px;color:#1ab394;">
+                                           See All Notifications
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>         
                 <li>
                     <a href="{{ url('/logout') }}">
                         <i class="fa fa-sign-out"></i> Log out
