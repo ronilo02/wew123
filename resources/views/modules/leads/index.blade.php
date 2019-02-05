@@ -191,7 +191,6 @@
                     $('#advance-field-three').show(1000);
                 });
 
-0
                 $("#advance_status").on('change',function(){
                     var advance_status = $("#advance_status option:selected").val();
                     
