@@ -164,7 +164,7 @@
                                           <li class="list-group-item">                                               
                                                 Book Reference
                                                 <span class="pull-right" style="color:#b1aeae;">
-                                                <a href="{{ $lead->getBookInformation->book_reference }}" target="_blank">{{ $lead->getBookInformation->book_reference }}</a>
+                                                <a href="{{ $lead->getBookInformation->book_reference }}" target="_blank">{{ str_limit($lead->getBookInformation->book_reference,180) }}</a>
                                                 </span>
                                           </li>                                        
                                     </ul>
@@ -222,14 +222,18 @@
 
           
              <div class="wrapper wrapper-content animated fadeInRight">
+                  
                   <div class="ibox float-e-margins">
                         <div class="ibox-title">
                               <h5><i class="fa fa-book"></i> Notes</h5>
+                              
                               <div class="ibox-tools">
                               <span style="cursor:pointer;" data-toggle="modal" data-target="#notesModal">
                                     
                                     <i class="fa fa-plus" style="color:#1ab394"> New</i>
-                              </span>                     
+                              </span>   
+                              <br>     
+                              <small style="color:#1ab394">Shortcut keys for adding note, Click <b>shift + n</b>.</small>             
                         </div>
                    </div>
 

@@ -302,7 +302,7 @@ class LeadController extends Controller
             ]);
 
             $date = $d->published_date;
-
+              
             $book_information = BookInformation::create([ 
                 'author' => $lead->id,                          
                 'book_title' => $d->book_title,

@@ -41,7 +41,7 @@
                             <tbody>
                              <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td><img src="<?php echo e(asset('images/user/'.$user->avatar)); ?>" alt="" class="img-circle" width="30px" height="30px"></td>
+                                    <td><img src="<?php echo e(asset('storage/files/users/'.$user->avatar)); ?>" alt="" class="img-circle" width="30px" height="30px"></td>
                                     <td style="color:#1ab394;"><a href="<?php echo e(url('user/'.$user->id.'/edit')); ?>"><?php echo e($user->fullname()); ?></a></td>            
                                     <td><?php echo e($user->username); ?>  </td>
                                     <td><?php echo e($user->email); ?></td>
