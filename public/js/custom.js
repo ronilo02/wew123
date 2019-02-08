@@ -22,8 +22,25 @@ $(document).ready(function() {
         drawCallback: function() {
             $('input[type="checkbox"]').iCheck({
                 checkboxClass: 'icheckbox_square-green'
-            });
-        },
+            });      
+            $("#advance").on("ifUnchecked",function(e){
+                e.preventDefault();
+              //uncheck all checkboxes
+              $(this).val(0);
+              $('#advance-field').hide(1000);
+              $('#advance-field-two').hide(1000);
+              $('#advance-field-three').hide(1000);
+             });
+
+             $("#advance").on("ifChecked",function(e){
+                 e.preventDefault();
+                 //uncheck all checkboxes
+                 $(this).val(1);
+                 $('#advance-field').show(1000);
+                 $('#advance-field-two').show(1000);
+                 $('#advance-field-three').show(1000);
+             });     
+        },       
         columnDefs: [{
             'targets': 0,
             'checkboxes': {

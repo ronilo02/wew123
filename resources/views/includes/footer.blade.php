@@ -4,7 +4,7 @@
    <!-- <script src="{{ asset('js/jquery.min.js') }}"></script> --> --}}
    <script src="http://code.jquery.com/jquery-latest.js"></script>
    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script> -->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> -->
+    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> --}}
     <script src="{{ asset('inspinia_admin/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('inspinia_admin/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
     <script src="{{ asset('inspinia_admin/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>

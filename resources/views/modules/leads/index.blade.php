@@ -8,10 +8,15 @@
                         <div class="ibox-title">
                             <h5 style="margin-top:10px;">Leads</h5>                         
                             <div class="ibox-tools">                            
-                                <button class="advance-filter btn btn-primary dim btn-xs" >
+                                {{-- <button class="advance-filter btn btn-primary dim btn-xs" >
                                 <i class="fa fa-filter"></i> Advance Filter                                      
-                                </button>                           
+                                </button>                            --}}
+                                <button type="button" class="btn btn-sm btn-primary advance-filter"> <i class="fa fa-filter"></i> </button>
+                                <button type="button" class="btn btn-sm btn-primary" id="refresh"> <i class="fa fa-refresh"></i></button>
+                                <button type="button" class="btn btn-sm btn-primary"> <i class="fa fa-cogs"></i> </button>
+                            
                             </div>
+                           
                         </div>
                         <div class="ibox-content">
                         <div class="filter-section">
@@ -36,9 +41,8 @@
                                     </select>
                                     </div>
                                     <div class="col-sm-3">
-                                        <button class="btn btn-info dim pull-right"  type="button"><i class="fa fa-refresh"></i></button> 
-                                        <button class="btn btn-primary dim pull-right" type="button"><i class="fa fa-bars"></i></button>                            
-                                        <button class="btn btn-success dim pull-right" id="submit-filter" type="submit"><i class="fa fa-filter"></i> Filter</button>    
+                                                         
+                                        <button class="btn btn-success" id="submit-filter" type="submit"><i class="fa fa-filter"></i> Filter</button>    
                                         
                                     </div>  
                                 </form>
@@ -102,50 +106,84 @@
                                 </div>
                                 <div class="row">
                                         <div class="col-sm-12">
-                                            <button type="button" class="btn btn-primary btn-block" id="assign-show"> Assign</button>
+                                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#assign-modal"> Assign</button>
                                             <br>
                                         </div> 
-                                </div>
-                                <div class="form_assign">
-                                <div class="row">     
-                                        <div class="col-sm-12">
-                                                <div class="i-checks pull-right" ><input type="checkbox"  name="advance" class="advance" id="advance" value="0" > Show Advanced Fields</div>
+                                        <div class="modal inmodal" id="assign-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-sm">
+                                            <div class="modal-content animated bounceInRight">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                        <i class="fa fa-share-square-o modal-icon" style="color:#1ab394"></i>
+                                                        <h4 class="modal-title">Assign Leads</h4>
+                                                        <small class="font-bold">You can also transfer leads using this module, just check advance settings below.</small>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row form_assign">
+                                                            <div class="form-group" id="advance-field">
+                                                                    <label>Select Bucket</label>
+                                                                    <select name="advance_bucket" id="advance_bucket" class="form-control">
+                                                                        <option value="0">Select Bucket</option>
+                                                                        @foreach($users as $key => $val)
+                                                                        <option value="{{ $key }}">{{ $val }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                            </div>
+                                                            <div class="form-group" id="advance-field-two">
+                                                                    <label>Select Status</label>
+                                                                <select name="advance_status" id="advance_status" class="form-control">                               
+                                                                    <option value="0">All Status</option>
+                                                                    @foreach($status as $key => $val)
+                                                                    <option value="{{ $key }}">{{ $val }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group" id="advance-field-three">
+                                                                    <label>Input Number of Leads</label>
+                                                               <input type="number" class="form-control" name="advance_number_leads" value="0" placeholder="Number of Leads" id="advance_number_leads">
+                                                             </div>
+                                                             <div class="form-group">
+                                                                    <label>Select Assignee</label>
+                                                                <select name="advance_assigned_to" id="advance_assigned_to" class="form-control">
+                                                                    <option value="0">Assigned to</option>
+                                                                    @foreach($users as $key => $val)
+                                                                    <option value="{{ $key }}">{{ $val }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                             </div>
+                                                            
+                        
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <div class="row">
+                                                            <div class="col-sm-2"> 
+                                                             </div>  
+                                                            <div class="col-sm-8"> <div class="i-checks pull-left" >                                                                        
+                                                                    <input type="checkbox" style="font-size:10px;" name="advance" class="advance" id="advance" value="0" ><span style="color:#1ab394;margin-left:5px;"> Show Advanced Fields </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-2"> 
+                                                            </div>  
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-2"> 
+                                                            </div>
+                                                            <div class="col-sm-8">   
+                                                                <br>
+                                                                    <button class="btn btn-primary " type="button" id="assign-submit">Assign</button>
+                                                                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                            <div class="col-sm-2"> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                 </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="row form_assign">
-                                    <div class="col-sm-2" id="advance-field">
-                                            <select name="advance_bucket" id="advance_bucket" class="form-control">
-                                                <option value="0">Select Bucket</option>
-                                                @foreach($users as $key => $val)
-                                                <option value="{{ $key }}">{{ $val }}</option>
-                                                @endforeach
-                                            </select>
-                                    </div>
-                                    <div class="col-sm-3" id="advance-field-two">
-                                        <select name="advance_status" id="advance_status" class="form-control">                               
-                                            <option value="0">All Status</option>
-                                            @foreach($status as $key => $val)
-                                            <option value="{{ $key }}">{{ $val }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3" id="advance-field-three">
-                                       <input type="number" class="form-control" name="advance_number_leads" value="0" placeholder="Number of Leads" id="advance_number_leads">
-                                     </div>
-                                     <div class="col-sm-2">
-                                        <select name="advance_assigned_to" id="advance_assigned_to" class="form-control">
-                                            <option value="0">Assigned to</option>
-                                            @foreach($users as $key => $val)
-                                            <option value="{{ $key }}">{{ $val }}</option>
-                                            @endforeach
-                                        </select>
-                                     </div>
-                                     <div class="col-sm-2">
-                                            <button class="btn btn-success btn-block" type="button" id="assign-submit">Assign</button>
-                                     </div>
-
-                                </div>
+                               
+                               
                             </form>
                             </div>
                         </div>
@@ -158,8 +196,8 @@
 @section('custom_js')
     <script>
            $(document).ready(function(){
-  
-                 $('.form_assign').hide();
+          
+                // $('.form_assign').hide();
                 $('.filter-section').hide();
                 $('#advance-field').hide();
                 $('#advance-field-two').hide();
@@ -168,28 +206,33 @@
                     $('.filter-section').toggle(1000);
                 });
 
+                $('#refresh').on('click',function() {
+                    window.location.replace("{{ url('/leads') }}");
+                });
+
                 $('#assign-show').on('click',function(e){
                     $('.form_assign').toggle(1000);
                 });
 
-                
-               $("#advance").on("ifUnchecked",function(e){
-                   e.preventDefault();
-                 //uncheck all checkboxes
-                 $(this).val(0);
-                 $('#advance-field').hide(1000);
-                 $('#advance-field-two').hide(1000);
-                 $('#advance-field-three').hide(1000);
+                 $("#advance").on("ifUnchecked",function(e){
+                    e.preventDefault();
+                //uncheck all checkboxes
+                $(this).val(0);
+                $('#advance-field').hide(1000);
+                $('#advance-field-two').hide(1000);
+                $('#advance-field-three').hide(1000);
                 });
 
-                $("#advance").on("ifChecked",function(e){
-                    e.preventDefault();
-                    //uncheck all checkboxes
-                    $(this).val(1);
-                    $('#advance-field').show(1000);
-                    $('#advance-field-two').show(1000);
-                    $('#advance-field-three').show(1000);
-                });
+             $("#advance").on("ifChecked",function(e){
+                 e.preventDefault();
+                 //uncheck all checkboxes
+                 $(this).val(1);
+                 $('#advance-field').show(1000);
+                 $('#advance-field-two').show(1000);
+                 $('#advance-field-three').show(1000);
+             }); 
+                
+               
 
                 $("#advance_status").on('change',function(){
                     var advance_status = $("#advance_status option:selected").val();
@@ -208,6 +251,8 @@
                     var advance_status = $("#advance_status option:selected").val();
                     var advance_number_leads = $("#advance_number_leads").val();
                     var advance_assign_to = $("#advance_assigned_to option:selected").val();
+                    var isAdvanceChecked = $('#advance:checked').val()?true:false;
+
                     $(".dataTables-leads input:checkbox:checked").map(function(){
                         leads.push($(this).val());
                     });
@@ -233,8 +278,8 @@
                    if(advance != 0){
                          if(advance_bucket != 0){
                              
-                                 if(advance_number_leads != 0){
-                                    if(advance_assign_to != 0){
+                            // if(advance_number_leads != 0){
+                                    if(advance_assign_to != 0 || isAdvanceChecked){
                                             $("#assign-leads-form").submit();
                                     }else{
                                         swal({
@@ -242,12 +287,12 @@
                                             text  : "You should select assignee!"
                                         });
                                     }
-                                }else{
-                                    swal({
-                                            title : "Field Required!",
-                                            text  : "You should enter number of leads to be transfer!"
-                                        });
-                                }
+                                // }else{
+                                //     swal({
+                                //             title : "Field Required!",
+                                //             text  : "You should enter number of leads to be transfer!"
+                                //         });
+                                // }
                             
                          }else{
                             swal({

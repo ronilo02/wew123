@@ -648,7 +648,9 @@ class LeadController extends Controller
         $advance_status = $request->advance_status;
        
         $advance_assigned_to = $request->advance_assigned_to;
-        
+        $bucket_owner = User::find($advance_bucket);
+        $assigned_user = User::find($advance_assigned_to);
+
         if($advance == null){
             foreach($leads as $lead){
                 $update = Leads::find($lead);
@@ -657,7 +659,7 @@ class LeadController extends Controller
                 $update->save();
             }
                 $user = auth()->user();
-                $assigned_user = User::find($advance_assigned_to);
+                
                 activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
                 $message = $user->fullname() . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
                 Notification::send($assigned_user, new LeadsTransferred($user,$message));
@@ -666,28 +668,32 @@ class LeadController extends Controller
                 return redirect()->back();
             
         }else{
-            $leads = Leads::where('status',$advance_status)
-                     ->where('assigned_to',$advance_bucket);
-
-            if($advance_status != 0){
-                $leads = $leads->limit((int) $number_leads)->get();
             
+            $leads = Leads::where(function($query) use ($advance_status){
+                        $advance_status == 0?null:$query->where('status',$advance_status);
+                    })->where('assigned_to',(int) $advance_bucket)->limit($number_leads == 0?null:$number_leads)->get();
+              
+           
+            if($leads == null || count($leads) > 0){
+                if((int) $number_leads <= count($leads)){
+                    foreach($leads as $lead){
+                        $lead->assigned_to = $advance_assigned_to;
+                        $lead->save();
+                    } 
+                        $user = auth()->user();
+                    
+                        activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
+                        $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
+                        Notification::send($assigned_user, new LeadsTransferred($user,$message));  
+                        session()->flash('message','Leads successfully transferred!');         
+                }else{
+                    session()->flash('error_message',$bucket_owner->fullname().' bucket list has ('.count($leads).') leads available to transfer!');       
+                      
+                }
             }else{
-                $leads = $leads->get();
-            }         
-                  
-            foreach($leads as $lead){
-                $lead->assigned_to = $advance_assigned_to;
-                $lead->save();
-            } 
-
-            $user = auth()->user();
-                $assigned_user = User::find($advance_assigned_to);
-                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
-                $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
-                Notification::send($assigned_user, new LeadsTransferred($user,$message));        
-            
-            session()->flash('message','Leads successfully transferred!');      
+                session()->flash('error_message',$bucket_owner->fullname().' bucket list has no leads available to transfer!');       
+            }
+               
 
             return redirect()->back();
         }
