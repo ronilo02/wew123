@@ -118,7 +118,7 @@ class LeadController extends Controller
 
         DB::commit();
 
-        return redirect('leads');
+        return redirect('leads/create');
 
     }
     /**
