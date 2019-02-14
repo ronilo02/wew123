@@ -11,31 +11,91 @@
                   </div>
                   <div class="col-sm-6">
                  
-                  <h5  style="color:#1ab394">*Personal Information</h5>
+                  <h5  style="color:#1ab394">*Personal Information
+                              <i class="fa fa-times-circle fa-2x pull-right" id="info_close" style="cursor:pointer;"></i>
+                              <i class="fa fa-check-circle fa-2x pull-right" id="info_save" style="cursor:pointer;"></i>
+                              <i class="fa fa-pencil  pull-right" id="info_pencil" data-toggle="tooltip" data-placement="top" title="Edit Contact Information" style="cursor:pointer;"></i>
+                  </h5>
                   <ul class="list-group clear-list m-t">
                         <li class="list-group-item fist-item">
-                              <span class="pull-right" style="color:#b1aeae;">
-                                {{ $lead->street." ".$lead->city." ".$lead->state." ".$lead->postal_code." ,".$lead->country }}
-                              </span>
-                              <span class="label label-danger"><i class="fa fa-map-marker"></i></span> Primary Address
+                              <div class="row">
+                                    <div class="col-md-4">
+                                          <span class="label label-danger"><i class="fa fa-map-marker"></i></span> Primary Address
+                                    </div>
+                                    <div class="col-md-8">
+                                          <div id="info_address_display">
+                                                <span class="pull-right" id="address_display" style="color:#b1aeae;">
+                                                {{ $lead->street." ".$lead->city." ".$lead->state." ".$lead->postal_code." ,".$lead->country }}
+                                                </span>
+                                           </div>
+                                           <div id="info_address_fields">
+                                                <input type="text" id="primary-street"  style="text-align:right;margin-bottom:10px;" placeholder="Street" value="{{ $lead->street }}" class="form-control">
+                                                <input type="text" id="primary-city"  style="text-align:right;margin-bottom:10px;" placeholder="City" value="{{ $lead->city}}" class="form-control">
+                                                <input type="text" id="primary-state"  style="text-align:right;margin-bottom:10px;" placeholder="State" value="{{ $lead->state }}" class="form-control">
+                                                <input type="text" id="primary-postal_code"  style="text-align:right;margin-bottom:10px;" placeholder="Postal Code" value="{{ $lead->postal_code }}" class="form-control">
+                                                <input type="text" id="primary-country"  style="text-align:right;margin-bottom:10px;" placeholder="Country" value="{{ $lead->country }}" class="form-control">
+                                           </div>
+                                    </div>
+                               </div>
                         </li>
                         <li class="list-group-item">
-                              <span class="pull-right" style="color:#b1aeae;">
-                                 {{ $lead->email}}
-                              </span>
-                              <span class="label label-info"><i class="fa fa-envelope"></i></span> Email
+                              <div class="row">
+                                    <div class="col-md-4">
+                                         <span class="label label-info"><i class="fa fa-envelope"></i></span> Email   
+                                    </div>
+                                    <div class="col-md-8">
+                                          <div id="info_email_display">
+                                                <span class="pull-right" id="email_display"  style="color:#b1aeae;">
+                                                {{ $lead->email}}
+                                                </span>
+                                          </div>
+                                          
+                                          <div id="info_email_fields">
+                                                 <input type="email" id="email" style="text-align:right;" placeholder="Email" value="{{ $lead->email }}"  class="form-control">
+                                          </div>
+                                    </div>
+                              </div>
+                              
+                              
                         </li>
                         <li class="list-group-item">
-                              <span class="pull-right" style="color:#b1aeae;">
-                               {{ $lead->Website }}
-                              </span>
-                              <span class="label label-primary"><i class="fa fa-globe"></i></span> Website
+                              <div class="row">
+                                    <div class="col-md-4">
+                                          <span class="label label-primary"><i class="fa fa-globe"></i></span> Website
+                                    </div>
+                                    <div class="col-md-8">
+                                          <div id="info_website_display">
+                                                <span class="pull-right" id="website_display" style="color:#b1aeae;">
+                                                      {{ $lead->Website }}
+                                                </span>
+                                           </div>
+                                           <div id="info_website_fields">
+                                                 <input type="text" id="website" style="text-align:right;" placeholder="Website Link" value="{{ $lead->Website }}"  class="form-control">
+                                           </div>
+                                    </div>
+                              </div>
+                             
+                              
                         </li>
                         <li class="list-group-item">
-                              <span class="pull-right" style="color:#b1aeae;">
-                                {{ $lead->remarks }}
-                              </span>
-                              <span class="label label-warning"><i class="fa fa-file-text-o"></i></span> Remarks
+                              <div class="row">
+                                    <div class="col-md-4">
+                                          <span class="label label-warning"><i class="fa fa-file-text-o"></i></span> Remarks
+                                    </div>
+                                    <div class="col-md-8">
+                                          <div id="info_remarks_display">
+                                                <span class="pull-right" id="remarks_display"  style="color:#b1aeae;">
+                                                            {{ $lead->remarks }}
+                                                      </span>
+                                          </div>
+                                          <div id="info_remarks_fields">
+                                                <input type="text" id="remarks" style="text-align:right;" placeholder="Remarks"  value="{{ $lead->remarks }}" class="form-control">
+                                          </div>
+                                          
+                                    </div>
+                              </div>
+                             
+                              
                         </li>
                       
                   </ul>
@@ -410,6 +470,15 @@
                         $('#edit-lead-form').submit();
                   });
 
+                  $('#info_address_fields').hide();
+                  $('#info_email_fields').hide();
+                  $('#info_website_fields').hide();
+                  $('#info_remarks_fields').hide();
+                  // $('#info_address_display').hide();
+                  // $('#info_email_display').hide();
+                  // $('#info_website_display').hide();
+                  // $('#info_remarks_display').hide();
+
                   //Status Jquery 
 
                   // $('#edit_status_pencil').hide();
@@ -537,11 +606,103 @@
                   Mousetrap.bind('N', function(){
                         $('#notesModal').modal('toggle');
                   });
-
                  
+                  //Starts of Personal Info Jquery
 
+                  
+                  $("#info_save").hide();
+                  $("#info_close").hide();
 
+                  $("#info_pencil").on("click",function(){
+                        $(this).hide();
+                        $("#info_save").show();
+                        $("#info_close").show();
+                        $('#info_address_fields').show();
+                        $('#info_email_fields').show();
+                        $('#info_website_fields').show();
+                        $('#info_remarks_fields').show();
+                        $('#info_address_display').hide();
+                        $('#info_email_display').hide();
+                        $('#info_website_display').hide();
+                        $('#info_remarks_display').hide();
+                  });
 
+                  $("#info_close").on("click",function(){
+                        $(this).hide();
+                        $("#info_save").hide();
+                        $("#info_pencil").show();
+                        $('#info_address_fields').hide();
+                        $('#info_email_fields').hide();
+                        $('#info_website_fields').hide();
+                        $('#info_remarks_fields').hide();
+                        $('#info_address_display').show();
+                        $('#info_email_display').show();
+                        $('#info_website_display').show();
+                        $('#info_remarks_display').show();
+                  });
+
+                  $("#info_save").on("click",function(){
+                        
+                        var street = $("#primary-street").val();
+                        var city = $("#primary-city").val();
+                        var state = $("#primary-state").val();
+                        var country = $("#primary-country").val();
+                        var postal_code = $('#primary-postal_code').val();
+                        var email = $('#email').val();
+                        var website = $('#website').val();
+                        var remarks = $('#remarks').val(); 
+                        var url    = "/leads/"+lead+"/update";  
+                        
+                        $.ajax({
+                              type:"POST",
+                              url:url,
+                              data:{
+                                    street:street,
+                                    city:city,
+                                    state:state,
+                                    country:country,
+                                    postal_code:postal_code,
+                                    email:email,
+                                    website:website,
+                                    remarks:remarks,
+                                    _token: "{{ csrf_token() }}",       
+                              },
+                              success:function(result){
+                                    console.log(result);
+                                    toastr["success"]("Personal information successfully updated!");                                     
+                                    $("#primary-street").val(street);
+                                    $("#primary-city").val(city);
+                                    $("#primary-state").val(state);                                    
+                                    $("#primary-country").val(country);
+                                    $("#primary-postal_code").val(postal_code);
+                                    $("#email").val(email);
+                                    $("#website").val(website);
+                                    $("#remarks").val(remarks);
+
+                                    $("#address_display").html(street+' '+city+' '+state+' '+country+', '+postal_code);
+                                    $("#email_display").html(email);
+                                    $("#website_display").html(website);
+                                    $("#remarks_display").html(remarks);
+
+                                    $("#info_close").hide();
+                                    $("#info_save").hide();
+                                    $("#info_pencil").show();
+                                    $('#info_address_fields').hide();
+                                    $('#info_email_fields').hide();
+                                    $('#info_website_fields').hide();
+                                    $('#info_remarks_fields').hide();
+                                    $('#info_address_display').show();
+                                    $('#info_email_display').show();
+                                    $('#info_website_display').show();
+                                    $('#info_remarks_display').show();
+                              },
+                              error:function(error){
+                                    toastr["error"]("Failed to update personal information!");
+                              }
+                             
+                        });
+
+                  });
 
             });
       </script>

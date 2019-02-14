@@ -484,8 +484,8 @@ class LeadController extends Controller
     public function realtimeUpdate($lead,Request $request){
         
         $lead = Leads::where('id',$lead)->update($request->except('_token'));
-
-        return $lead;
+        
+        return $request->all();
     }
 
     public function storenotes(Request $request){
