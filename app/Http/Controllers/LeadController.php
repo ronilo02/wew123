@@ -25,13 +25,12 @@ class LeadController extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request,$next){
            
-            $this->leads     = Leads::orderBy('assigned_to')->get();
+            $this->leads     = Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->orderBy('assigned_to')->get();
             $this->bucket_list = Leads::where('assigned_to',auth()->user()->id)->get();
             $this->publisher = Publisher::orderBy('name','asc')->pluck('name','id');
             $this->status    = LeadStatus::orderBy('name','asc')->pluck('name','id');
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
             $this->users     = User::orderBy('username','asc')->pluck('username','id');
-
 
             return $next($request);
          });      
