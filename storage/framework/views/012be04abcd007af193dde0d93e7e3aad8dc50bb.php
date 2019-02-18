@@ -76,10 +76,12 @@
                                             </table>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-12">
-                                                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#assign-modal"> Assign</button>
-                                                <br>
-                                            </div> 
+                                                <?php if(auth()->user()->hasRole(['lead.researcher'])): ?>
+                                                    <div class="col-sm-12">
+                                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#assign-modal"> Assign</button>
+                                                        <br>
+                                                    </div> 
+                                                 <?php endif; ?>   
                                             <div class="modal inmodal" id="assign-modal" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog modal-sm">
                                                 <div class="modal-content animated bounceInRight">
