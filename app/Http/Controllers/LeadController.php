@@ -26,7 +26,7 @@ class LeadController extends Controller
         $this->middleware(function ($request,$next){
            
             $this->leads     = Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->orderBy('assigned_to')->get();
-            $this->bucket_list = Leads::where('assigned_to',auth()->user()->id)->get();
+            $this->bucket_list = Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->where('assigned_to',auth()->user()->id)->get();
             $this->publisher = Publisher::orderBy('name','asc')->pluck('name','id');
             $this->status    = LeadStatus::orderBy('name','asc')->pluck('name','id');
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
@@ -67,7 +67,9 @@ class LeadController extends Controller
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Bucket Lists']);
 
          return view('modules.leads.bucket-lists')
-                ->with('bucket_list',$this->bucket_list);   
+                ->with('bucket_list',$this->bucket_list)
+                ->with('status',$this->status)
+                ->with('users',$this->users);   
     }
 
     /**
