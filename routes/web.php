@@ -47,6 +47,7 @@ Route::group(['prefix'=>''],function(){
     Route::get('/leads/{lead}/profile','LeadController@profile');
     Route::post('/leads/{lead}/update','LeadController@realtimeUpdate');
     Route::post('/leads/store/notes','LeadController@storenotes');
+    Route::post('/leads/delete/notes','LeadController@deletenotes');
     Route::get('/leads/{note}/download','LeadController@download_notes_file');
     Route::post('/leads/notes/{note}/update','LeadController@update_note');
     Route::post('/leads/filter','LeadController@filter');

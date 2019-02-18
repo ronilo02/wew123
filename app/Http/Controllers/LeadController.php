@@ -546,6 +546,13 @@ class LeadController extends Controller
 
     }
 
+    public function deletenotes(Request $request)
+    {
+        $notes = Notes::find($request->id);
+
+        $notes->delete();
+    }
+
     public function download_notes_file($note){
        
         $file = Notes::find($note);

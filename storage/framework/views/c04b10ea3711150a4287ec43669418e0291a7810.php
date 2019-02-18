@@ -27,7 +27,7 @@
                                     <div class="form-group"><label>Middlename</label> <input type="text" name="middlename" value="<?php if(isset($lead)): ?> <?php echo e($lead->middlenames); ?>  <?php endif; ?>" placeholder="Enter Middlename" class="form-control" ></div>
                                     <div class="form-group"><label>Lastname</label> <input type="text" name="lastname" value="<?php if(isset($lead)): ?> <?php echo e($lead->lastname); ?>  <?php endif; ?>" placeholder="Enter Lastname" class="form-control" required></div>
                                     
-                                    <div class="form-group"><label>Primary Email</label> <input type="email" name="email" value="<?php if(isset($lead)): ?> <?php echo e($lead->email); ?>  <?php endif; ?>" placeholder="Enter Primary Email" class="form-control" required></div>
+                                    <div class="form-group"><label>Primary Email</label> <input type="email" name="email" value="<?php if(isset($lead)): ?> <?php echo e($lead->email); ?>  <?php endif; ?>" placeholder="Enter Primary Email" class="form-control" ></div>
                             </div>
                             <div class="col-sm-6"><h3 class="m-t-none m-b" style="color:#1ab394"><i class="fa fa-phone-square fa-sm" style="color:#1ab394"></i> Contact Details</h3>
                                   

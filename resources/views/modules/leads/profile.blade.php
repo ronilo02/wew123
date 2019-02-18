@@ -337,7 +337,7 @@
                                     </thead>
                                     <tbody>
                                           @foreach($notes as $n)
-                                                <tr>
+                                    <tr id="notes-row{{ $n->id }}">
                                                       <td><span style="cursor:pointer;color:#1ab394" data-toggle="modal" data-target="#notes{{ $n->id }}">{{ mb_strimwidth($n->subject, 0, 30, "...")  }}</span></td>
                                                       <td> {{ mb_strimwidth($n->notes, 0, 50, "...") }}</td>
                                                       <td>{{ date('M d,Y h:i a', strtotime($n->created_at)) }}</td>
@@ -349,7 +349,11 @@
                                                             @endif
                                                       </td>
                                                       <td>
-                                                      <span style="cursor:pointer;color:#1ab394" data-toggle="modal" data-target="#editnotes{{ $n->id }}"><i class="fa fa-pencil" style="cursor:pointer;color:#1ab394;"></i></span>
+                                                      <div class="pull-right">
+                                                            <span style="cursor:pointer;color:#1ab394" data-toggle="modal" data-target="#editnotes{{ $n->id }}"><i class="fa fa-pencil" style="cursor:pointer;color:#1ab394;"></i></span>
+                                                            <span style="cursor:pointer;color:#1ab394;margin-left:7px;" id="delete-note"><i class="fa fa-trash" style="cursor:pointer;color:#ed5565;"></i></span>
+                                                            <input type="hidden" name="note-id" id="note-id" value="{{ $n->id }}">
+                                                      </div>
                                                       </td>
                                                 </tr>
 
@@ -702,6 +706,37 @@
                              
                         });
 
+                  });
+
+                  $("#delete-note").on("click",function(){
+                        var id = $("#note-id").val();
+                        var url = "/leads/delete/notes";
+                        swal({
+                        title: "Are you sure you want to delete this note?",
+                        text: "You will not be able to recover this note again!",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        closeOnConfirm: false
+                        }, function () {
+                              $.ajax({                                                               
+                                    type:"POST",
+                                    url:url,
+                                    data:{
+                                          id:id,
+                                          _token: "{{ csrf_token() }}",      
+                                    },
+                                    success:function(result){
+                                          swal("Deleted!", "Your note successfully deleted!", "success");
+                                          $("#notes-row"+id).remove();
+                                    },
+                                    error:function(result){
+                                          console.log(result);
+                                    }
+
+                               });
+                        });
                   });
 
             });
