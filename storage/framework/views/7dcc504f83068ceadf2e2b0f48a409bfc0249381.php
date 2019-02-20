@@ -68,7 +68,7 @@
             
             <p style="color:white;">Login in. To see it in action.</p>
             <form class="m-t" method="POST" action="<?php echo e(route('login')); ?>" aria-label="<?php echo e(__('Login')); ?>">
-                        <?php echo csrf_field(); ?>
+             <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
 
                         <div class="form-group row">
                             

@@ -81,7 +81,7 @@
                                             <td>{{ $lead->getStatus->name }}</td>
                                             <td>{{ $lead->getAssignee == null ? "" : $lead->getAssignee->fullname() }}</td>
                                             <td>{{ $lead->getResearcher->fullname() }}</td>
-                                            @if(auth()->user()->hasRole(['administrator','lead.researcher']))
+                                            @if($view_edit_icon)
                                                 <td ><a href="{{ url('leads/'.$lead->id.'/edit') }}" style="cursor:pointer;" target="_blank"><i class="fa fa-pencil" style="color:#1ab394"></i></a></td>
                                             @endif
                                             </tr>
@@ -97,7 +97,7 @@
                                                 <th>Status</th>
                                                 <th>Assigned</th>
                                                 <th>Researcher</th>
-                                                @if(auth()->user()->hasRole(['administrator','lead.researcher']))
+                                                @if($view_edit_icon)
                                                 <th></th>
                                                 @endif
                                             </tr>

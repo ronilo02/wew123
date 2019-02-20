@@ -68,7 +68,7 @@
             
             <p style="color:white;">Login in. To see it in action.</p>
             <form class="m-t" method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
-                        @csrf
+             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                         <div class="form-group row">
                             

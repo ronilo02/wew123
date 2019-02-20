@@ -30,7 +30,7 @@ class LeadController extends Controller
             $this->publisher = Publisher::orderBy('name','asc')->pluck('name','id');
             $this->status    = LeadStatus::orderBy('name','asc')->pluck('name','id');
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
-            $this->users     = User::orderBy('username','asc')->pluck('username','id');
+           
 
             return $next($request);
          });      
@@ -45,7 +45,8 @@ class LeadController extends Controller
     public function index()
     {
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Lists']);
-
+        $users     = User::orderBy('username','asc')->pluck('username','id');
+        $view_edit_icon = false;
         // foreach ($this->leads as $l) {
         //     try{
         //        if($l->getBookInformation->getPublisher->name == null){
@@ -56,20 +57,25 @@ class LeadController extends Controller
         //    }
         // }
 
+        if(auth()->user()->hasRole(['administrator','lead.researcher'])){
+            $view_edit_icon = true;
+        }
         return view('modules.leads.index')
                 ->with('leads',$this->leads)
                 ->with('status',$this->status)
-                ->with('users',$this->users);
+                ->with('view_edit_icon',$view_edit_icon)
+                ->with('users',$users);
     }
 
     public function bucket_list()
     {
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Bucket Lists']);
+        $users     = User::orderBy('username','asc')->pluck('username','id');
 
          return view('modules.leads.bucket-lists')
                 ->with('bucket_list',$this->bucket_list)
                 ->with('status',$this->status)
-                ->with('users',$this->users);   
+                ->with('users',$users);   
     }
 
     /**
@@ -97,7 +103,7 @@ class LeadController extends Controller
         DB::beginTransaction();
 
         $leads =  Leads::create($request->all()+['researcher'=>auth()->user()->id]);
-
+        
         $book_information = BookInformation::create([
                             'author'=>$leads->id,
                             'book_title'=>$request->get('book_title'),
@@ -296,18 +302,18 @@ class LeadController extends Controller
                 'state'          => $d->state,
                 'postal_code'    => $d->postal_code, 
                 'country'        => $d->country,
-                'remarks'        => $d->remarks,
+                'remarks'        => $d->remarks,    
                 'assigned_to'    => null,
                 'researcher'     => $this->ReplaceResearcherToId($d->researcher),
                 'status'         => $this->checkStatus($d->status)
             ]);
 
             $date = $d->published_date;
-              
+           
             $book_information = BookInformation::create([ 
                 'author' => $lead->id,                          
                 'book_title' => $d->book_title,
-                'published_date' => date('y-m-d', strtotime((string) $date)),
+                'published_date' => date('y-m-d', strtotime($date->date)),
                 'previous_publisher' => $this->checkPublisherIfExist($d->previous_publisher),
                 'book_reference' => $d->book_reference,
                 'genre' => $d->genre,
@@ -628,7 +634,7 @@ class LeadController extends Controller
     public function filter(Request $request){
 
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Filter']);
-
+        $users     = User::orderBy('username','asc')->pluck('username','id');
        $status = $request->status;
        $assigned_to = $request->assigned_to;
         $leads = Leads::where(function($query) use ($status,$assigned_to){
@@ -644,7 +650,7 @@ class LeadController extends Controller
         return view('modules.leads.index')
                 ->with('leads',$leads)
                 ->with('status',$this->status)
-                ->with('users',$this->users);
+                ->with('users',$users);
     }
 
     public function assign_leads(Request $request)

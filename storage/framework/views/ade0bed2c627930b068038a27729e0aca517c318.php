@@ -77,7 +77,7 @@
                                             <td><?php echo e($lead->getStatus->name); ?></td>
                                             <td><?php echo e($lead->getAssignee == null ? "" : $lead->getAssignee->fullname()); ?></td>
                                             <td><?php echo e($lead->getResearcher->fullname()); ?></td>
-                                            <?php if(auth()->user()->hasRole(['administrator','lead.researcher'])): ?>
+                                            <?php if($view_edit_icon): ?>
                                                 <td ><a href="<?php echo e(url('leads/'.$lead->id.'/edit')); ?>" style="cursor:pointer;" target="_blank"><i class="fa fa-pencil" style="color:#1ab394"></i></a></td>
                                             <?php endif; ?>
                                             </tr>
@@ -93,7 +93,7 @@
                                                 <th>Status</th>
                                                 <th>Assigned</th>
                                                 <th>Researcher</th>
-                                                <?php if(auth()->user()->hasRole(['administrator','lead.researcher'])): ?>
+                                                <?php if($view_edit_icon): ?>
                                                 <th></th>
                                                 <?php endif; ?>
                                             </tr>
