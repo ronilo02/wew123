@@ -67,8 +67,8 @@
             <h3 style="color:white;">Welcome to CRM</h3>
             
             <p style="color:white;">Login in. To see it in action.</p>
-            <form class="m-t" method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
-             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <form class="m-t" role="form" method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
+             @csrf
 
                         <div class="form-group row">
                             
