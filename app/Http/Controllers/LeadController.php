@@ -122,9 +122,9 @@ class LeadController extends Controller
         $leads =  Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->where('assigned_to',auth()->user()->id)->select('leads.*');
         
         return Datatables::of($leads)
-                 ->addColumn('checkbox', function($leads){
-                     return "<div class='i-checks assign-check'><label><input type='checkbox'  name='leads[]'  value='$leads->id'/></label></div>";
-                 })
+                //  ->addColumn('checkbox', function($leads){
+                //      return "<div class='i-checks assign-check'><label><input type='checkbox'  name='leads[]'  value='$leads->id'/></label></div>";
+                //  })
                  ->editColumn('full_name', function($leads) {
                      return "<a href='/leads/$leads->id/profile' style='color:#1ab394;'>$leads->fullName </a>";
                  })

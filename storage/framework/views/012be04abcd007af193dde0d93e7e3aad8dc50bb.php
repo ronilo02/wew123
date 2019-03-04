@@ -37,7 +37,7 @@
                                                         <th>Researcher</th>                                                                                           
                                                     </tr>
                                                 </thead>
-                                                
+                                              
                                                 <tfoot>
                                                     <tr>                                                          
                                                         <th>Author</th>
@@ -49,7 +49,7 @@
                                                         <th>Status</th>
                                                         <th>State</th>
                                                         <th>Researcher</th>
-                                                        
+                                                     
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -237,6 +237,7 @@
             });
             // Setup - add a text input to each footer cell
             $('#dataTables-bucket-list thead tr').clone(false).appendTo( '#dataTables-bucket-list thead' );
+
             $('#dataTables-bucket-list thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
                 $(this).html( '<input type="text" class="form-control" style="width:100%;font-size:10px;" placeholder="Search '+title+'" />' );
