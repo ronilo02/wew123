@@ -331,7 +331,7 @@ class LeadController extends Controller
         
         $file_name = $file->getClientOriginalName().'_'.date('h-m-s').'.'.$file->getClientOriginalExtension();
 
-       $file->move('storage/files/leads/',$file_name);
+        $file->move('storage/files/leads/',$file_name);
 
         $uploadedFile = 'storage/files/leads/'.$file_name;
 

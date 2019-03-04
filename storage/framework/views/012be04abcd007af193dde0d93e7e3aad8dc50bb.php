@@ -29,27 +29,25 @@
                                                         <th>Author</th>
                                                         <th>Book Title</th>
                                                         <th>Publisher</th>            
-                                                        <th>Home Phone</th> 
-                                                        <th>office Phone</th>                
-                                                        
-                                                        <th>Status</th>
-                                                        <th>State</th>
-                                                        <th>Researcher</th>                                                                                           
+                                                        <th style="width:10%">Home Phone</th> 
+                                                        <th style="width:10%">Office Phone</th>    
+                                                        <th style="width:10%">Status</th>
+                                                        <th style="width:5%">State</th>
+                                                        <th style="width:10%">Researcher</th>                                                                                           
                                                     </tr>
                                                 </thead>
-                                              
+                                               
                                                 <tfoot>
                                                     <tr>                                                          
                                                         <th>Author</th>
                                                         <th>Book Title</th>
-                                                        <th>Publisher</th>  
-                                                        <th>Home Phone</th> 
-                                                        <th>office Phone</th>           
-                                                        
-                                                        <th>Status</th>
-                                                        <th>State</th>
-                                                        <th>Researcher</th>
-                                                     
+                                                        <th>Publisher</th>            
+                                                        <th style="width:10%">Home Phone</th> 
+                                                        <th style="width:10%">Office Phone</th>    
+                                                        <th style="width:10%">Status</th>
+                                                        <th style="width:5%">State</th>
+                                                        <th style="width:10%">Researcher</th>  
+                                                       
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -180,7 +178,7 @@
         var table = $('#dataTables-bucket-list').DataTable({   
             processing: true,   
             serverSide: true,
-            ajax: '<?php echo e(url('leads/bucket-lists-data')); ?>',  
+            ajax: "<?php echo e(url('leads/bucket-lists-data')); ?>",  
             orderCellsTop: true,
             fixedHeader: true,      
             pageLength: 10,
@@ -208,14 +206,12 @@
                  $('#advance-field-three').show(1000);
              });     
             },
-            columns: [       
-                                 
+            columns: [                                        
                         { data: 'full_name', name: 'full_name'},
                         { data: 'book_title', name: 'getBookInformation.book_title'},
                         { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
                         { data: 'home_phone', name: 'home_phone'},
                         { data: 'office_phone', name: 'office_phone'},
-                        // { data: 'genre', name: 'getBookInformation.genre'},
                         { data: 'status', name: 'getStatus.name'},
                         { data: 'state', name: 'state'},
                         { data: 'researcher', name: 'researcher'}
@@ -237,7 +233,6 @@
             });
             // Setup - add a text input to each footer cell
             $('#dataTables-bucket-list thead tr').clone(false).appendTo( '#dataTables-bucket-list thead' );
-
             $('#dataTables-bucket-list thead tr:eq(1) th').each( function (i) {
                 var title = $(this).text();
                 $(this).html( '<input type="text" class="form-control" style="width:100%;font-size:10px;" placeholder="Search '+title+'" />' );

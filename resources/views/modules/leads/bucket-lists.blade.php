@@ -31,45 +31,25 @@
                                                         <th>Author</th>
                                                         <th>Book Title</th>
                                                         <th>Publisher</th>            
-                                                        <th>Home Phone</th> 
-                                                        <th>office Phone</th>                
-                                                        {{-- <th>Genre</th> --}}
-                                                        <th>Status</th>
-                                                        <th>State</th>
-                                                        <th>Researcher</th>                                                                                           
+                                                        <th style="width:10%">Home Phone</th> 
+                                                        <th style="width:10%">Office Phone</th>    
+                                                        <th style="width:10%">Status</th>
+                                                        <th style="width:5%">State</th>
+                                                        <th style="width:10%">Researcher</th>                                                                                           
                                                     </tr>
                                                 </thead>
-                                                {{-- <tbody >
-                                                @foreach($bucket_list as $b)
-                                                    <tr>
-                                                    
-                                                    <td ><a href="{{ url('leads/'.$b->id.'/profile') }}" style="color:#1ab394;">{{ $b->fullName }} </a></td>
-                                                    <td>{{ $b->getBookInformation->book_title }}</td>
-                                                    <td>{{ $b->getBookInformation->getPublisher == null? " ":$b->getBookInformation->getPublisher['name']}}</td>
-                                                    <td>{{ $b->home_phone }}</td>
-                                                    <td>{{ $b->office_phone }}</td>
-                                                    <td>{{ $b->getBookInformation->genre }}</td>
-                                                    <td>{{ $b->getStatus->name }}</td>
-                                                    <td>{{ $b->state }}</td>
-                                                    <td>{{ $b->getResearcher->fullname() }}</td>
-                                                    
-                                                    </tr>
-                                                @endforeach    
-                                                </tbody> --}}
+                                               
                                                 <tfoot>
                                                     <tr>                                                          
                                                         <th>Author</th>
                                                         <th>Book Title</th>
-                                                        <th>Publisher</th>  
-                                                        <th>Home Phone</th> 
-                                                        <th>office Phone</th>           
-                                                        {{-- <th>Genre</th> --}}
-                                                        <th>Status</th>
-                                                        <th>State</th>
-                                                        <th>Researcher</th>
-                                                        {{-- @if(auth()->user()->hasRole(['administrator','lead.researcher']))
-                                                      
-                                                        @endif --}}
+                                                        <th>Publisher</th>            
+                                                        <th style="width:10%">Home Phone</th> 
+                                                        <th style="width:10%">Office Phone</th>    
+                                                        <th style="width:10%">Status</th>
+                                                        <th style="width:5%">State</th>
+                                                        <th style="width:10%">Researcher</th>  
+                                                       
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -228,14 +208,12 @@
                  $('#advance-field-three').show(1000);
              });     
             },
-            columns: [       
-                                 
+            columns: [                                        
                         { data: 'full_name', name: 'full_name'},
                         { data: 'book_title', name: 'getBookInformation.book_title'},
                         { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
                         { data: 'home_phone', name: 'home_phone'},
                         { data: 'office_phone', name: 'office_phone'},
-                        // { data: 'genre', name: 'getBookInformation.genre'},
                         { data: 'status', name: 'getStatus.name'},
                         { data: 'state', name: 'state'},
                         { data: 'researcher', name: 'researcher'}
