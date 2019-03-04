@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="col-sm-1">
                                     <div>
-                                        <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" id="upload-leads"><i class="fa fa-upload"></i> Upload</button>
+                                        <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" id="upload-leads"><i class="fa fa-upload" type="submit"></i> Upload</button>
                                     </div>
                                 </div>
                             
@@ -54,38 +54,5 @@
 
 
    
-<?php $__env->stopSection(); ?>
-
-<?php $__env->startSection('custom_js'); ?>   
-   <script>
-         $(document).ready(function() { 
-            $("#progress-bar").hide();
-            $('#uploadForm').submit(function(e) {	
-                if($('#leads').val()) {
-                    
-                    e.preventDefault();
-                   
-                    $(this).ajaxSubmit({ 
-                        target:   '#targetLayer', 
-                        beforeSubmit: function() {
-                           
-                            $("#progress-bar").show();
-                            $("#progress-bar").width('0%');
-                        },
-                        uploadProgress: function (event, position, total, percentComplete){	
-                            $("#progress-bar").width(percentComplete + '%');
-                            $("#progress-bar").html('<div id="progress-status">' + percentComplete +' %</div>')
-                        },
-                        success:function (result){
-                            
-                           $('#lead-import-leads').html(result);
-                        },
-                        resetForm: true 
-                    }); 
-                    return false; 
-                }
-            });
-        });
-   </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

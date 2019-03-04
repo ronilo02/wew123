@@ -12,7 +12,7 @@ class Leads extends Model
                         ,'office_phone','home_phone','other_phone','street','city','state','assigned_to'
                         ,'postal_code','country','remarks','researcher','status'];
 
-    public function fullname()
+    public function getFullNameAttribute()
     {
         return $this->firstname.' '.$this->lastname; 
     }                    

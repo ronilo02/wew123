@@ -36,10 +36,8 @@
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     </div>
-                                    <div class="col-sm-3">
-                                                         
-                                        <button class="btn btn-success" id="submit-filter" type="submit"><i class="fa fa-filter"></i> Filter</button>    
-                                        
+                                    <div class="col-sm-3">                                                         
+                                        <button class="btn btn-success" id="submit-filter" type="submit"><i class="fa fa-filter"></i> Filter</button>                                   
                                     </div>  
                                 </form>
                             </div>
@@ -61,28 +59,10 @@
                                                 <th>Status</th>
                                                 <th>Assigned</th>
                                                 <th>Researcher</th>
-                                                <?php if(auth()->user()->hasRole(['administrator','lead.researcher'])): ?>
-                                                <th></th>
-                                                <?php endif; ?>                                    
+                                                
                                             </tr>
                                         </thead>
-                                        <tbody >
-                                        <?php $__currentLoopData = $leads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lead): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <tr>
-                                            <td ><div class="i-checks assign-check"><label><input type="checkbox"  name="leads[]"  value="<?php echo e($lead->id); ?>"/></label></div></td> 
-                                            <td ><a href="<?php echo e(url('leads/'.$lead->id.'/profile')); ?>" style="color:#1ab394;"><?php echo e($lead->fullname()); ?> </a></td>
-                                            <td><?php echo e($lead->getBookInformation['book_title']); ?></td>
-                                            <td><?php echo e($lead->getBookInformation->getPublisher->name == null? " ":$lead->getBookInformation->getPublisher->name); ?></td>
-                                            <td><?php echo e($lead->getBookInformation['genre']); ?></td>
-                                            <td><?php echo e($lead->getStatus->name); ?></td>
-                                            <td><?php echo e($lead->getAssignee == null ? "" : $lead->getAssignee->fullname()); ?></td>
-                                            <td><?php echo e($lead->getResearcher->fullname()); ?></td>
-                                            <?php if($view_edit_icon): ?>
-                                                <td ><a href="<?php echo e(url('leads/'.$lead->id.'/edit')); ?>" style="cursor:pointer;" target="_blank"><i class="fa fa-pencil" style="color:#1ab394"></i></a></td>
-                                            <?php endif; ?>
-                                            </tr>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>    
-                                        </tbody>
+                                        
                                         <tfoot>
                                             <tr>   
                                                 <th></th>                               
@@ -93,9 +73,7 @@
                                                 <th>Status</th>
                                                 <th>Assigned</th>
                                                 <th>Researcher</th>
-                                                <?php if($view_edit_icon): ?>
-                                                <th></th>
-                                                <?php endif; ?>
+                                                
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -146,9 +124,7 @@
                                                                     <option value="<?php echo e($key); ?>"><?php echo e($val); ?></option>
                                                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </select>
-                                                             </div>
-                                                            
-                        
+                                                             </div>       
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -192,9 +168,18 @@
 <?php $__env->startSection('custom_js'); ?>
     <script>
            $(document).ready(function(){
-          
+                <?php if(\Request::is('leads')): ?>
+                    var url = "<?php echo e(url('leads/getdata')); ?>";
+                 
+                <?php elseif(\Request::is('leads/filter')): ?>
+                    var data = [];
+                    data = [{status: $('#filter_status').val()}];
+                    var url = "<?php echo e(url('leads/getfilterdata')); ?>"+"/"+data;
+                  
+                <?php endif; ?>
+                
                 // $('.form_assign').hide();
-                $('.filter-section').hide();
+                $('.filter-section').hide();                         
                 $('#advance-field').hide();
                 $('#advance-field-two').hide();
                 $('#advance-field-three').hide();
@@ -213,20 +198,20 @@
                  $("#advance").on("ifUnchecked",function(e){
                     e.preventDefault();
                 //uncheck all checkboxes
-                $(this).val(0);
-                $('#advance-field').hide(1000);
-                $('#advance-field-two').hide(1000);
-                $('#advance-field-three').hide(1000);
+                    $(this).val(0);
+                    $('#advance-field').hide(1000);
+                    $('#advance-field-two').hide(1000);
+                    $('#advance-field-three').hide(1000);
                 });
 
-             $("#advance").on("ifChecked",function(e){
-                 e.preventDefault();
-                 //uncheck all checkboxes
-                 $(this).val(1);
-                 $('#advance-field').show(1000);
-                 $('#advance-field-two').show(1000);
-                 $('#advance-field-three').show(1000);
-             }); 
+                $("#advance").on("ifChecked",function(e){
+                    e.preventDefault();
+                    //uncheck all checkboxes
+                    $(this).val(1);
+                    $('#advance-field').show(1000);
+                    $('#advance-field-two').show(1000);
+                    $('#advance-field-three').show(1000);
+                }); 
                 
                
 
@@ -313,8 +298,65 @@
                                 });
                         }
                    }
-                });           
-            });                
+                });     
+
+                $('.dataTables-leads').DataTable({
+                    processing: true,   
+                    serverSide: true,
+                    ajax: url,                  
+                    pageLength: 10,
+                    responsive: true,
+                    ordering: false,
+                    drawCallback: function() {
+                        $('input[type="checkbox"]').iCheck({
+                            checkboxClass: 'icheckbox_square-green'
+                        });      
+                        $("#advance").on("ifUnchecked",function(e){
+                            e.preventDefault();
+                        //uncheck all checkboxes
+                        $(this).val(0);
+                        $('#advance-field').hide(1000);
+                        $('#advance-field-two').hide(1000);
+                        $('#advance-field-three').hide(1000);
+                        });
+
+                        $("#advance").on("ifChecked",function(e){
+                            e.preventDefault();
+                            //uncheck all checkboxes
+                            $(this).val(1);
+                            $('#advance-field').show(1000);
+                            $('#advance-field-two').show(1000);
+                            $('#advance-field-three').show(1000);
+                        });     
+                    },                         
+                    columns: [       
+                        { data: 'checkbox'},               
+                        { data: 'full_name', name: 'full_name'},
+                        { data: 'book_title', name: 'getBookInformation.book_title'},
+                        { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
+                        { data: 'genre', name: 'getBookInformation.genre'},
+                        { data: 'status', name: 'getStatus.name'},
+                        { data: 'assignee', name: 'assignee'},
+                        { data: 'researcher', name: 'researcher'}
+                    ],  
+                    columnDefs: [{
+                        'targets': 0,
+                        'checkboxes': {
+                            'selectRow': true,
+                            'selectCallback': function(nodes, selected) {
+                                $('input[type="checkbox"]', nodes).iCheck('update');
+                            },
+                            'selectAllCallback': function(nodes, selected, indeterminate) {
+                                $('input[type="checkbox"]', nodes).iCheck('update');
+                            }
+                        }
+                    }],
+                    select: 'multi',
+                });
+                   
+            });      
+            
+            
         
     </script>
 <?php $__env->stopSection(); ?>

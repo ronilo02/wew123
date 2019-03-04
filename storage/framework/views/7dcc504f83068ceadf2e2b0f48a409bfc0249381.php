@@ -67,8 +67,8 @@
             <h3 style="color:white;">Welcome to CRM</h3>
             
             <p style="color:white;">Login in. To see it in action.</p>
-            <form class="m-t" method="POST" action="<?php echo e(route('login')); ?>" aria-label="<?php echo e(__('Login')); ?>">
-             <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+            <form class="m-t" role="form" method="POST" action="<?php echo e(route('login')); ?>" aria-label="<?php echo e(__('Login')); ?>">
+             <?php echo csrf_field(); ?>
 
                         <div class="form-group row">
                             

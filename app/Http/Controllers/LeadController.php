@@ -12,6 +12,7 @@ use App\Notifications\LeadsTransferred;
 use App\Publisher;
 use App\User;
 use App\leads;
+use Yajra\Datatables\Datatables;
 use DB;
 use Excel;
 use Illuminate\Http\Request;
@@ -25,8 +26,8 @@ class LeadController extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request,$next){
            
-            $this->leads     = Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->orderBy('assigned_to')->get();
-            $this->bucket_list = Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->where('assigned_to',auth()->user()->id)->get();
+            // $this->leads     = Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->orderBy('assigned_to')->get();
+            // $this->bucket_list = Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->where('assigned_to',auth()->user()->id)->get();
             $this->publisher = Publisher::orderBy('name','asc')->pluck('name','id');
             $this->status    = LeadStatus::orderBy('name','asc')->pluck('name','id');
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
@@ -61,21 +62,96 @@ class LeadController extends Controller
             $view_edit_icon = true;
         }
         return view('modules.leads.index')
-                ->with('leads',$this->leads)
+                // ->with('leads',$this->leads)
                 ->with('status',$this->status)
                 ->with('view_edit_icon',$view_edit_icon)
                 ->with('users',$users);
+    }
+
+    public function getData()
+    {
+       $leads =  Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->select('leads.*');
+        
+       return Datatables::of($leads)
+                ->addColumn('checkbox', function($leads){
+                    return "<div class='i-checks assign-check'><label><input type='checkbox'  name='leads[]'  value='$leads->id'/></label></div>";
+                })
+                ->editColumn('full_name', function($leads) {
+                    return "<a href='leads/$leads->id/profile' style='color:#1ab394;'>$leads->fullName </a>";
+                })
+                ->filterColumn('full_name', function($query, $keyword) {
+                    $sql = "CONCAT(leads.firstname,' ',leads.lastname)  like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%"]);
+                })
+                ->addColumn('book_title', function($leads){
+                    return $leads->getBookInformation->book_title;
+                })
+                ->addColumn('publisher', function($leads){
+                    return $leads->getBookInformation->getPublisher->name;
+                })
+                ->addColumn('genre', function($leads){
+                    return $leads->getBookInformation->genre;
+                })
+                ->addColumn('status', function($leads){
+                    return $leads->getStatus->name;
+                })
+                ->addColumn('assignee', function($leads){
+                    return $leads->getAssignee->fullname();
+                })
+                ->editColumn('researcher', function($leads) {
+                        return $leads->getResearcher->fullname();
+                })
+                ->escapeColumns([])
+                ->make(true);
     }
 
     public function bucket_list()
     {
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Bucket Lists']);
         $users     = User::orderBy('username','asc')->pluck('username','id');
-
+        // $bucket_list = Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->where('assigned_to',auth()->user()->id)->get();
+        
          return view('modules.leads.bucket-lists')
-                ->with('bucket_list',$this->bucket_list)
+                // ->with('bucket_list',$bucket_list)
                 ->with('status',$this->status)
                 ->with('users',$users);   
+    }
+
+    public function bucket_list_data()
+    {
+        $leads =  Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->where('assigned_to',auth()->user()->id)->select('leads.*');
+        
+        return Datatables::of($leads)
+                 ->addColumn('checkbox', function($leads){
+                     return "<div class='i-checks assign-check'><label><input type='checkbox'  name='leads[]'  value='$leads->id'/></label></div>";
+                 })
+                 ->editColumn('full_name', function($leads) {
+                     return "<a href='leads/$leads->id/profile' style='color:#1ab394;'>$leads->fullName </a>";
+                 })
+                 ->filterColumn('full_name', function($query, $keyword) {
+                     $sql = "CONCAT(leads.firstname,' ',leads.lastname)  like ?";
+                     $query->whereRaw($sql, ["%{$keyword}%"]);
+                 })
+                 ->addColumn('book_title', function($leads){
+                     return $leads->getBookInformation->book_title;
+                 })
+                 ->addColumn('publisher', function($leads){
+                     return $leads->getBookInformation->getPublisher->name;
+                 })
+                 ->addColumn('genre', function($leads){
+                     return $leads->getBookInformation->genre;
+                 })
+                 ->addColumn('status', function($leads){
+                     return $leads->getStatus->name;
+                 })
+                 ->addColumn('assignee', function($leads){
+                     return $leads->getAssignee->fullname();
+                 })
+                 ->editColumn('researcher', function($leads) {
+                         return $leads->getResearcher->fullname();
+                 })
+                 ->escapeColumns([])
+                 ->make(true);
     }
 
     /**
@@ -635,22 +711,66 @@ class LeadController extends Controller
 
         view()->share(['breadcrumb' => 'Leads','sub_breadcrumb'=> 'Filter']);
         $users     = User::orderBy('username','asc')->pluck('username','id');
-       $status = $request->status;
-       $assigned_to = $request->assigned_to;
-        $leads = Leads::where(function($query) use ($status,$assigned_to){
-                            if($status != 0 && $assigned_to != 0){
-                                $query->where('status',$status)->where('assigned_to',$assigned_to);
-                            }elseif($status != 0 && $assigned_to == 0){
-                                $query->where('status',$status);
-                            }else{
-                                $query->where('assigned_to',$assigned_to);
-                            }
-                       })->get();
+        $filter_status = [];
+        $filter_status['status'] = $request->status;
+        $filter_status['assigned_to'] = $request->assigned_to;
+        
 
         return view('modules.leads.index')
-                ->with('leads',$leads)
                 ->with('status',$this->status)
+                ->with('filter_status',$filter_status)
+                
                 ->with('users',$users);
+    }
+
+    public function getFilterData($data)
+    {
+      
+       $status = json_decode($data)->status;
+       $assigned_to = 1;
+       $leads =  Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])
+                ->where(function($query) use ($status,$assigned_to){
+                    if($status != 0 && $assigned_to != 0){
+                        $query->where('status',$status)->where('assigned_to',$assigned_to);
+                    }elseif($status != 0 && $assigned_to == 0){
+                        $query->where('status',$status);
+                    }else{
+                        $query->where('assigned_to',$assigned_to);
+                    }
+               })    
+                ->select('leads.*');
+        
+       return Datatables::of($leads)
+                ->addColumn('checkbox', function($leads){
+                    return "<div class='i-checks assign-check'><label><input type='checkbox'  name='leads[]'  value='$leads->id'/></label></div>";
+                })
+                ->editColumn('full_name', function($leads) {
+                    return $leads->fullName;
+                })
+                ->filterColumn('full_name', function($query, $keyword) {
+                    $sql = "CONCAT(leads.firstname,' ',leads.lastname)  like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%"]);
+                })
+                ->addColumn('book_title', function($leads){
+                    return $leads->getBookInformation->book_title;
+                })
+                ->addColumn('publisher', function($leads){
+                    return $leads->getBookInformation->getPublisher->name;
+                })
+                ->addColumn('genre', function($leads){
+                    return $leads->getBookInformation->genre;
+                })
+                ->addColumn('status', function($leads){
+                    return $leads->getStatus->name;
+                })
+                ->addColumn('assignee', function($leads){
+                    return $leads->getAssignee->fullname();
+                })
+                ->editColumn('researcher', function($leads) {
+                        return $leads->getResearcher->fullname();
+                })
+                ->escapeColumns([])
+                ->make(true);
     }
 
     public function assign_leads(Request $request)

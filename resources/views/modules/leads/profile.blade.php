@@ -7,7 +7,7 @@
                         @if(auth()->user()->can('edit.leads') || auth()->user()->hasRole('superadmin'))
                               <a href="{{ url('leads/'.$lead->id.'/edit') }}" data-toggle="tooltip" data-placement="top" title="Edit Status"  class="pull-right"><i style="color:#1ab394" data-toggle="tooltip" data-placement="top" title="Edit Lead" class="fa fa-pencil"></i></a>
                         @endif
-                          <h1>{{ $lead->fullname() }}</h1>                 
+                          <h1>{{ $lead->fullName }}</h1>                 
                   </div>
                   <div class="col-sm-6">
                  
@@ -178,15 +178,13 @@
                                                               <input type="text" name="other_phone" value="{{ $lead->other_phone }}"   id="other_phone" class="form-control">
                                                         </div>
                                                 </div>
-                                           </div>
-                                          
+                                           </div>                                         
                                         
                                     </li>
                               
                               </ul>
                          </div>
                   </div>
-
 
             <div class="wrapper wrapper-content animated fadeInRight">                  
                         <div class="ibox float-e-margins">
@@ -224,7 +222,7 @@
                                           <li class="list-group-item">                                               
                                                 Book Reference
                                                 <span class="pull-right" style="color:#b1aeae;">
-                                                <a href="{{ $lead->getBookInformation->book_reference }}" target="_blank">{{ str_limit($lead->getBookInformation->book_reference,180) }}</a>
+                                                <a href="{{ $lead->getBookInformation->book_reference }}" target="_blank">{{ str_limit($lead->getBookInformation->book_reference,150) }}</a>
                                                 </span>
                                           </li>                                        
                                     </ul>
@@ -374,7 +372,7 @@
                                                                         </p>     
                                                                         </div>
                                                                         <div class="hr-line-dashed"></div>
-                                                                        <div class="col-mid-12">
+                                                                        <div class="col-mi d-12">
                                                                         <div class="file-box">
                                                                               <div class="file">
                                                                                     <a href="#">
@@ -610,6 +608,12 @@
                   Mousetrap.bind('N', function(){
                         $('#notesModal').modal('toggle');
                   });
+
+                  //Keyboard shortcuts for saving notes
+                  // Mousetrap.bind('alt+s', function(){
+                  //     $("#notesform").submit();
+                  // });
+                 
                  
                   //Starts of Personal Info Jquery
 

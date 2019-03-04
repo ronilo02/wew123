@@ -39,26 +39,10 @@
                                                                                            
                                                     </tr>
                                                 </thead>
-                                                <tbody >
-                                                <?php $__currentLoopData = $bucket_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <tr>
-                                                    
-                                                    <td ><a href="<?php echo e(url('leads/'.$b->id.'/profile')); ?>" style="color:#1ab394;"><?php echo e($b->fullname()); ?> </a></td>
-                                                    <td><?php echo e($b->getBookInformation->book_title); ?></td>
-                                                    <td><?php echo e($b->getBookInformation->getPublisher == null? " ":$b->getBookInformation->getPublisher['name']); ?></td>
-                                                    <td><?php echo e($b->home_phone); ?></td>
-                                                    <td><?php echo e($b->office_phone); ?></td>
-                                                    <td><?php echo e($b->getBookInformation->genre); ?></td>
-                                                    <td><?php echo e($b->getStatus->name); ?></td>
-                                                    <td><?php echo e($b->state); ?></td>
-                                                    <td><?php echo e($b->getResearcher->fullname()); ?></td>
-                                                    
-                                                    </tr>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>    
-                                                </tbody>
+                                                
                                                 <tfoot>
                                                     <tr>   
-                                                                                 
+                                                       
                                                         <th>Author</th>
                                                         <th>Book Title</th>
                                                         <th>Publisher</th>  
@@ -66,11 +50,9 @@
                                                         <th>office Phone</th>           
                                                         <th>Genre</th>
                                                         <th>Status</th>
-                                                        <th>Assigned</th>
+                                                        <th>State</th>
                                                         <th>Researcher</th>
-                                                        <?php if(auth()->user()->hasRole(['administrator','lead.researcher'])): ?>
-                                                      
-                                                        <?php endif; ?>
+                                                        
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -199,6 +181,9 @@
              }); 
 
         var table = $('#dataTables-bucket-list').DataTable({   
+            processing: true,   
+            serverSide: true,
+            ajax: "<?php echo e(url('/leads/bucket-lists-data')); ?>",  
             orderCellsTop: true,
             fixedHeader: true,      
             pageLength: 10,
@@ -226,6 +211,18 @@
                  $('#advance-field-three').show(1000);
              });     
             },
+            columns: [       
+                                 
+                        { data: 'full_name', name: 'full_name'},
+                        { data: 'book_title', name: 'getBookInformation.book_title'},
+                        { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
+                        { data: 'home_phone', name: 'home_phone'},
+                        { data: 'office_phone', name: 'office_phone'},
+                        { data: 'genre', name: 'getBookInformation.genre'},
+                        { data: 'status', name: 'getStatus.name'},
+                        { data: 'state', name: 'state'},
+                        { data: 'researcher', name: 'researcher'}
+                    ], 
             columnDefs: [{
                 'targets': 0,
                 'checkboxes': {

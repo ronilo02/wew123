@@ -40,6 +40,7 @@ Route::delete('profile/{user}/notifications', function(App\User $user) {
 Route::group(['prefix'=>''],function(){
     
     Route::get('/leads/bucket-lists','LeadController@bucket_list');
+    Route::get('/leads/bucket-lists-data','LeadController@bucket_list_data');
     Route::get('/leads/export','LeadController@export');
     Route::post('/leads/upload','LeadController@upload');
     Route::get('/leads/import','LeadController@import');
@@ -52,6 +53,8 @@ Route::group(['prefix'=>''],function(){
     Route::post('/leads/notes/{note}/update','LeadController@update_note');
     Route::post('/leads/filter','LeadController@filter');
     Route::post('/leads/assign','LeadController@assign_leads');
+    Route::get('leads/getdata','LeadController@getData');
+    Route::get('leads/getfilterdata/{data}','LeadController@getFilterData');
     Route::resource('/leads','LeadController');
   
 });

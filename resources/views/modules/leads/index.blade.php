@@ -14,7 +14,7 @@
                                 <button type="button" class="btn btn-sm btn-primary advance-filter"> <i class="fa fa-filter"></i> </button>
                                 <button type="button" class="btn btn-sm btn-primary" id="refresh"> <i class="fa fa-refresh"></i></button>
                                 <button type="button" class="btn btn-sm btn-primary"> <i class="fa fa-cogs"></i> </button>
-                            
+                            {{-- <input type="hidden" id="filter_status"  value="{{ $filter_status['status'] }}"> --}}
                             </div>
                            
                         </div>
@@ -40,10 +40,8 @@
                                         @endforeach
                                     </select>
                                     </div>
-                                    <div class="col-sm-3">
-                                                         
-                                        <button class="btn btn-success" id="submit-filter" type="submit"><i class="fa fa-filter"></i> Filter</button>    
-                                        
+                                    <div class="col-sm-3">                                                         
+                                        <button class="btn btn-success" id="submit-filter" type="submit"><i class="fa fa-filter"></i> Filter</button>                                   
                                     </div>  
                                 </form>
                             </div>
@@ -65,12 +63,12 @@
                                                 <th>Status</th>
                                                 <th>Assigned</th>
                                                 <th>Researcher</th>
-                                                @if(auth()->user()->hasRole(['administrator','lead.researcher']))
+                                                {{-- @if(auth()->user()->hasRole(['administrator','lead.researcher']))
                                                 <th></th>
-                                                @endif                                    
+                                                @endif                                     --}}
                                             </tr>
                                         </thead>
-                                        <tbody >
+                                        {{-- <tbody >
                                         @foreach($leads as $lead)
                                             <tr>
                                             <td ><div class="i-checks assign-check"><label><input type="checkbox"  name="leads[]"  value="{{ $lead->id }}"/></label></div></td> 
@@ -86,7 +84,7 @@
                                             @endif
                                             </tr>
                                         @endforeach    
-                                        </tbody>
+                                        </tbody> --}}
                                         <tfoot>
                                             <tr>   
                                                 <th></th>                               
@@ -97,9 +95,9 @@
                                                 <th>Status</th>
                                                 <th>Assigned</th>
                                                 <th>Researcher</th>
-                                                @if($view_edit_icon)
+                                                {{-- @if($view_edit_icon)
                                                 <th></th>
-                                                @endif
+                                                @endif --}}
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -150,9 +148,7 @@
                                                                     <option value="{{ $key }}">{{ $val }}</option>
                                                                     @endforeach
                                                                 </select>
-                                                             </div>
-                                                            
-                        
+                                                             </div>       
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -196,9 +192,18 @@
 @section('custom_js')
     <script>
            $(document).ready(function(){
-          
+                @if(\Request::is('leads'))
+                    var url = "{{ url('leads/getdata') }}";
+                 
+                @elseif(\Request::is('leads/filter'))
+                    var data = [];
+                    data = [{status: $('#filter_status').val()}];
+                    var url = "{{ url('leads/getfilterdata') }}"+"/"+data;
+                  
+                @endif
+                
                 // $('.form_assign').hide();
-                $('.filter-section').hide();
+                $('.filter-section').hide();                         
                 $('#advance-field').hide();
                 $('#advance-field-two').hide();
                 $('#advance-field-three').hide();
@@ -217,20 +222,20 @@
                  $("#advance").on("ifUnchecked",function(e){
                     e.preventDefault();
                 //uncheck all checkboxes
-                $(this).val(0);
-                $('#advance-field').hide(1000);
-                $('#advance-field-two').hide(1000);
-                $('#advance-field-three').hide(1000);
+                    $(this).val(0);
+                    $('#advance-field').hide(1000);
+                    $('#advance-field-two').hide(1000);
+                    $('#advance-field-three').hide(1000);
                 });
 
-             $("#advance").on("ifChecked",function(e){
-                 e.preventDefault();
-                 //uncheck all checkboxes
-                 $(this).val(1);
-                 $('#advance-field').show(1000);
-                 $('#advance-field-two').show(1000);
-                 $('#advance-field-three').show(1000);
-             }); 
+                $("#advance").on("ifChecked",function(e){
+                    e.preventDefault();
+                    //uncheck all checkboxes
+                    $(this).val(1);
+                    $('#advance-field').show(1000);
+                    $('#advance-field-two').show(1000);
+                    $('#advance-field-three').show(1000);
+                }); 
                 
                
 
@@ -317,8 +322,65 @@
                                 });
                         }
                    }
-                });           
-            });                
+                });     
+
+                $('.dataTables-leads').DataTable({
+                    processing: true,   
+                    serverSide: true,
+                    ajax: url,                  
+                    pageLength: 10,
+                    responsive: true,
+                    ordering: false,
+                    drawCallback: function() {
+                        $('input[type="checkbox"]').iCheck({
+                            checkboxClass: 'icheckbox_square-green'
+                        });      
+                        $("#advance").on("ifUnchecked",function(e){
+                            e.preventDefault();
+                        //uncheck all checkboxes
+                        $(this).val(0);
+                        $('#advance-field').hide(1000);
+                        $('#advance-field-two').hide(1000);
+                        $('#advance-field-three').hide(1000);
+                        });
+
+                        $("#advance").on("ifChecked",function(e){
+                            e.preventDefault();
+                            //uncheck all checkboxes
+                            $(this).val(1);
+                            $('#advance-field').show(1000);
+                            $('#advance-field-two').show(1000);
+                            $('#advance-field-three').show(1000);
+                        });     
+                    },                         
+                    columns: [       
+                        { data: 'checkbox'},               
+                        { data: 'full_name', name: 'full_name'},
+                        { data: 'book_title', name: 'getBookInformation.book_title'},
+                        { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
+                        { data: 'genre', name: 'getBookInformation.genre'},
+                        { data: 'status', name: 'getStatus.name'},
+                        { data: 'assignee', name: 'assignee'},
+                        { data: 'researcher', name: 'researcher'}
+                    ],  
+                    columnDefs: [{
+                        'targets': 0,
+                        'checkboxes': {
+                            'selectRow': true,
+                            'selectCallback': function(nodes, selected) {
+                                $('input[type="checkbox"]', nodes).iCheck('update');
+                            },
+                            'selectAllCallback': function(nodes, selected, indeterminate) {
+                                $('input[type="checkbox"]', nodes).iCheck('update');
+                            }
+                        }
+                    }],
+                    select: 'multi',
+                });
+                   
+            });      
+            
+            
         
     </script>
 @endsection

@@ -27,8 +27,7 @@
                                     <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover " id="dataTables-bucket-list">
                                                 <thead>
-                                                    <tr>
-                                                      
+                                                    <tr>                                                      
                                                         <th>Author</th>
                                                         <th>Book Title</th>
                                                         <th>Publisher</th>            
@@ -37,15 +36,14 @@
                                                         <th>Genre</th>
                                                         <th>Status</th>
                                                         <th>State</th>
-                                                        <th>Researcher</th>
-                                                                                           
+                                                        <th>Researcher</th>                                                                                           
                                                     </tr>
                                                 </thead>
-                                                <tbody >
+                                                {{-- <tbody >
                                                 @foreach($bucket_list as $b)
                                                     <tr>
                                                     
-                                                    <td ><a href="{{ url('leads/'.$b->id.'/profile') }}" style="color:#1ab394;">{{ $b->fullname() }} </a></td>
+                                                    <td ><a href="{{ url('leads/'.$b->id.'/profile') }}" style="color:#1ab394;">{{ $b->fullName }} </a></td>
                                                     <td>{{ $b->getBookInformation->book_title }}</td>
                                                     <td>{{ $b->getBookInformation->getPublisher == null? " ":$b->getBookInformation->getPublisher['name']}}</td>
                                                     <td>{{ $b->home_phone }}</td>
@@ -57,10 +55,9 @@
                                                     
                                                     </tr>
                                                 @endforeach    
-                                                </tbody>
+                                                </tbody> --}}
                                                 <tfoot>
-                                                    <tr>   
-                                                                                 
+                                                    <tr>                                                          
                                                         <th>Author</th>
                                                         <th>Book Title</th>
                                                         <th>Publisher</th>  
@@ -68,11 +65,11 @@
                                                         <th>office Phone</th>           
                                                         <th>Genre</th>
                                                         <th>Status</th>
-                                                        <th>Assigned</th>
+                                                        <th>State</th>
                                                         <th>Researcher</th>
-                                                        @if(auth()->user()->hasRole(['administrator','lead.researcher']))
+                                                        {{-- @if(auth()->user()->hasRole(['administrator','lead.researcher']))
                                                       
-                                                        @endif
+                                                        @endif --}}
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -201,6 +198,9 @@
              }); 
 
         var table = $('#dataTables-bucket-list').DataTable({   
+            processing: true,   
+            serverSide: true,
+            ajax: "{{ url('/leads/bucket-lists-data') }}",  
             orderCellsTop: true,
             fixedHeader: true,      
             pageLength: 10,
@@ -228,6 +228,18 @@
                  $('#advance-field-three').show(1000);
              });     
             },
+            columns: [       
+                                 
+                        { data: 'full_name', name: 'full_name'},
+                        { data: 'book_title', name: 'getBookInformation.book_title'},
+                        { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
+                        { data: 'home_phone', name: 'home_phone'},
+                        { data: 'office_phone', name: 'office_phone'},
+                        { data: 'genre', name: 'getBookInformation.genre'},
+                        { data: 'status', name: 'getStatus.name'},
+                        { data: 'state', name: 'state'},
+                        { data: 'researcher', name: 'researcher'}
+                    ], 
             columnDefs: [{
                 'targets': 0,
                 'checkboxes': {

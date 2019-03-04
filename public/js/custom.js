@@ -15,46 +15,7 @@ $(document).ready(function() {
  
 
 
-   var tleads = $('.dataTables-leads').DataTable({
-        pageLength: 10,
-        responsive: true,
-        ordering: false,
-        drawCallback: function() {
-            $('input[type="checkbox"]').iCheck({
-                checkboxClass: 'icheckbox_square-green'
-            });      
-            $("#advance").on("ifUnchecked",function(e){
-                e.preventDefault();
-              //uncheck all checkboxes
-              $(this).val(0);
-              $('#advance-field').hide(1000);
-              $('#advance-field-two').hide(1000);
-              $('#advance-field-three').hide(1000);
-             });
-
-             $("#advance").on("ifChecked",function(e){
-                 e.preventDefault();
-                 //uncheck all checkboxes
-                 $(this).val(1);
-                 $('#advance-field').show(1000);
-                 $('#advance-field-two').show(1000);
-                 $('#advance-field-three').show(1000);
-             });     
-        },       
-        columnDefs: [{
-            'targets': 0,
-            'checkboxes': {
-                'selectRow': true,
-                'selectCallback': function(nodes, selected) {
-                    $('input[type="checkbox"]', nodes).iCheck('update');
-                },
-                'selectAllCallback': function(nodes, selected, indeterminate) {
-                    $('input[type="checkbox"]', nodes).iCheck('update');
-                }
-            }
-        }],
-        select: 'multi',
-    });
+   
 
     // Handle iCheck change event for "select all" control
 
