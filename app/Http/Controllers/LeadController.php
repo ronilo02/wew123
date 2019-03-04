@@ -126,7 +126,7 @@ class LeadController extends Controller
                      return "<div class='i-checks assign-check'><label><input type='checkbox'  name='leads[]'  value='$leads->id'/></label></div>";
                  })
                  ->editColumn('full_name', function($leads) {
-                     return "<a href='leads/$leads->id/profile' style='color:#1ab394;'>$leads->fullName </a>";
+                     return "<a href='/leads/$leads->id/profile' style='color:#1ab394;'>$leads->fullName </a>";
                  })
                  ->filterColumn('full_name', function($query, $keyword) {
                      $sql = "CONCAT(leads.firstname,' ',leads.lastname)  like ?";

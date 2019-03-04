@@ -31,7 +31,7 @@
                                                         <th>Publisher</th>            
                                                         <th>Home Phone</th> 
                                                         <th>office Phone</th>                
-                                                        <th>Genre</th>
+                                                        
                                                         <th>Status</th>
                                                         <th>State</th>
                                                         <th>Researcher</th>                                                                                           
@@ -45,7 +45,7 @@
                                                         <th>Publisher</th>  
                                                         <th>Home Phone</th> 
                                                         <th>office Phone</th>           
-                                                        <th>Genre</th>
+                                                        
                                                         <th>Status</th>
                                                         <th>State</th>
                                                         <th>Researcher</th>
@@ -180,7 +180,7 @@
         var table = $('#dataTables-bucket-list').DataTable({   
             processing: true,   
             serverSide: true,
-            ajax: "<?php echo e(url('/leads/bucket-lists-data')); ?>",  
+            ajax: '<?php echo e(url('leads/bucket-lists-data')); ?>',  
             orderCellsTop: true,
             fixedHeader: true,      
             pageLength: 10,
@@ -215,7 +215,7 @@
                         { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
                         { data: 'home_phone', name: 'home_phone'},
                         { data: 'office_phone', name: 'office_phone'},
-                        { data: 'genre', name: 'getBookInformation.genre'},
+                        // { data: 'genre', name: 'getBookInformation.genre'},
                         { data: 'status', name: 'getStatus.name'},
                         { data: 'state', name: 'state'},
                         { data: 'researcher', name: 'researcher'}
