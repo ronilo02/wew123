@@ -408,7 +408,7 @@ class LeadController extends Controller
             activity()->causedBy($user)->withProperties(['icon' => count($data)])->log(':causer.firstname :causer.lastname has imported ' . count($data) . ' leads.');
             $admin_users = User::withRole('admin')->where('id', '!=', $user->id)->get();
             $lead_researcher_users = User::withRole('lead.researcher')->where('id', '!=', $user->id)->get();
-            $message = $user->fullname() . ' has imported ' . count($data) . ' leads.';
+            $message = $user->fullName . ' has imported ' . count($data) . ' leads.';
             Notification::send($admin_users, new LeadsImported($user,$message));
             Notification::send($lead_researcher_users, new LeadsImported($user,$message));
             
@@ -488,8 +488,8 @@ class LeadController extends Controller
             $details = [
                 'error' => true,
                 'id'    => $lead->id,
-                'name'  => $lead->fullname(),
-                'description' => $lead->fullname()." author Already exist"
+                'name'  => $lead->fullName,
+                'description' => $lead->fullName." author Already exist"
             ];
            
         }else{
@@ -508,8 +508,8 @@ class LeadController extends Controller
                 $details = [
                     'error' => true,
                     'id'    => $lead->id,
-                    'name'  => $lead->fullname(),
-                    'description' => "This author has same email address('".$lead->email."') with ".$lead->fullname()
+                    'name'  => $lead->fullName,
+                    'description' => "This author has same email address('".$lead->email."') with ".$lead->fullName
                 ];           
             }else{
                 $details =  ['error' => false ];
@@ -550,8 +550,8 @@ class LeadController extends Controller
                         $error[] = [
                             'error' => true,
                             'id'    => $lead->id,
-                            'name'  => $lead->fullname(),
-                            'description' => "This author has same ".$d['name']." number ('".$d['number']."') with ".$lead->fullname()." ".$ct['name']." number"
+                            'name'  => $lead->fullName,
+                            'description' => "This author has same ".$d['name']." number ('".$d['number']."') with ".$lead->fullName." ".$ct['name']." number"
                         ];           
                     }
                     
@@ -612,7 +612,7 @@ class LeadController extends Controller
         if($notes){
             $user = auth()->user();
             $notes_author = Leads::find($author);
-            activity()->causedBy($user)->log(':causer.firstname :causer.lastname has stored notes to ' . $notes_author->fullname() . '.');
+            activity()->causedBy($user)->log(':causer.firstname :causer.lastname has stored notes to ' . $notes_author->fullName . '.');
             session()->flash('message','Notes successfully added!');          
 
         }else{            
@@ -794,8 +794,8 @@ class LeadController extends Controller
             }
                 $user = auth()->user();
                 
-                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
-                $message = $user->fullname() . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
+                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.');
+                $message = $user->fullName . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.';
                 Notification::send($assigned_user, new LeadsTransferred($user,$message));
                 session()->flash('message','Leads successfully transferred!');      
     
@@ -816,16 +816,16 @@ class LeadController extends Controller
                     } 
                         $user = auth()->user();
                     
-                        activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
-                        $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
+                        activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.');
+                        $message = $user->fullName . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.';
                         Notification::send($assigned_user, new LeadsTransferred($user,$message));  
                         session()->flash('message','Leads successfully transferred!');         
                 }else{
-                    session()->flash('error_message',$bucket_owner->fullname().' bucket list has ('.count($leads).') leads available to transfer!');       
+                    session()->flash('error_message',$bucket_owner->fullName.' bucket list has ('.count($leads).') leads available to transfer!');       
                       
                 }
             }else{
-                session()->flash('error_message',$bucket_owner->fullname().' bucket list has no leads available to transfer!');       
+                session()->flash('error_message',$bucket_owner->fullName.' bucket list has no leads available to transfer!');       
             }
                
 

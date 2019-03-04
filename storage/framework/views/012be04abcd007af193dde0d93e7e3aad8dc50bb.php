@@ -25,8 +25,7 @@
                                     <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover " id="dataTables-bucket-list">
                                                 <thead>
-                                                    <tr>
-                                                      
+                                                    <tr>                                                      
                                                         <th>Author</th>
                                                         <th>Book Title</th>
                                                         <th>Publisher</th>            
@@ -35,14 +34,12 @@
                                                         <th>Genre</th>
                                                         <th>Status</th>
                                                         <th>State</th>
-                                                        <th>Researcher</th>
-                                                                                           
+                                                        <th>Researcher</th>                                                                                           
                                                     </tr>
                                                 </thead>
                                                 
                                                 <tfoot>
-                                                    <tr>   
-                                                       
+                                                    <tr>                                                          
                                                         <th>Author</th>
                                                         <th>Book Title</th>
                                                         <th>Publisher</th>  
