@@ -250,6 +250,15 @@
                 });
 
                 $('.dataTables-leads').DataTable({
+                    onSuccess: function (result) {
+                        // execute some code after table records loaded
+                    },
+                    onError: function (result) {
+                        // execute some code on network or other general error 
+                    },
+                    onDataLoad: function(result) {
+                        // execute some code on ajax data load
+                    },
                     retrieve: true,
                     processing: true,   
                     serverSide: true,

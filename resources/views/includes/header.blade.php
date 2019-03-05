@@ -7,8 +7,8 @@
 
     <link href="{{ asset('inspinia_admin/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('inspinia_admin/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
-    {{-- <link href="{{ asset('inspinia_admin/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet"> --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link href="{{ asset('inspinia_admin/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+    
     <!-- Ladda style -->
     <link href="{{ asset('inspinia_admin/css/plugins/ladda/ladda-themeless.min.css') }}" rel="stylesheet">
 
