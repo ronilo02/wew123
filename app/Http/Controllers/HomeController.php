@@ -28,7 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $activity_logs= Activity::orderBy('created_at', 'DESC')->get();
+        $activity_logs= Activity::orderBy('created_at', 'DESC')->limit(10)->get();
 
         $leads_count = Leads::count();
         $assigned_leads_count = Leads::where('assigned_to',auth()->user()->id)->count();

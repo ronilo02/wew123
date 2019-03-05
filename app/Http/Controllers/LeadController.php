@@ -98,7 +98,7 @@ class LeadController extends Controller
                 ->addColumn('assignee', function($leads){
                     return $leads->getAssignee->fullname();
                 })
-                ->editColumn('researcher', function($leads) {
+                ->addColumn('researcher', function($leads) {
                         return $leads->getResearcher->fullname();
                 })
                 ->escapeColumns([])
@@ -147,7 +147,7 @@ class LeadController extends Controller
                  ->addColumn('assignee', function($leads){
                      return $leads->getAssignee->fullname();
                  })
-                 ->editColumn('researcher', function($leads) {
+                 ->addColumn('researcher', function($leads) {
                          return $leads->getResearcher->fullname();
                  })
                  ->escapeColumns([])
