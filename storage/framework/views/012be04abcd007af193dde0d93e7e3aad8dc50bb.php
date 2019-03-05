@@ -175,10 +175,10 @@
                  $('#advance-field-three').show(1000);
              }); 
 
-        var table = $('#dataTables-bucket-list').DataTable({   
+           var table = $('#dataTables-bucket-list').DataTable({   
             processing: true,   
             serverSide: true,
-            ajax: "<?php echo e(url('leads/bucket-lists-data')); ?>",  
+            ajax: '<?php echo e(url('leads/bucket-lists-data')); ?>',  
             orderCellsTop: true,
             fixedHeader: true,      
             pageLength: 10,

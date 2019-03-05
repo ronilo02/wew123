@@ -177,7 +177,7 @@
                  $('#advance-field-three').show(1000);
              }); 
 
-        var table = $('#dataTables-bucket-list').DataTable({   
+           var table = $('#dataTables-bucket-list').DataTable({   
             processing: true,   
             serverSide: true,
             ajax: '{{ url('leads/bucket-lists-data') }}',  
