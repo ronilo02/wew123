@@ -249,6 +249,60 @@
                     }
                 });
 
+                var tleads = $('.dataTables-leads').DataTable({
+                    processing: true,   
+                    serverSide: true,
+                    ajax: url,                  
+                    pageLength: 10,
+                    responsive: true,
+                    ordering: false,
+                    drawCallback: function() {
+                        $('input[type="checkbox"]').iCheck({
+                            checkboxClass: 'icheckbox_square-green'
+                        });      
+                        $("#advance").on("ifUnchecked",function(e){
+                            e.preventDefault();
+                        //uncheck all checkboxes
+                        $(this).val(0);
+                        $('#advance-field').hide(1000);
+                        $('#advance-field-two').hide(1000);
+                        $('#advance-field-three').hide(1000);
+                        });
+
+                        $("#advance").on("ifChecked",function(e){
+                            e.preventDefault();
+                            //uncheck all checkboxes
+                            $(this).val(1);
+                            $('#advance-field').show(1000);
+                            $('#advance-field-two').show(1000);
+                            $('#advance-field-three').show(1000);
+                        });     
+                    },                         
+                    columns: [       
+                        { data: 'checkbox'},               
+                        { data: 'full_name', name: 'full_name'},
+                        { data: 'book_title', name: 'getBookInformation.book_title'},
+                        { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
+                        { data: 'genre', name: 'getBookInformation.genre'},
+                        { data: 'status', name: 'getStatus.name'},
+                        { data: 'assignee', name: 'assignee'},
+                        { data: 'researcher', name: 'researcher'}
+                    ],  
+                    columnDefs: [{
+                        'targets': 0,
+                        'checkboxes': {
+                            'selectRow': true,
+                            'selectCallback': function(nodes, selected) {
+                                $('input[type="checkbox"]', nodes).iCheck('update');
+                            },
+                            'selectAllCallback': function(nodes, selected, indeterminate) {
+                                $('input[type="checkbox"]', nodes).iCheck('update');
+                            }
+                        }
+                    }],
+                    select: 'multi',
+                });
+
                 $("#assign-submit").on('click',function(){
                     var advance = $("#advance").val();
                     var leads  = [];
@@ -262,7 +316,7 @@
                         leads.push($(this).val());
                     });
                     var form = this;
-                    var tleads = $('.dataTables-leads').DataTable();
+                    //var tleads = $('.dataTables-leads').DataTable();
 
                     var params = tleads.$('input,select,textarea').serializeArray();
 
@@ -324,59 +378,7 @@
                    }
                 });     
 
-                $('.dataTables-leads').DataTable({
-                    processing: true,   
-                    serverSide: true,
-                    ajax: url,                  
-                    pageLength: 10,
-                    responsive: true,
-                    ordering: false,
-                    drawCallback: function() {
-                        $('input[type="checkbox"]').iCheck({
-                            checkboxClass: 'icheckbox_square-green'
-                        });      
-                        $("#advance").on("ifUnchecked",function(e){
-                            e.preventDefault();
-                        //uncheck all checkboxes
-                        $(this).val(0);
-                        $('#advance-field').hide(1000);
-                        $('#advance-field-two').hide(1000);
-                        $('#advance-field-three').hide(1000);
-                        });
-
-                        $("#advance").on("ifChecked",function(e){
-                            e.preventDefault();
-                            //uncheck all checkboxes
-                            $(this).val(1);
-                            $('#advance-field').show(1000);
-                            $('#advance-field-two').show(1000);
-                            $('#advance-field-three').show(1000);
-                        });     
-                    },                         
-                    columns: [       
-                        { data: 'checkbox'},               
-                        { data: 'full_name', name: 'full_name'},
-                        { data: 'book_title', name: 'getBookInformation.book_title'},
-                        { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
-                        { data: 'genre', name: 'getBookInformation.genre'},
-                        { data: 'status', name: 'getStatus.name'},
-                        { data: 'assignee', name: 'assignee'},
-                        { data: 'researcher', name: 'researcher'}
-                    ],  
-                    columnDefs: [{
-                        'targets': 0,
-                        'checkboxes': {
-                            'selectRow': true,
-                            'selectCallback': function(nodes, selected) {
-                                $('input[type="checkbox"]', nodes).iCheck('update');
-                            },
-                            'selectAllCallback': function(nodes, selected, indeterminate) {
-                                $('input[type="checkbox"]', nodes).iCheck('update');
-                            }
-                        }
-                    }],
-                    select: 'multi',
-                });
+               
                    
             });      
             
