@@ -245,9 +245,9 @@
                             .draw();
                     }
                 } );
-            } );
+            });
 
-            $("#advance_status").on('change',function(){
+            $("#advance_status").on('change',function(we){
                     var advance_status = $("#advance_status option:selected").val();
                     
                     if(advance_status != 0){

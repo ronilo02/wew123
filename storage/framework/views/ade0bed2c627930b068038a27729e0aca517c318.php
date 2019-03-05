@@ -225,7 +225,7 @@
                     }
                 });
 
-                var tleads = $('.dataTables-leads').DataTable({
+                $('.dataTables-leads').DataTable({
                     retrieve: true,
                     processing: true,   
                     serverSide: true,
@@ -293,7 +293,7 @@
                         leads.push($(this).val());
                     });
                     var form = this;
-                    //var tleads = $('.dataTables-leads').DataTable();
+                    var tleads = $('.dataTables-leads').DataTable();
 
                     var params = tleads.$('input,select,textarea').serializeArray();
 

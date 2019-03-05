@@ -31,7 +31,8 @@
     <!-- jQuery UI -->
     <script src="{{ asset('inspinia_admin/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!--Datatables -->
-    <script src="{{ asset('inspinia_admin/js/plugins/dataTables/datatables.min.js') }}"></script>
+    {{-- <script src="{{ asset('inspinia_admin/js/plugins/dataTables/datatables.min.js') }}"></script> --}}
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <!-- Jvectormap -->
     <script src="{{ asset('inspinia_admin/js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js') }}"></script>
     <script src="{{ asset('inspinia_admin/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
