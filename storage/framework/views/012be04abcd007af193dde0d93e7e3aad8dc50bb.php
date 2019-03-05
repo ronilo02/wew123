@@ -180,7 +180,7 @@
             serverSide: true,
             ajax: '<?php echo e(url('leads/bucket-lists-data')); ?>',  
             orderCellsTop: true,
-            fixedHeader: true,      
+                 
             pageLength: 10,
             responsive: true,
             ordering: false,
@@ -270,9 +270,9 @@
                         leads.push($(this).val());
                     });
                     var form = this;
-                    var tleads = $('#dataTables-bucket-list').DataTable();
+                    // var tleads = $('#dataTables-bucket-list').DataTable();
 
-                    var params = tleads.$('input,select,textarea').serializeArray();
+                    var params = table.$('input,select,textarea').serializeArray();
 
                         // Iterate over all form elements
                         $.each(params, function(){

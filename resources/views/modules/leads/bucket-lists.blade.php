@@ -182,7 +182,7 @@
             serverSide: true,
             ajax: '{{ url('leads/bucket-lists-data') }}',  
             orderCellsTop: true,
-            fixedHeader: true,      
+                 
             pageLength: 10,
             responsive: true,
             ordering: false,

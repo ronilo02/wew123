@@ -250,6 +250,7 @@
                 });
 
                 var tleads = $('.dataTables-leads').DataTable({
+                    retrieve: true,
                     processing: true,   
                     serverSide: true,
                     ajax: url,                  
