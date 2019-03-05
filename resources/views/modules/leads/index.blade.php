@@ -192,15 +192,15 @@
 @section('custom_js')
     <script>
            $(document).ready(function(){
-                @if(\Request::is('leads'))
-                    var url = '{{ url('leads/getdata') }}';
+                // @if(\Request::is('leads'))
+                //     var url = '{{ url('leads/getdata') }}';
                  
-                @elseif(\Request::is('leads/filter'))
-                    var data = [];
-                    data = [{status: $('#filter_status').val()}];
-                    var url = "{{ url('leads/getfilterdata') }}"+"/"+data;
+                // @elseif(\Request::is('leads/filter'))
+                //     var data = [];
+                //     data = [{status: $('#filter_status').val()}];
+                //     var url = "{{ url('leads/getfilterdata') }}"+"/"+data;
                   
-                @endif
+                // @endif
                 
                 // $('.form_assign').hide();
                 $('.filter-section').hide();                         
@@ -251,10 +251,10 @@
 
                 $('.dataTables-leads').DataTable({
                     onSuccess: function (result) {
-                        // execute some code after table records loaded
+                        console.log(result);
                     },
                     onError: function (result) {
-                        // execute some code on network or other general error 
+                        console.log(result);
                     },
                     onDataLoad: function(result) {
                         // execute some code on ajax data load
@@ -262,7 +262,7 @@
                     retrieve: true,
                     processing: true,   
                     serverSide: true,
-                    ajax: url,                  
+                    ajax: '{{ url('leads/getdata') }}',                  
                     pageLength: 10,
                     responsive: true,
                     ordering: false,

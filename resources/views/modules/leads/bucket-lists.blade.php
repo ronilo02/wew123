@@ -181,8 +181,7 @@
             processing: true,   
             serverSide: true,
             ajax: '{{ url('leads/bucket-lists-data') }}',  
-            orderCellsTop: true,
-                 
+            orderCellsTop: true,                 
             pageLength: 10,
             responsive: true,
             ordering: false,
