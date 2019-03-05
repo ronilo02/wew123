@@ -169,7 +169,7 @@
     <script>
            $(document).ready(function(){
                 <?php if(\Request::is('leads')): ?>
-                    var url = "<?php echo e(url('leads/getdata')); ?>";
+                    var url = '<?php echo e(url('leads/getdata')); ?>';
                  
                 <?php elseif(\Request::is('leads/filter')): ?>
                     var data = [];

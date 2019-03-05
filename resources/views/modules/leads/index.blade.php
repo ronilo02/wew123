@@ -193,7 +193,7 @@
     <script>
            $(document).ready(function(){
                 @if(\Request::is('leads'))
-                    var url = "{{ url('leads/getdata') }}";
+                    var url = '{{ url('leads/getdata') }}';
                  
                 @elseif(\Request::is('leads/filter'))
                     var data = [];

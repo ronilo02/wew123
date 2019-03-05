@@ -180,7 +180,7 @@
         var table = $('#dataTables-bucket-list').DataTable({   
             processing: true,   
             serverSide: true,
-            ajax: "{{ url('leads/bucket-lists-data') }}",  
+            ajax: '{{ url('leads/bucket-lists-data') }}',  
             orderCellsTop: true,
             fixedHeader: true,      
             pageLength: 10,
