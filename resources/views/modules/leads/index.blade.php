@@ -249,7 +249,7 @@
                     }
                 });
 
-                $('.dataTables-leads').DataTable({
+               var table = $('.dataTables-leads').DataTable({
                     onSuccess: function (result) {
                         console.log(result);
                     },
@@ -311,6 +311,22 @@
                         }
                     }],
                     select: 'multi',
+                });
+
+                // Setup - add a text input to each footer cell
+                $('.dataTables-leads thead tr').clone(false).appendTo( '.dataTables-leads thead' );
+                $('.dataTables-leads thead tr:eq(1) th').each( function (i) {
+                    var title = $(this).text();
+                    $(this).html( '<input type="text" class="form-control" style="width:100%;font-size:10px;" placeholder="Search '+title+'" />' );
+            
+                    $( 'input', this ).on( 'keyup change', function () {
+                        if ( table.column(i).search() !== this.value ) {
+                            table
+                                .column(i)
+                                .search( this.value )
+                                .draw();
+                        }
+                    } );
                 });
 
                 $("#assign-submit").on('click',function(){

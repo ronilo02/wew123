@@ -179,8 +179,7 @@
             processing: true,   
             serverSide: true,
             ajax: '<?php echo e(url('leads/bucket-lists-data')); ?>',  
-            orderCellsTop: true,
-                 
+            orderCellsTop: true,                 
             pageLength: 10,
             responsive: true,
             ordering: false,

@@ -168,15 +168,15 @@
 <?php $__env->startSection('custom_js'); ?>
     <script>
            $(document).ready(function(){
-                <?php if(\Request::is('leads')): ?>
-                    var url = '<?php echo e(url('leads/getdata')); ?>';
+                // <?php if(\Request::is('leads')): ?>
+                //     var url = '<?php echo e(url('leads/getdata')); ?>';
                  
-                <?php elseif(\Request::is('leads/filter')): ?>
-                    var data = [];
-                    data = [{status: $('#filter_status').val()}];
-                    var url = "<?php echo e(url('leads/getfilterdata')); ?>"+"/"+data;
+                // <?php elseif(\Request::is('leads/filter')): ?>
+                //     var data = [];
+                //     data = [{status: $('#filter_status').val()}];
+                //     var url = "<?php echo e(url('leads/getfilterdata')); ?>"+"/"+data;
                   
-                <?php endif; ?>
+                // <?php endif; ?>
                 
                 // $('.form_assign').hide();
                 $('.filter-section').hide();                         
@@ -225,11 +225,20 @@
                     }
                 });
 
-                $('.dataTables-leads').DataTable({
+               var table = $('.dataTables-leads').DataTable({
+                    onSuccess: function (result) {
+                        console.log(result);
+                    },
+                    onError: function (result) {
+                        console.log(result);
+                    },
+                    onDataLoad: function(result) {
+                        // execute some code on ajax data load
+                    },
                     retrieve: true,
                     processing: true,   
                     serverSide: true,
-                    ajax: url,                  
+                    ajax: '<?php echo e(url('leads/getdata')); ?>',                  
                     pageLength: 10,
                     responsive: true,
                     ordering: false,
@@ -278,6 +287,22 @@
                         }
                     }],
                     select: 'multi',
+                });
+
+                // Setup - add a text input to each footer cell
+                $('.dataTables-leads thead tr').clone(false).appendTo( '.dataTables-leads thead' );
+                $('.dataTables-leads thead tr:eq(1) th').each( function (i) {
+                    var title = $(this).text();
+                    $(this).html( '<input type="text" class="form-control" style="width:100%;font-size:10px;" placeholder="Search '+title+'" />' );
+            
+                    $( 'input', this ).on( 'keyup change', function () {
+                        if ( table.column(i).search() !== this.value ) {
+                            table
+                                .column(i)
+                                .search( this.value )
+                                .draw();
+                        }
+                    } );
                 });
 
                 $("#assign-submit").on('click',function(){

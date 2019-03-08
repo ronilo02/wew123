@@ -86,16 +86,65 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                     
+                                @endforeach                               
+                               
+                                <div id="remove">
+                                    <input type="hidden" name="last-id" id="last-id" value="{{ $activity_log->id }}">
+                                    <div id="loader">
+                                        <div class="sk-spinner sk-spinner-wave">
+                                            <div class="sk-rect1"></div>
+                                            <div class="sk-rect2"></div>
+                                            <div class="sk-rect3"></div>
+                                            <div class="sk-rect4"></div>
+                                            <div class="sk-rect5"></div>
+                                        </div>
+                                     </div>
+                                </div>  
+                             
                             </div>
+                            
                         </div>
                     </div>
-
                 </div>
-
             </div>
 @endsection
 
 @section('custom_js')
 <script src="{{ asset('js/custom.js') }}"></script>
+<script>
+    $(document).ready(function(){
+        $("#loader").hide();
+        $(window).scroll(function() {
+            var id = $('#last-id').val();
+            if($(window).scrollTop() + $(window).height() >= $(document).height()){
+                //$("#loader").html("<div class='sk-spinner sk-spinner-wav'><div class='sk-rect1'></div><div class='sk-rect2'></div><div class='sk-rect3'></div><div class='sk-rect4'></div><div class='sk-rect5'></div></div>");
+                 
+                $.ajax({
+                  url: "{{ url('load-more') }}",
+                  method: 'post',
+                  dataType : "text",
+                  data: {
+                    id:id,
+                     _token:"{{csrf_token()}}"
+                  },
+                  beforeSend : function(){
+                    $("#loader").show();  
+                  },
+                  error:function(result){
+                    console.log(result);
+                  },
+                  complete : function(){
+                    $("#loader").hide();
+                  },
+                  success: function(result){                   
+                     $("#remove").remove(); 
+                     $(".inspinia-timeline").append(result);                    
+                  }
+                });
+            }   
+        });
+        
+    });
+</script>
 @endsection

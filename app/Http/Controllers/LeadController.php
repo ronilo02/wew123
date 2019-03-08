@@ -70,7 +70,8 @@ class LeadController extends Controller
 
     public function getData()
     {
-       $leads =  Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])->select('leads.*');
+       $leads =  Leads::with(['getBookInformation.getPublisher', 'getStatus','getAssignee','getResearcher'])
+                ->select('leads.*');
         
        return Datatables::of($leads)
                 ->addColumn('checkbox', function($leads){
@@ -95,8 +96,12 @@ class LeadController extends Controller
                 ->addColumn('status', function($leads){
                     return $leads->getStatus->name;
                 })
-                ->addColumn('assignee', function($leads){
+                ->editColumn('assignee', function($leads){
                     return $leads->getAssignee->fullname();
+                })
+                ->filterColumn('assignee', function($query, $keyword) {
+                    $sql = "CONCAT(leads.getAssignee.firstname,' ',leads.getAssignee.lastname)  like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%"]);
                 })
                 ->addColumn('researcher', function($leads) {
                         return $leads->getResearcher->fullname();
@@ -379,7 +384,7 @@ class LeadController extends Controller
                 'postal_code'    => $d->postal_code, 
                 'country'        => $d->country,
                 'remarks'        => $d->remarks,    
-                'assigned_to'    => null,
+                'assigned_to'    => $this->ReplaceResearcherToId($d->researcher),
                 'researcher'     => $this->ReplaceResearcherToId($d->researcher),
                 'status'         => $this->checkStatus($d->status)
             ]);
@@ -408,7 +413,7 @@ class LeadController extends Controller
             activity()->causedBy($user)->withProperties(['icon' => count($data)])->log(':causer.firstname :causer.lastname has imported ' . count($data) . ' leads.');
             $admin_users = User::withRole('admin')->where('id', '!=', $user->id)->get();
             $lead_researcher_users = User::withRole('lead.researcher')->where('id', '!=', $user->id)->get();
-            $message = $user->fullName . ' has imported ' . count($data) . ' leads.';
+            $message = $user->fullname() . ' has imported ' . count($data) . ' leads.';
             Notification::send($admin_users, new LeadsImported($user,$message));
             Notification::send($lead_researcher_users, new LeadsImported($user,$message));
             
@@ -794,8 +799,8 @@ class LeadController extends Controller
             }
                 $user = auth()->user();
                 
-                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.');
-                $message = $user->fullName . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.';
+                activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
+                $message = $user->fullname() . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
                 Notification::send($assigned_user, new LeadsTransferred($user,$message));
                 session()->flash('message','Leads successfully transferred!');      
     
@@ -817,15 +822,15 @@ class LeadController extends Controller
                         $user = auth()->user();
                     
                         activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.');
-                        $message = $user->fullName . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.';
+                        $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
                         Notification::send($assigned_user, new LeadsTransferred($user,$message));  
                         session()->flash('message','Leads successfully transferred!');         
                 }else{
-                    session()->flash('error_message',$bucket_owner->fullName.' bucket list has ('.count($leads).') leads available to transfer!');       
+                    session()->flash('error_message',$bucket_owner->fullname().' bucket list has ('.count($leads).') leads available to transfer!');       
                       
                 }
             }else{
-                session()->flash('error_message',$bucket_owner->fullName.' bucket list has no leads available to transfer!');       
+                session()->flash('error_message',$bucket_owner->fullname().' bucket list has no leads available to transfer!');       
             }
                
 

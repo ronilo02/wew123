@@ -24,6 +24,7 @@ Auth::routes();
 Route::group(['middleware'=>'auth'],function(){
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/load-more','HomeController@load_more');
 
 Route::get('/notifications', 'NotificationController@index');
 Route::delete('profile/{user}/notifications', function(App\User $user) {

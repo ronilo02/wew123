@@ -85,18 +85,67 @@
                                             </div>
                                         </div>
                                     </div>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                     
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>                               
+                               
+                                <div id="remove">
+                                    <input type="hidden" name="last-id" id="last-id" value="<?php echo e($activity_log->id); ?>">
+                                    <div id="loader">
+                                        <div class="sk-spinner sk-spinner-wave">
+                                            <div class="sk-rect1"></div>
+                                            <div class="sk-rect2"></div>
+                                            <div class="sk-rect3"></div>
+                                            <div class="sk-rect4"></div>
+                                            <div class="sk-rect5"></div>
+                                        </div>
+                                     </div>
+                                </div>  
+                             
                             </div>
+                            
                         </div>
                     </div>
-
                 </div>
-
             </div>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('custom_js'); ?>
 <script src="<?php echo e(asset('js/custom.js')); ?>"></script>
+<script>
+    $(document).ready(function(){
+        $("#loader").hide();
+        $(window).scroll(function() {
+            var id = $('#last-id').val();
+            if($(window).scrollTop() + $(window).height() >= $(document).height()){
+                //$("#loader").html("<div class='sk-spinner sk-spinner-wav'><div class='sk-rect1'></div><div class='sk-rect2'></div><div class='sk-rect3'></div><div class='sk-rect4'></div><div class='sk-rect5'></div></div>");
+                 
+                $.ajax({
+                  url: "<?php echo e(url('load-more')); ?>",
+                  method: 'post',
+                  dataType : "text",
+                  data: {
+                    id:id,
+                     _token:"<?php echo e(csrf_token()); ?>"
+                  },
+                  beforeSend : function(){
+                    $("#loader").show();  
+                  },
+                  error:function(result){
+                    console.log(result);
+                  },
+                  complete : function(){
+                    $("#loader").hide();
+                  },
+                  success: function(result){                   
+                     $("#remove").remove(); 
+                     $(".inspinia-timeline").append(result);                    
+                  }
+                });
+            }   
+        });
+        
+    });
+</script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
