@@ -215,7 +215,7 @@
                         { data: 'office_phone', name: 'office_phone'},
                         { data: 'status', name: 'getStatus.name'},
                         { data: 'state', name: 'state'},
-                        { data: 'researcher', name: 'researcher'}
+                        { data: 'researcher'}
                     ], 
             columnDefs: [{
                 'targets': 0,

@@ -96,13 +96,9 @@ class LeadController extends Controller
                 ->addColumn('status', function($leads){
                     return $leads->getStatus->name;
                 })
-                ->editColumn('assignee', function($leads){
+                ->addColumn('assignee', function($leads){
                     return $leads->getAssignee->fullname();
-                })
-                ->filterColumn('assignee', function($query, $keyword) {
-                    $sql = "CONCAT(leads.getAssignee.firstname,' ',leads.getAssignee.lastname)  like ?";
-                    $query->whereRaw($sql, ["%{$keyword}%"]);
-                })
+                })                
                 ->addColumn('researcher', function($leads) {
                         return $leads->getResearcher->fullname();
                 })
