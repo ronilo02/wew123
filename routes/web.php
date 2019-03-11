@@ -23,22 +23,24 @@ Auth::routes();
 /*-------------------------------------------END OF ROUTE SECTION---------------------------------------------------*/
 Route::group(['middleware'=>'auth'],function(){
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/load-more','HomeController@load_more');
+Route::group(['prefix'=>'crm/public'],function(){
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::post('/load-more','HomeController@load_more');
 
-Route::get('/notifications', 'NotificationController@index');
-Route::delete('profile/{user}/notifications', function(App\User $user) {
-    $user->notifications->map(function($n) {
-        $n->markAsRead();
+    Route::get('/notifications', 'NotificationController@index');
+    Route::delete('/profile/{user}/notifications', function(App\User $user) {
+        $user->notifications->map(function($n) {
+            $n->markAsRead();
+        });
+
+        return back();
     });
 
-    return back();
 });
-
 
 /*----------------------------------------------Leads-----------------------------------------------------------*/
 
-Route::group(['prefix'=>''],function(){
+Route::group(['prefix'=>'crm/public'],function(){
     
     Route::get('/leads/bucket-lists','LeadController@bucket_list');
     Route::get('/leads/bucket-lists-data','LeadController@bucket_list_data');
@@ -54,8 +56,8 @@ Route::group(['prefix'=>''],function(){
     Route::post('/leads/notes/{note}/update','LeadController@update_note');
     Route::post('/leads/filter','LeadController@filter');
     Route::post('/leads/assign','LeadController@assign_leads');
-    Route::get('leads/getdata','LeadController@getData');
-    Route::get('leads/getfilterdata/{data}','LeadController@getFilterData');
+    Route::get('/leads/getdata','LeadController@getData');
+    Route::get('/leads/getfilterdata/{data}','LeadController@getFilterData');
     Route::resource('/leads','LeadController');
   
 });
@@ -68,11 +70,11 @@ Route::group(['prefix'=>''],function(){
 /*----------------------------------------------Entrust Routes------------------------------------------------------*/
 
 
-Route::group(['prefix'=>''],function(){
+Route::group(['prefix'=>'crm/public'],function(){
     Route::resource('/permission','PermissionController');
 });
 
-Route::group(['prefix'=>''],function(){
+Route::group(['prefix'=>'crm/public'],function(){
     Route::resource('/role','RoleController');
 });
 
@@ -81,7 +83,7 @@ Route::group(['prefix'=>''],function(){
  
 /*----------------------------------------------User Routes-----------------------------------------------------------*/
 
-Route::group(['prefix'=>''],function(){
+Route::group(['prefix'=>'crm/public'],function(){
     Route::resource('/user','UserController');
 });
 
@@ -100,7 +102,7 @@ Route::group(['prefix'=>''],function(){
 
 /*----------------------------------------------Migration Routes-----------------------------------------------------------*/
 
-Route::group(['prefix'=>''],function(){
+Route::group(['prefix'=>'crm/public'],function(){
     Route::get('/migration/import','MigrationController@import');
     Route::post('/migration/upload','MigrationController@upload');
     Route::post('/migration/import/store','MigrationController@storefile');
@@ -110,8 +112,9 @@ Route::group(['prefix'=>''],function(){
 /*------------------------------------------End of Leads-------------------------------------------------*/
 
 /*------------------------------------------Quota Routes-----------------------------------------------------------*/
-    
+Route::group(['prefix'=>'crm/public'],function(){   
     Route::resource('/quota','QuotaController');
+});
 /*------------------------------------------End of Leads-------------------------------------------------*/
 
 }); //End of Middleware group
