@@ -22,7 +22,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-12 ">
-                            <form role="form" method="POST" action="{{ url('/crm/public/leads/assign') }}" id="assign-leads-form">
+                            <form role="form" method="POST" action="{{ url('/leads/assign') }}" id="assign-leads-form">
                                 @csrf   
                                     <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover " id="dataTables-bucket-list">
