@@ -817,7 +817,7 @@ class LeadController extends Controller
                     } 
                         $user = auth()->user();
                     
-                        activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullName . '.');
+                        activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
                         $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
                         Notification::send($assigned_user, new LeadsTransferred($user,$message));  
                         session()->flash('message','Leads successfully transferred!');         
