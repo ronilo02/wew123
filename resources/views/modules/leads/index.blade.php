@@ -296,7 +296,7 @@
                         { data: 'genre', name: 'getBookInformation.genre'},
                         { data: 'status', name: 'getStatus.name'},
                         { data: 'assignee'},
-                        { data: 'researcher'}
+                        { data: 'researcher',name:  'getResearcher.firstname'}
                     ],  
                     columnDefs: [{
                         'targets': 0,

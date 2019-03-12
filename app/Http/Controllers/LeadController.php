@@ -146,7 +146,7 @@ class LeadController extends Controller
                      return $leads->getStatus->name;
                  })
                  ->addColumn('assignee', function($leads){
-                     return $leads->getAssignee->fullname();
+                    return $leads->getAssignee->fullname() == null ? "" : $leads->getAssignee->fullname()  ;
                  })
                  ->addColumn('researcher', function($leads) {
                          return $leads->getResearcher->fullname();
@@ -179,7 +179,7 @@ class LeadController extends Controller
     {
         DB::beginTransaction();
 
-        $leads =  Leads::create($request->all()+['researcher'=>auth()->user()->id]);
+        $leads =  Leads::create($request->all()+['assigned_to'=>auth()->user()->id,'researcher'=>auth()->user()->id]);
         
         $book_information = BookInformation::create([
                             'author'=>$leads->id,
@@ -765,11 +765,11 @@ class LeadController extends Controller
                     return $leads->getStatus->name;
                 })
                 ->addColumn('assignee', function($leads){
-                    return $leads->getAssignee->fullname();
+                    return $leads->getAssignee->fullname() == null ? "" : $leads->getAssignee->fullname();
                 })
-                ->editColumn('researcher', function($leads) {
+                ->addColumn('researcher', function($leads) {
                         return $leads->getResearcher->fullname();
-                })
+                })                           
                 ->escapeColumns([])
                 ->make(true);
     }
