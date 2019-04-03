@@ -20,7 +20,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-12 ">
-                            <form role="form" method="POST" action="<?php echo e(url('leads/assign')); ?>" id="assign-leads-form">
+                            <form role="form" method="POST" action="<?php echo e(url('/leads/assign')); ?>" id="assign-leads-form">
                                 <?php echo csrf_field(); ?>   
                                     <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover " id="dataTables-bucket-list">
@@ -213,7 +213,7 @@
                         { data: 'office_phone', name: 'office_phone'},
                         { data: 'status', name: 'getStatus.name'},
                         { data: 'state', name: 'state'},
-                        { data: 'researcher', name: 'researcher'}
+                        { data: 'researcher'}
                     ], 
             columnDefs: [{
                 'targets': 0,

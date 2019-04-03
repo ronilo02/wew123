@@ -519,7 +519,7 @@
                         var new_status = $("#status_field").val();
                         var name       = $("#status_field").find('option:selected').attr("name");
                         
-                        var url        = "/leads/"+lead+"/update";                       
+                        var url        = "/crm/public/leads/"+lead+"/update";                       
                      
                         $.ajax({
                               type:"POST",
