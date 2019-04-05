@@ -574,7 +574,7 @@
                         var mobile_phone = $("#mobile_phone").val();
                         var office_phone = $("#office_phone").val();
                         var other_phone = $("#other_phone").val();
-                        var url        = "/leads/"+lead+"/update";  
+                        var url        = "/crm/public/leads/"+lead+"/update";  
 
                         $.ajax({
                               type:"POST",
@@ -607,7 +607,6 @@
                               },
                               error:function(error){
                                     toastr["error"]("Failed to update contact information!");
-
                               }
                              
                         });
@@ -672,7 +671,7 @@
                         var email = $('#email').val();
                         var website = $('#website').val();
                         var remarks = $('#remarks').val(); 
-                        var url    = "/leads/"+lead+"/update";  
+                        var url    = "/crm/public/leads/"+lead+"/update";  
                         
                         $.ajax({
                               type:"POST",
@@ -727,7 +726,7 @@
 
                   $("#delete-note").on("click",function(){
                         var id = $("#note-id").val();
-                        var url = "/leads/delete/notes";
+                        var url = "/crm/public/leads/delete/notes";
                         swal({
                         title: "Are you sure you want to delete this note?",
                         text: "You will not be able to recover this note again!",

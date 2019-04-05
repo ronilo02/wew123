@@ -97,11 +97,11 @@ class LeadController extends Controller
                     return $leads->getStatus->name;
                 })
                 ->addColumn('assignee', function($leads){
-                    return $leads->getAssignee->fullname();
-                })                
-                ->addColumn('researcher', function($leads) {
-                        return $leads->getResearcher->fullname();
+                    return $leads->getAssignee->username == null ? "" : ucfirst($leads->getAssignee->username);
                 })
+                ->addColumn('researcher', function($leads) {
+                        return ucfirst($leads->getResearcher->username);
+                })     
                 ->escapeColumns([])
                 ->make(true);
     }
@@ -146,11 +146,11 @@ class LeadController extends Controller
                      return $leads->getStatus->name;
                  })
                  ->addColumn('assignee', function($leads){
-                    return $leads->getAssignee->fullname() == null ? "" : $leads->getAssignee->fullname()  ;
-                 })
-                 ->addColumn('researcher', function($leads) {
-                         return $leads->getResearcher->fullname();
-                 })
+                    return $leads->getAssignee->username == null ? "" : ucfirst($leads->getAssignee->username);
+                })
+                ->addColumn('researcher', function($leads) {
+                        return ucfirst($leads->getResearcher->username);
+                })     
                  ->escapeColumns([])
                  ->make(true);
     }
@@ -765,10 +765,10 @@ class LeadController extends Controller
                     return $leads->getStatus->name;
                 })
                 ->addColumn('assignee', function($leads){
-                    return $leads->getAssignee->fullname() == null ? "" : $leads->getAssignee->fullname();
+                    return $leads->getAssignee->username == null ? "" : $leads->getAssignee->username;
                 })
                 ->addColumn('researcher', function($leads) {
-                        return $leads->getResearcher->fullname();
+                        return $leads->getResearcher->username;
                 })                           
                 ->escapeColumns([])
                 ->make(true);
@@ -776,21 +776,25 @@ class LeadController extends Controller
 
     public function assign_leads(Request $request)
     {
+        
         $advance = $request->advance;
         $leads = $request->leads;
         $number_leads = $request->advance_number_leads;
         $advance_bucket = $request->advance_bucket;
-        $advance_status = $request->advance_status;
-       
+        $advance_status = $request->advance_status;   
+        $new_advance_status = $request->new_advance_status;     
         $advance_assigned_to = $request->advance_assigned_to;
         $bucket_owner = User::find($advance_bucket);
         $assigned_user = User::find($advance_assigned_to);
 
         if($advance == null){
+            
             foreach($leads as $lead){
                 $update = Leads::find($lead);
-
                 $update->assigned_to = $advance_assigned_to;
+                if($new_advance_status != null && $new_advance_status != 0){                           
+                    $update->status = $new_advance_status;
+                }
                 $update->save();
             }
                 $user = auth()->user();
@@ -798,12 +802,11 @@ class LeadController extends Controller
                 activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
                 $message = $user->fullname() . ' has assigned ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
                 Notification::send($assigned_user, new LeadsTransferred($user,$message));
-                session()->flash('message','Leads successfully transferred!');      
-    
+                session()->flash('message','Leads successfully transferred!'); 
                 return redirect()->back();
             
         }else{
-            
+           
             $leads = Leads::where(function($query) use ($advance_status){
                         $advance_status == 0?null:$query->where('status',$advance_status);
                     })->where('assigned_to',(int) $advance_bucket)->limit($number_leads == 0?null:$number_leads)->get();
@@ -813,6 +816,9 @@ class LeadController extends Controller
                 if((int) $number_leads <= count($leads)){
                     foreach($leads as $lead){
                         $lead->assigned_to = $advance_assigned_to;
+                        if($new_advance_status != null && $new_advance_status != 0){                           
+                            $lead->status = $new_advance_status;
+                        }
                         $lead->save();
                     } 
                         $user = auth()->user();

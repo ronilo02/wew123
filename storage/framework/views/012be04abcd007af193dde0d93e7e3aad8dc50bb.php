@@ -92,6 +92,15 @@
                                                                         <label>Input Number of Leads</label>
                                                                    <input type="number" class="form-control" name="advance_number_leads" value="0" placeholder="Number of Leads" id="advance_number_leads">
                                                                  </div>
+                                                                 <div class="form-group" >
+                                                                    <label>Select new status</label>
+                                                                    <select name="new_advance_status" id="new_advance_status" class="form-control">                               
+                                                                        <option value="0">None</option>
+                                                                        <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <option value="<?php echo e($key); ?>"><?php echo e($val); ?></option>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                    </select>
+                                                            </div>
                                                                  <div class="form-group">
                                                                         <label>Select Assignee</label>
                                                                     <select name="advance_assigned_to" id="advance_assigned_to" class="form-control">
@@ -213,7 +222,7 @@
                         { data: 'office_phone', name: 'office_phone'},
                         { data: 'status', name: 'getStatus.name'},
                         { data: 'state', name: 'state'},
-                        { data: 'researcher'}
+                        { data: 'researcher',name:  'getResearcher.username'}
                     ], 
             columnDefs: [{
                 'targets': 0,
@@ -261,6 +270,7 @@
                     var leads  = [];
                     var advance_bucket = $("#advance_bucket option:selected").val();
                     var advance_status = $("#advance_status option:selected").val();
+                    var new_advance_status = $("#new_advance_status option:selected").val();
                     var advance_number_leads = $("#advance_number_leads").val();
                     var advance_assign_to = $("#advance_assigned_to option:selected").val();
                     var isAdvanceChecked = $('#advance:checked').val()?true:false;

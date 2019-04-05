@@ -116,6 +116,15 @@
                                                                     <label>Input Number of Leads</label>
                                                                <input type="number" class="form-control" name="advance_number_leads" value="0" placeholder="Number of Leads" id="advance_number_leads">
                                                              </div>
+                                                             <div class="form-group" >
+                                                                    <label>Select new status</label>
+                                                                    <select name="new_advance_status" id="new_advance_status" class="form-control">                               
+                                                                        <option value="0">None</option>
+                                                                        <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <option value="<?php echo e($key); ?>"><?php echo e($val); ?></option>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                    </select>
+                                                            </div>
                                                              <div class="form-group">
                                                                     <label>Select Assignee</label>
                                                                 <select name="advance_assigned_to" id="advance_assigned_to" class="form-control">
@@ -183,6 +192,7 @@
                 $('#advance-field').hide();
                 $('#advance-field-two').hide();
                 $('#advance-field-three').hide();
+                $('#advance-field-four').hide();
                 $('.advance-filter').on('click',function(){
                     $('.filter-section').toggle(1000);
                 });
@@ -202,6 +212,8 @@
                     $('#advance-field').hide(1000);
                     $('#advance-field-two').hide(1000);
                     $('#advance-field-three').hide(1000);
+                    $('#advance-field-four').hide();
+                 
                 });
 
                 $("#advance").on("ifChecked",function(e){
@@ -211,6 +223,7 @@
                     $('#advance-field').show(1000);
                     $('#advance-field-two').show(1000);
                     $('#advance-field-three').show(1000);
+                    $('#advance-field-four').show(1000);
                 }); 
                 
                
@@ -253,6 +266,7 @@
                         $('#advance-field').hide(1000);
                         $('#advance-field-two').hide(1000);
                         $('#advance-field-three').hide(1000);
+                        $('#advance-field-four').hide();
                         });
 
                         $("#advance").on("ifChecked",function(e){
@@ -262,6 +276,7 @@
                             $('#advance-field').show(1000);
                             $('#advance-field-two').show(1000);
                             $('#advance-field-three').show(1000);
+                            $('#advance-field-four').show(1000);
                         });     
                     },                         
                     columns: [       
@@ -271,8 +286,8 @@
                         { data: 'publisher', name: 'getBookInformation.getPublisher.name'},
                         { data: 'genre', name: 'getBookInformation.genre'},
                         { data: 'status', name: 'getStatus.name'},
-                        { data: 'assignee'},
-                        { data: 'researcher',name:  'getResearcher.firstname'}
+                        { data: 'assignee',name:  'getAssignee.username'},
+                        { data: 'researcher',name:  'getResearcher.username'}
                     ],  
                     columnDefs: [{
                         'targets': 0,
@@ -312,6 +327,7 @@
                     var advance_status = $("#advance_status option:selected").val();
                     var advance_number_leads = $("#advance_number_leads").val();
                     var advance_assign_to = $("#advance_assigned_to option:selected").val();
+                    var new_advance_status = $("#new_advance_status option:selected").val();
                     var isAdvanceChecked = $('#advance:checked').val()?true:false;
 
                     $(".dataTables-leads input:checkbox:checked").map(function(){
