@@ -59,9 +59,9 @@
                                     <div class="form-group"><label>Website</label> <input type="text" name="website" value="@if(isset($lead)) {{ $lead->website }}  @endif" placeholder="Enter Website Link" class="form-control" ></div>
                                     <div class="form-group"><label>Remarks</label> <textarea name="remarks" value="@if(isset($lead)) {{ $lead->remarks }}  @endif" id="" placeholder="Add remarks or note..." class="form-control" cols="30" rows="10">@if(isset($lead)) {{ $lead->remarks }}  @endif</textarea></div>
                                     
-                                        <div>
-                                        <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" id="submit-user">Add</button>
-                                        </div>
+                                    <div>
+                                    <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" id="submit-user">Add</button>
+                                    </div>
                             </div>
                         </div>
                     </div>

@@ -338,7 +338,7 @@ class LeadController extends Controller
 
         $data   = Excel::selectSheetsByIndex(0)->Load($uploadedFile)->get();
 
-
+      
         foreach($data as $d)
         {            
            
@@ -362,7 +362,7 @@ class LeadController extends Controller
        $data = json_decode($request->get('data'));    
 
         DB::beginTransaction();
-
+        
         foreach ($data as $d) {  
             $lead = Leads::create([
                 'firstname'      => $d->first_name,
@@ -380,11 +380,12 @@ class LeadController extends Controller
                 'postal_code'    => $d->postal_code, 
                 'country'        => $d->country,
                 'remarks'        => $d->remarks,    
-                'assigned_to'    => $this->ReplaceResearcherToId($d->researcher),
+                'assigned_to'    => $d->assigned_to == null || $d->assigned_to == "" ? $this->ReplaceResearcherToId($d->researcher) : $this->ReplaceResearcherToId($d->assigned_to) ,
                 'researcher'     => $this->ReplaceResearcherToId($d->researcher),
                 'status'         => $this->checkStatus($d->status)
+                
             ]);
-
+             
             $date = $d->published_date;
            
             $book_information = BookInformation::create([ 
