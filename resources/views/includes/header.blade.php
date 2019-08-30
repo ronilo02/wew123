@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FolioAvenue - {{ $page_title }}</title>
+<title>AdMe Marketing Services - {{ $page_title }}</title>
 
     <link href="{{ asset('inspinia_admin/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('inspinia_admin/font-awesome/css/font-awesome.css') }}" rel="stylesheet">

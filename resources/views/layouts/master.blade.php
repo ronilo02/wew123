@@ -48,7 +48,7 @@
                 <div class="footer">
                     
                     <div>
-                        <strong>Copyright</strong> FolioAvenue &copy; 2018
+                        <strong>Copyright</strong> AdMe Marketing Services &copy; 2018
                     </div>
                 </div>
 

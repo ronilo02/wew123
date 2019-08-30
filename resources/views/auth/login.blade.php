@@ -114,7 +114,7 @@
                             </div>
                         </div>
                     </form>
-            <p class="m-t"> <small style="color:white;">Powered by FolioAvenue &copy; 2018</small> </p>
+            <p class="m-t"> <small style="color:white;">Powered by AdMe Marketing Services &copy; 2018</small> </p>
         </div>
     
     </div>
