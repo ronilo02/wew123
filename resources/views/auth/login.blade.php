@@ -49,22 +49,22 @@
      </style>
 </head>
 
-<body class="gray-bg">
+<body class="gray-bg" style="background-image: url( {{ asset('images/app_bg.jpg') }})">
 
- <div id="login-top-video">
+ {{-- <div id="login-top-video">
     <video autoplay muted loop id="myVideo">
     <source src="{{ asset('video/BG.mp4') }}" type="video/mp4">
     </video>
-    </div>
+    </div> --}}
 
     <div class="middle-box text-center loginscreen animated fadeInDown" stlye="z-index:9999;">
         <div>
             <div>
                 
-                <h2 class="logo-name" style="margin-left:-15%;">CRM</h2>
+                <h2 class="logo-name" style="margin-left:2%;background-image: url( {{ asset('images/app_bg.jpg') }})">APP</h2>
 
             </div>
-            <h3 style="color:white;">Welcome to CRM</h3>
+            <h3 style="color:white;">Welcome to AdMe Marketing Services</h3>
             
             <p style="color:white;">Login in. To see it in action.</p>
             <form class="m-t" role="form" method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
@@ -99,7 +99,7 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12 ">
-                                <button type="submit" class="btn btn-primary btn-block">
+                            <button type="submit" class="btn btn-primary btn-block" style="background-image: url({{ asset('images/app_bg.jpg') }});background-position:top center;border:0px;">
                                     {{ __('Login') }}
                                 </button>
                             </div>

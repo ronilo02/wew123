@@ -275,7 +275,7 @@
                     retrieve: true,
                     processing: true,   
                     serverSide: true,
-                    ajax: '{{ url('leads/getdata') }}',                  
+                    ajax: '{{ url('/leads/getdata') }}',                  
                     pageLength: 10,
                     responsive: true,
                     ordering: false,
