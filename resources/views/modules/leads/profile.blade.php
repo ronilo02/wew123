@@ -506,12 +506,11 @@
                         var new_status = $("#status_field").val();
                         var name       = $("#status_field").find('option:selected').attr("name");
                         
-                        var url        = "leads/"+lead+"/update";                       
+                        var url        = "/leads/"+lead+"/update";                       
                      
                         $.ajax({
                               type:"POST",
-                              url:url,
-                              
+                              url:url,                              
                               data:{
                                status:new_status,
                                _token: "{{ csrf_token() }}",       
@@ -524,6 +523,7 @@
                                      $('#field_section').hide();
                               },
                               error:function(error){
+                                    console.log(lead);
                                     toastr["error"]("Failed to update status!");
 
                               }
@@ -561,7 +561,7 @@
                         var mobile_phone = $("#mobile_phone").val();
                         var office_phone = $("#office_phone").val();
                         var other_phone = $("#other_phone").val();
-                        var url        = "leads/"+lead+"/update";  
+                        var url        = "/leads/"+lead+"/update";  
 
                         $.ajax({
                               type:"POST",
@@ -658,7 +658,7 @@
                         var email = $('#email').val();
                         var website = $('#website').val();
                         var remarks = $('#remarks').val(); 
-                        var url    = "leads/"+lead+"/update";  
+                        var url    = "/leads/"+lead+"/update";  
                         
                         $.ajax({
                               type:"POST",
@@ -713,7 +713,7 @@
 
                   $("#delete-note").on("click",function(){
                         var id = $("#note-id").val();
-                        var url = "leads/delete/notes";
+                        var url = "/leads/delete/notes";
                         swal({
                         title: "Are you sure you want to delete this note?",
                         text: "You will not be able to recover this note again!",
