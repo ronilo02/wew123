@@ -11,7 +11,7 @@ use App\Notifications\LeadsImported;
 use App\Notifications\LeadsTransferred;
 use App\Publisher;
 use App\User;
-use App\leads;
+use App\Leads;
 use Yajra\Datatables\Datatables;
 use DB;
 use Excel;

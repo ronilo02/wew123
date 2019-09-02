@@ -2,13 +2,14 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+<link rel="icon" type="image/png" href="<?php echo asset('/images/adme.png') ?>">
 <title>AdMe Marketing Services - {{ $page_title }}</title>
-
+    
     <link href="{{ asset('inspinia_admin/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('inspinia_admin/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('inspinia_admin/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
-    
+
     <!-- Ladda style -->
     <link href="{{ asset('inspinia_admin/css/plugins/ladda/ladda-themeless.min.css') }}" rel="stylesheet">
 

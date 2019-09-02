@@ -8,15 +8,15 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" href="<?php echo e(asset('favicon.ico')); ?>">
     <link rel="icon" type="image/png" href="<?php echo asset('/images/adme.png') ?>">
     <title>APP | Login</title>
 
-    <link href="{{ asset('inspinia_admin/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('inspinia_admin/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+    <link href="<?php echo e(asset('inspinia_admin/css/bootstrap.min.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('inspinia_admin/font-awesome/css/font-awesome.css')); ?>" rel="stylesheet">
 
-    <link href="{{ asset('inspinia_admin/css/animate.css') }}" rel="stylesheet">
-    <link href="{{ asset('inspinia_admin/css/style.css') }}" rel="stylesheet">
+    <link href="<?php echo e(asset('inspinia_admin/css/animate.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('inspinia_admin/css/style.css')); ?>" rel="stylesheet">
     <style>
 
 
@@ -50,38 +50,34 @@
      </style>
 </head>
 
-<body class="gray-bg" style="background-image: url( {{ asset('images/app_bg.jpg') }})">
+<body class="gray-bg" style="background-image: url( <?php echo e(asset('images/app_bg.jpg')); ?>)">
 
- {{-- <div id="login-top-video">
-    <video autoplay muted loop id="myVideo">
-    <source src="{{ asset('video/BG.mp4') }}" type="video/mp4">
-    </video>
-    </div> --}}
+ 
 
     <div class="middle-box text-center loginscreen animated fadeInDown" stlye="z-index:9999;">
         <div>
             <div>
                 
-                <h2 class="logo-name" style="margin-left:2%;background-image: url( {{ asset('images/app_bg.jpg') }})">APP</h2>
+                <h2 class="logo-name" style="margin-left:2%;background-image: url( <?php echo e(asset('images/app_bg.jpg')); ?>)">APP</h2>
 
             </div>
             <h3 style="color:white;">Welcome to AdMe Marketing Services</h3>
             
             <p style="color:white;">Login in. To see it in action.</p>
-            <form class="m-t" role="form" method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
-             @csrf
+            <form class="m-t" role="form" method="POST" action="<?php echo e(route('login')); ?>" aria-label="<?php echo e(__('Login')); ?>">
+             <?php echo csrf_field(); ?>
 
                         <div class="form-group row">
                             
 
                             <div class="col-md-12">
-                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus placeholder="Username">
+                                <input id="username" type="text" class="form-control<?php echo e($errors->has('username') ? ' is-invalid' : ''); ?>" name="username" value="<?php echo e(old('username')); ?>" required autofocus placeholder="Username">
 
-                                @if ($errors->has('username'))
+                                <?php if($errors->has('username')): ?>
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('username') }}</strong>
+                                        <strong><?php echo e($errors->first('username')); ?></strong>
                                     </span>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
 
@@ -89,19 +85,20 @@
                             
 
                             <div class="col-md-12">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Password">
+                                <input id="password" type="password" class="form-control<?php echo e($errors->has('password') ? ' is-invalid' : ''); ?>" name="password" required placeholder="Password">
 
-                                @if ($errors->has('password'))
+                                <?php if($errors->has('password')): ?>
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
+                                        <strong><?php echo e($errors->first('password')); ?></strong>
                                     </span>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12 ">
-                            <button type="submit" class="btn btn-primary btn-block" style="background-image: url({{ asset('images/app_bg.jpg') }});background-position:top center;border:0px;">
-                                    {{ __('Login') }}
+                            <button type="submit" class="btn btn-primary btn-block" style="background-image: url(<?php echo e(asset('images/app_bg.jpg')); ?>);background-position:top center;border:0px;">
+                                    <?php echo e(__('Login')); ?>
+
                                 </button>
                             </div>
                         </div>
@@ -109,7 +106,8 @@
                             <div class="col-md-12 ">
                                 <div class="checkbox">
                                     <label style="color:white;">
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Remember Me') }}
+                                        <input type="checkbox" name="remember" <?php echo e(old('remember') ? 'checked' : ''); ?>> <?php echo e(__('Remember Me')); ?>
+
                                     </label>
                                 </div>
                             </div>
