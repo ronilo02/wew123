@@ -1,15 +1,12 @@
 
 <!DOCTYPE html>
 <html>
-
-
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.6/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Sep 2016 06:51:39 GMT -->
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CRM | Login</title>
+    <title>APP | Login</title>
 
     <link href="{{ asset('inspinia_admin/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('inspinia_admin/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
@@ -123,7 +120,4 @@
     <script src="js/bootstrap.min.js"></script>
 
 </body>
-
-
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.6/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Sep 2016 06:51:39 GMT -->
 </html>
