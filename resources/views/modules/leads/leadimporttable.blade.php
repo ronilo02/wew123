@@ -30,7 +30,7 @@
                                     <tbody>
                                         @foreach($valid_data as $d)
                                         <tr style="text-align:left;">
-                                        <td >{{ $d->firt_name." ".$d->last_name}}</td>
+                                        <td >{{ $d->first_name." ".$d->last_name}}</td>
                                         <td>{{ $d->previous_publisher}}</td>
                                         <td>{{ $d->isbn}}</td>
                                         </tr>

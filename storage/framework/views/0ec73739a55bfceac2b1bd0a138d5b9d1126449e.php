@@ -40,6 +40,12 @@
             </div>
          </div>
        </form>           
+       <div class="loader">
+            <div class="sk-spinner sk-spinner-chasing-dots">
+                <div class="sk-dot1"></div>
+                <div class="sk-dot2"></div>
+            </div>
+        </div>
     <div id="targetLayer"></div>                  
     </div>
 
@@ -50,7 +56,9 @@
 <?php $__env->startSection('custom_js'); ?>   
    <script>
          $(document).ready(function() { 
+            $("#progress-div").hide();
             $("#progress-bar").hide();
+            $('.loader').hide();
             $('#uploadForm').submit(function(e) {	
                 if($('#leads').val()) {
                     
@@ -59,17 +67,24 @@
                     $(this).ajaxSubmit({ 
                         target:   '#targetLayer', 
                         beforeSubmit: function() {
-                           
+                            $("#progress-div").show();
                             $("#progress-bar").show();
                             $("#progress-bar").width('0%');
                         },
                         uploadProgress: function (event, position, total, percentComplete){	
                             $("#progress-bar").width(percentComplete + '%');
-                            $("#progress-bar").html('<div id="progress-status">' + percentComplete +' %</div>')
+                            $("#progress-bar").html('<div id="progress-status">' + percentComplete +' %</div>');
+                            $('.loader').show();
                         },
                         success:function (result){
-                            
-                           $('#lead-import-leads').html(result);
+                           
+                            $('#lead-import-leads').html(result);
+                             $('.loader').hide();
+                        },
+                        error:function(error){
+                            $('.loader').hide();
+                            console.log(error);
+                           
                         },
                         resetForm: true 
                     }); 

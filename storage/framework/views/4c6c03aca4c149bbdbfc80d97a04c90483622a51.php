@@ -31,7 +31,7 @@
                                     <tbody>
                                         <?php $__currentLoopData = $valid_data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr style="text-align:left;">
-                                        <td ><?php echo e($d->firt_name." ".$d->last_name); ?></td>
+                                        <td ><?php echo e($d->first_name." ".$d->last_name); ?></td>
                                         <td><?php echo e($d->previous_publisher); ?></td>
                                         <td><?php echo e($d->isbn); ?></td>
                                         </tr>
