@@ -332,9 +332,9 @@ class LeadController extends Controller
         
         $file_name = $file->getClientOriginalName().'_'.date('h-m-s').'.'.$file->getClientOriginalExtension();
 
-        $file->move('storage/files/leads/',$file_name);
+        $file->move('/storage/files/leads/',$file_name);
 
-        $uploadedFile = 'storage/files/leads/'.$file_name;
+        $uploadedFile = '/storage/files/leads/'.$file_name;
 
         $data   = Excel::selectSheetsByIndex(0)->Load($uploadedFile)->get();
 
@@ -348,11 +348,11 @@ class LeadController extends Controller
                 $invalid_data[] = array_merge(["author_name" => $d->first_name." ".$d->middle_name." ".$d->last_name], ["error_details" => $this->checkIfErrorExist($d)]);
             }
         }                
-          
-        return view('modules.leads.leadimporttable')
-                ->with('valid_data',$valid_data)
-                ->with('invalid_data',json_decode(json_encode($invalid_data)))
-                ->with('file',$file);
+        // return $d;
+         return view('modules.leads.leadimporttable')
+                 ->with('valid_data',$valid_data)
+                 ->with('invalid_data',json_decode(json_encode($invalid_data)))
+                 ->with('file',$file);
     }
 
     public function storeimport(Request $request)
