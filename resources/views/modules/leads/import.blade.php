@@ -81,7 +81,7 @@
                         success:function (result){
                            
                             $('#lead-import-leads').html(result);
-                             $('.loader').hide();
+                            $('.loader').hide();
                         },
                         error:function(error){
                             $('.loader').hide();
