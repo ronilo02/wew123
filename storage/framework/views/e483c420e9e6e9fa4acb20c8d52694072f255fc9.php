@@ -230,6 +230,9 @@
                                           </li>
                                           <li class="list-group-item">                                               
                                                 Book Reference
+                                                <i class="fa fa-times-circle fa-2x pull-right" id="info_close" style="cursor:pointer;"></i>
+                                                <i class="fa fa-check-circle fa-2x pull-right" id="info_save" style="cursor:pointer;"></i>
+                                                <i class="fa fa-pencil  pull-right" id="info_pencil" data-toggle="tooltip" data-placement="top" title="Edit Contact Information" style="cursor:pointer;"></i>
                                                 <span class="pull-right" style="color:#b1aeae;">
                                                 <a href="<?php echo e($lead->getBookInformation->book_reference); ?>" target="_blank"><?php echo e(str_limit($lead->getBookInformation->book_reference,150)); ?></a>
                                                 </span>
@@ -588,7 +591,6 @@
                               },
                               success:function(result){
                                     toastr["success"]("Contact information successfully updated!");
-                                     
                                     $("#home_phone").val(home_phone);
                                     $("#mobile_phone").val(mobile_phone);
                                     $("#office_phone").val(office_phone);
