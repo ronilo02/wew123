@@ -4,7 +4,7 @@
       
       <div class="row  border-bottom white-bg dashboard-header">
                   <div class="col-md-12">
-                        @if(auth()->user()->can('edit.leads') || auth()->user()->hasRole('superadmin'))
+                        @if(auth()->user()->can('edit.leads') || auth()->user()->hasRole('superadmin') || auth()->user()->hasRole('sales'))
                               <a href="{{ url('leads/'.$lead->id.'/edit') }}" data-toggle="tooltip" data-placement="top" title="Edit Status"  class="pull-right"><i style="color:#1ab394" data-toggle="tooltip" data-placement="top" title="Edit Lead" class="fa fa-pencil"></i></a>
                         @endif
                           <h1>{{ $lead->fullName }}</h1>                 
@@ -221,6 +221,7 @@
                                           </li>
                                           <li class="list-group-item">                                               
                                                 Book Reference
+                                                
                                                 <span class="pull-right" style="color:#b1aeae;">
                                                 <a href="{{ $lead->getBookInformation->book_reference }}" target="_blank">{{ str_limit($lead->getBookInformation->book_reference,150) }}</a>
                                                 </span>
@@ -575,7 +576,6 @@
                               },
                               success:function(result){
                                     toastr["success"]("Contact information successfully updated!");
-                                     
                                     $("#home_phone").val(home_phone);
                                     $("#mobile_phone").val(mobile_phone);
                                     $("#office_phone").val(office_phone);
