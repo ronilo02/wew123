@@ -23,24 +23,33 @@
                                         <tr >
                                             <th >Author</th>
                                             <th >Publisher</th>
-                                            <th >Isbn</th>
+                                            <th >Mobile #</th>
+                                            <th >Office #</th>
+                                            <th >Phone #</th>
+                                            <th >Other #</th>
                                         
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($valid_data as $d)
                                         <tr style="text-align:left;">
-                                        <td >{{ $d->first_name." ".$d->last_name}}</td>
+                                        <td>{{ $d->first_name." ".$d->last_name}}</td>
                                         <td>{{ $d->previous_publisher}}</td>
-                                        <td>{{ $d->isbn}}</td>
+                                        <td>{{ $d->mobile_phone}}</td>
+                                        <td>{{ $d->office_phone}}</td>
+                                        <td>{{ $d->home_phone}}</td>
+                                        <td>{{ $d->other_phone}}</td>
                                         </tr>
                                         @endforeach   
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>Author</th>
-                                            <th>Publisher</th>
-                                            <th>Isbn</th>
+                                            <th >Author</th>
+                                            <th >Publisher</th>
+                                            <th >Mobile #</th>
+                                            <th >Office #</th>
+                                            <th >Phone #</th>
+                                            <th >Other #</th>
                                             
                                         </tr>
                                     </tfoot>
