@@ -31,19 +31,59 @@
                                     <div class="form-group"><label>Lastname</label> <input type="text" name="lastname" value="@if(isset($userdata)){{ ucfirst($userdata->lastname) }}@endif" placeholder="Enter Lastname" class="form-control" required></div>
                                     <div class="form-group"><label>Primary Email</label> <input type="email" name="email" value="@if(isset($userdata)){{ $userdata->email }}@endif" placeholder="Enter Primary Email" class="form-control" required></div>
                                     <div class="form-group"><label>Profile Picture</label> <input type="file" name="profile"   class="form-control" ></div>
+                                
+                                    <h4>Account Status</h4>
+                                    <select name="status" id="status" class="form-control" required>                                     
+                                        @foreach ($status as $s)
+                                            <option value="{{ $s->id }}" @if(isset($userdata) && $userdata->status == $s->id) selected="selected" @endif>
+                                                    {{ $s->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                             </div>
-                            <div class="col-sm-6"><h4>User Credentials</h4>
-                                   <p style="color:#1ab394;">*Updating credentials require to input your current password.</p>
-                                    <div class="form-group"><label>Username</label> <input type="text" name="username" value="@if(isset($userdata)){{ $userdata->username }}@endif" placeholder="Enter Username" class="form-control" @if(isset($userdata))disabled @else required @endif></div>
-                                    @if(isset($userdata))
-                                        <div class="form-group"><label>Current Password</label> <input type="password" name="current-password" placeholder="Enter Current Password" class="form-control" ></div>
-                                    @endif
 
-                                    <div class="form-group"><label>@if(isset($userdata)) New @endif Password</label> <input type="password" name="password" placeholder="Enter @if(isset($userdata)) New @endif Password" class="form-control" required></div>
-                                    <div class="form-group"><label>Confirm @if(isset($userdata)) New @endif Password</label> <input type="password" name="confirm-password" placeholder="Confirm @if(isset($userdata)) New @endif Password" class="form-control" required></div>
-                                    <div>
-                                    <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" @if(auth()->user()->hasRole(['administrator','superadmin','lead.researcher'])) id="submit-user"  type="button" @else type="submit]"  @endif >@if(isset($userdata)) Update @else Create @endif</button>
+                            <div class="col-sm-6">
+                                    <h4>Company Info</h4>
+                                    <p style="color:#1ab394;">*Company info can be change if employee is transfered to another company.</p>
+                                    <div class="form-group">
+                                        <label>Company Name</label>
+                                        <select name="company" id="company" class="form-control" required>
+                                        <option value="0">Select Company</option>
+                                            @foreach ($company as $c)
+                                                <option value="{{ $c->id }}" @if(isset($userdata) && $userdata->company_id == $c->id) selected="selected" @endif>
+                                                        {{ $c->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
+                                    <div class="form-group" id="branch_ajax">
+                                       
+                                        @if(isset($userdata->branch_id))
+                                         <label>Branch Name</label>                                       
+                                        <select name="branch" id="branch" class="form-control" required>
+                                                @foreach ($userdata->company->branches as $b)
+                                                    <option value="{{ $b->id }}" @if(isset($userdata) && $userdata->branch_id == $b->id) selected="selected" @endif>
+                                                            {{ $b->name }}
+                                                    </option>
+                                                @endforeach
+                                        </select>
+                                        @endif
+
+                                    </div>
+                                    @if(auth()->user()->hasRole(['superadmin','administrator']))   
+                                        <h4>User Credentials</h4>
+                                        <p style="color:#1ab394;">*Updating credentials require to input your current password.</p>
+                                        <div class="form-group"><label>Username</label> <input type="text" name="username" value="@if(isset($userdata)){{ $userdata->username }}@endif" placeholder="Enter Username" class="form-control" @if(isset($userdata))disabled @else required @endif></div>
+                                        @if(isset($userdata))
+                                            <div class="form-group"><label>Current Password</label> <input type="password" name="current-password" placeholder="Enter Current Password" class="form-control" ></div>
+                                        @endif
+
+                                        <div class="form-group"><label>@if(isset($userdata)) New @endif Password</label> <input type="password" name="password" placeholder="Enter @if(isset($userdata)) New @endif Password" class="form-control" required></div>
+                                        <div class="form-group"><label>Confirm @if(isset($userdata)) New @endif Password</label> <input type="password" name="confirm-password" placeholder="Confirm @if(isset($userdata)) New @endif Password" class="form-control" required></div>
+                                        <div>
+                                        <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" @if(auth()->user()->hasRole(['administrator','superadmin','lead.researcher'])) id="submit-user"  type="button" @else type="submit]"  @endif >@if(isset($userdata)) Update @else Create @endif</button>
+                                        </div>
+                                    @endif    
                             </div>
                         </div>
                     </div>
@@ -146,6 +186,27 @@
                 }else{
                     $("#user-form").submit();
                 }
+            });
+
+            $("#company").on("change",function(){
+                    var id  = $("#company").val();
+                    var url = "/branch/getdata";
+                     
+                    $.ajax({
+                            type:"POST",
+                            url:url,                              
+                            data:{
+                            id:id,
+                            _token: "{{ csrf_token() }}",       
+                            },
+                            success:function(result){
+                               $("#branch_ajax").html(result);
+                            },
+                            error:function(error){
+                                console.log(error);         
+                            }
+                            
+                    });
             });
         });
     </script>

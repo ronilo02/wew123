@@ -55,6 +55,7 @@ Route::group(['prefix'=>''],function(){
     Route::post('/leads/filter','LeadController@filter');
     Route::post('/leads/assign','LeadController@assign_leads');
     Route::get('leads/getdata','LeadController@getData');
+    Route::post('/leads/getbranchdata','LeadController@getbranchdata');
     Route::get('leads/getfilterdata/{data}','LeadController@getFilterData');
     Route::resource('/leads','LeadController');
   
@@ -83,10 +84,27 @@ Route::group(['prefix'=>''],function(){
 
 Route::group(['prefix'=>''],function(){
     Route::resource('/user','UserController');
+   
 });
 
 /*------------------------------------------End of User Routes-------------------------------------------------*/
 
+/*----------------------------------------------User Company-----------------------------------------------------------*/
+
+Route::group(['prefix'=>''],function(){
+    Route::resource('/company','CompanyController');
+});
+
+/*------------------------------------------End of Company-------------------------------------------------*/
+
+/*----------------------------------------------User Company-----------------------------------------------------------*/
+
+Route::group(['prefix'=>''],function(){
+    Route::resource('/branch','BranchController');
+    Route::post('/branch/getdata','BranchController@getdata');
+});
+
+/*--
  
 /*----------------------------------------------User Profile-----------------------------------------------------------*/
 

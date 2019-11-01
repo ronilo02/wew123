@@ -149,14 +149,35 @@
                                                                         @endforeach
                                                                     </select>
                                                             </div>
-                                                             <div class="form-group">
-                                                                    <label>Select Assignee</label>
-                                                                <select name="advance_assigned_to" id="advance_assigned_to" class="form-control">
-                                                                    <option value="0">Assigned to</option>
-                                                                    @foreach($users as $key => $val)
-                                                                    <option value="{{ $key }}">{{ $val }}</option>
-                                                                    @endforeach
+                                                            <div class="form-group" id="advance-field-four">
+                                                                <label>Assign By</label>
+                                                                <select name="advance_assigned_by" id="advance_assigned_by" class="form-control">
+                                                                    <option value="0">Assign By</option>
+                                                                    <option value="1">Branch</option>
+                                                                    <option value="2">Company</option>
+                                                                    <option value="3">Person</option>
                                                                 </select>
+                                                             </div>    
+                                                             <div class="form-group" id="advance-field-five">
+                                                                    <label>Company</label>
+                                                                    <select name="company" id="company" class="form-control">
+                                                                        <option value="0">Choose Company</option>
+                                                                        @foreach($company as $key => $val)
+                                                                        <option value="{{ $key }}">{{ $val }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                            </div>   
+                                                            <div class="form-group" id="branch_ajax" >
+                                                                   
+                                                            </div>  
+                                                             <div class="form-group" id="advance-field-six">
+                                                                    <label>Select Assignee</label>
+                                                                    <select name="advance_assigned_to" id="advance_assigned_to" class="form-control">
+                                                                        <option value="0">Assigned to</option>
+                                                                        @foreach($users as $key => $val)
+                                                                        <option value="{{ $key }}">{{ $val }}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                              </div>       
                                                         </div>
                                                     </div>
@@ -217,6 +238,8 @@
                 $('#advance-field-two').hide();
                 $('#advance-field-three').hide();
                 $('#advance-field-four').hide();
+                $('#advance-field-five').hide();
+                $('#branch_ajax').hide();
                 $('.advance-filter').on('click',function(){
                     $('.filter-section').toggle(1000);
                 });
@@ -237,6 +260,10 @@
                     $('#advance-field-two').hide(1000);
                     $('#advance-field-three').hide(1000);
                     $('#advance-field-four').hide();
+                    
+                    $('#advance-field-five').hide();
+                    $('#branch_ajax').hide();
+                    $('#advance-field-six').show();
                  
                 });
 
@@ -248,7 +275,35 @@
                     $('#advance-field-two').show(1000);
                     $('#advance-field-three').show(1000);
                     $('#advance-field-four').show(1000);
+                    $('#advance-field-five').hide(1000);
+                   // $('#branch_ajax').show(1000);
+                    //$('#advance-field-six').hide();
                 }); 
+
+                $("#company").on("change",function(){
+                    var id  = $("#company").val();
+                    var url = "/branch/getdata";
+                     
+                    $.ajax({
+                            type:"POST",
+                            url:url,                              
+                            data:{
+                            id:id,
+                            _token: "{{ csrf_token() }}",       
+                            },
+                            success:function(result){
+                               
+                               $("#branch_ajax").html(result);
+                               if($("#advance_assigned_by").val() == 1){
+                                   $('#branch_ajax').show(1000);
+                               }
+                            },
+                            error:function(error){
+                                console.log(error);      
+                            }
+                            
+                    });
+            });
                 
                
 
@@ -260,6 +315,29 @@
                     }else{
                         $('#advance-field-three').hide(1000);
                     }
+                });
+
+                $("#advance_assigned_by").on("change",function(){
+                  
+                    var val = $(this).val();
+
+                    if(val == 1 ){
+                        $('#advance-field-five').show(1000);
+                        $('#advance-field-six').hide(1000);    
+                    }else if(val == 2){                         
+                        $('#advance-field-five').show(1000);
+                        $('#branch_ajax').hide(1000); 
+                        $('#advance-field-six').hide(1000);                           
+                    }else if(val == 3){
+                        $('#advance-field-six').show(1000);    
+                        $('#advance-field-five').hide(1000);
+                        $('#branch_ajax').hide(1000);                    
+                    }else{
+                        $('#advance-field-five').hide(1000);
+                        $('#branch_ajax').hide(1000);   
+                        $('#advance-field-six').hide(1000);
+                    } 
+                    
                 });
 
                var table = $('.dataTables-leads').DataTable({
@@ -291,6 +369,9 @@
                         $('#advance-field-two').hide(1000);
                         $('#advance-field-three').hide(1000);
                         $('#advance-field-four').hide();
+                        $('#advance-field-five').hide();
+                        $('#branch_ajax').hide();
+                        $('#advance-field-six').show();
                         });
 
                         $("#advance").on("ifChecked",function(e){
@@ -301,6 +382,9 @@
                             $('#advance-field-two').show(1000);
                             $('#advance-field-three').show(1000);
                             $('#advance-field-four').show(1000);
+                            $('#advance-field-five').hide();
+                            $('#branch_ajax').show(1000);
+                            $('#advance-field-six').hide();
                         });     
                     },                         
                     columns: [       
@@ -352,6 +436,9 @@
                     var advance_number_leads = $("#advance_number_leads").val();
                     var advance_assign_to = $("#advance_assigned_to option:selected").val();
                     var new_advance_status = $("#new_advance_status option:selected").val();
+                    var advance_assigned_by = $("#advance_assigned_by option:selected").val();
+                    var company = $("#company option:selected").val();
+                    var branch = $("#branch option:selected").val();
                     var isAdvanceChecked = $('#advance:checked').val()?true:false;
 
                     $(".dataTables-leads input:checkbox:checked").map(function(){
@@ -379,21 +466,35 @@
                    if(advance != 0){
                          if(advance_bucket != 0){
                              
-                            // if(advance_number_leads != 0){
-                                    if(advance_assign_to != 0 || isAdvanceChecked){
+                            if(advance_assigned_by != 0){
+                                    
+
+                                    if(advance_assigned_by == 1 || advance_assigned_by == 2 ){
+                                        if(company != 0){
                                             $("#assign-leads-form").submit();
-                                    }else{
-                                        swal({
+                                        }else{
+                                            swal({
                                             title : "Field Required!",
-                                            text  : "You should select assignee!"
+                                            text  : "You should select company and branch!"
                                         });
+                                        }
+                                    }else if(advance_assigned_by == 3){
+                                        if(advance_assign_to != 0 && isAdvanceChecked){
+                                            
+                                            $("#assign-leads-form").submit();
+                                        }else{  
+                                            swal({
+                                                title : "Field Required!",
+                                                text  : "You should select assignee!"
+                                            });
+                                        }
                                     }
-                                // }else{
-                                //     swal({
-                                //             title : "Field Required!",
-                                //             text  : "You should enter number of leads to be transfer!"
-                                //         });
-                                // }
+                                 }else{
+                                     swal({
+                                            title : "Field Required!",
+                                            text  : "You should select assign by!"
+                                        });
+                                 }
                             
                          }else{
                             swal({

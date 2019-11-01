@@ -29,19 +29,62 @@
                                     <div class="form-group"><label>Lastname</label> <input type="text" name="lastname" value="<?php if(isset($userdata)): ?><?php echo e(ucfirst($userdata->lastname)); ?><?php endif; ?>" placeholder="Enter Lastname" class="form-control" required></div>
                                     <div class="form-group"><label>Primary Email</label> <input type="email" name="email" value="<?php if(isset($userdata)): ?><?php echo e($userdata->email); ?><?php endif; ?>" placeholder="Enter Primary Email" class="form-control" required></div>
                                     <div class="form-group"><label>Profile Picture</label> <input type="file" name="profile"   class="form-control" ></div>
-                            </div>
-                            <div class="col-sm-6"><h4>User Credentials</h4>
-                                   <p style="color:#1ab394;">*Updating credentials require to input your current password.</p>
-                                    <div class="form-group"><label>Username</label> <input type="text" name="username" value="<?php if(isset($userdata)): ?><?php echo e($userdata->username); ?><?php endif; ?>" placeholder="Enter Username" class="form-control" <?php if(isset($userdata)): ?>disabled <?php else: ?> required <?php endif; ?>></div>
-                                    <?php if(isset($userdata)): ?>
-                                        <div class="form-group"><label>Current Password</label> <input type="password" name="current-password" placeholder="Enter Current Password" class="form-control" ></div>
-                                    <?php endif; ?>
+                                
+                                    <h4>Account Status</h4>
+                                    <select name="status" id="status" class="form-control" required>                                     
+                                        <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($s->id); ?>" <?php if(isset($userdata) && $userdata->status == $s->id): ?> selected="selected" <?php endif; ?>>
+                                                    <?php echo e($s->name); ?>
 
-                                    <div class="form-group"><label><?php if(isset($userdata)): ?> New <?php endif; ?> Password</label> <input type="password" name="password" placeholder="Enter <?php if(isset($userdata)): ?> New <?php endif; ?> Password" class="form-control" required></div>
-                                    <div class="form-group"><label>Confirm <?php if(isset($userdata)): ?> New <?php endif; ?> Password</label> <input type="password" name="confirm-password" placeholder="Confirm <?php if(isset($userdata)): ?> New <?php endif; ?> Password" class="form-control" required></div>
-                                    <div>
-                                    <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" <?php if(auth()->user()->hasRole(['administrator','superadmin','lead.researcher'])): ?> id="submit-user"  type="button" <?php else: ?> type="submit]"  <?php endif; ?> ><?php if(isset($userdata)): ?> Update <?php else: ?> Create <?php endif; ?></button>
+                                            </option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                            </div>
+
+                            <div class="col-sm-6">
+                                    <h4>Company Info</h4>
+                                    <p style="color:#1ab394;">*Company info can be change if employee is transfered to another company.</p>
+                                    <div class="form-group">
+                                        <label>Company Name</label>
+                                        <select name="company" id="company" class="form-control" required>
+                                        <option value="0">Select Company</option>
+                                            <?php $__currentLoopData = $company; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($c->id); ?>" <?php if(isset($userdata) && $userdata->company_id == $c->id): ?> selected="selected" <?php endif; ?>>
+                                                        <?php echo e($c->name); ?>
+
+                                                </option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
                                     </div>
+                                    <div class="form-group" id="branch_ajax">
+                                       
+                                        <?php if(isset($userdata->branch_id)): ?>
+                                         <label>Branch Name</label>                                       
+                                        <select name="branch" id="branch" class="form-control" required>
+                                                <?php $__currentLoopData = $userdata->company->branches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($b->id); ?>" <?php if(isset($userdata) && $userdata->branch_id == $b->id): ?> selected="selected" <?php endif; ?>>
+                                                            <?php echo e($b->name); ?>
+
+                                                    </option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
+                                        <?php endif; ?>
+
+                                    </div>
+                                    <?php if(auth()->user()->hasRole(['superadmin','administrator'])): ?>   
+                                        <h4>User Credentials</h4>
+                                        <p style="color:#1ab394;">*Updating credentials require to input your current password.</p>
+                                        <div class="form-group"><label>Username</label> <input type="text" name="username" value="<?php if(isset($userdata)): ?><?php echo e($userdata->username); ?><?php endif; ?>" placeholder="Enter Username" class="form-control" <?php if(isset($userdata)): ?>disabled <?php else: ?> required <?php endif; ?>></div>
+                                        <?php if(isset($userdata)): ?>
+                                            <div class="form-group"><label>Current Password</label> <input type="password" name="current-password" placeholder="Enter Current Password" class="form-control" ></div>
+                                        <?php endif; ?>
+
+                                        <div class="form-group"><label><?php if(isset($userdata)): ?> New <?php endif; ?> Password</label> <input type="password" name="password" placeholder="Enter <?php if(isset($userdata)): ?> New <?php endif; ?> Password" class="form-control" required></div>
+                                        <div class="form-group"><label>Confirm <?php if(isset($userdata)): ?> New <?php endif; ?> Password</label> <input type="password" name="confirm-password" placeholder="Confirm <?php if(isset($userdata)): ?> New <?php endif; ?> Password" class="form-control" required></div>
+                                        <div>
+                                        <button  class="ladda-button btn btn-primary pull-right" data-style="slide-right" <?php if(auth()->user()->hasRole(['administrator','superadmin','lead.researcher'])): ?> id="submit-user"  type="button" <?php else: ?> type="submit]"  <?php endif; ?> ><?php if(isset($userdata)): ?> Update <?php else: ?> Create <?php endif; ?></button>
+                                        </div>
+                                    <?php endif; ?>    
                             </div>
                         </div>
                     </div>
@@ -144,6 +187,27 @@
                 }else{
                     $("#user-form").submit();
                 }
+            });
+
+            $("#company").on("change",function(){
+                    var id  = $("#company").val();
+                    var url = "/branch/getdata";
+                     
+                    $.ajax({
+                            type:"POST",
+                            url:url,                              
+                            data:{
+                            id:id,
+                            _token: "<?php echo e(csrf_token()); ?>",       
+                            },
+                            success:function(result){
+                               $("#branch_ajax").html(result);
+                            },
+                            error:function(error){
+                                console.log(error);         
+                            }
+                            
+                    });
             });
         });
     </script>

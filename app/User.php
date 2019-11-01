@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username','firstname','lastname', 'email', 'password','status','avatar'
+        'username','firstname','lastname', 'email', 'password','status','avatar','company_id','branch_id'
     ];
 
     /**
@@ -37,5 +37,15 @@ class User extends Authenticatable
     public function getRoles()
     {
         return $this->hasMany('App\RoleUser','user_id','id');
+    }
+
+    public function company()
+    {
+        return $this->hasOne('App\Company','id','company_id');
+    }
+
+    public function getstatus()
+    {
+        return $this->hasOne('App\UserStatus','id','status');
     }
 }

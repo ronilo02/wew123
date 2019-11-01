@@ -33,12 +33,12 @@
                                     <tbody>
                                         @foreach($valid_data as $d)
                                         <tr style="text-align:left;">
-                                        <td>{{ $d->first_name." ".$d->last_name}}</td>
-                                        <td>{{ $d->previous_publisher}}</td>
-                                        <td>{{ $d->mobile_phone}}</td>
-                                        <td>{{ $d->office_phone}}</td>
-                                        <td>{{ $d->home_phone}}</td>
-                                        <td>{{ $d->other_phone}}</td>
+                                            <td>{{ $d->first_name." ".$d->last_name}}</td>
+                                            <td>{{ $d->previous_publisher}}</td>
+                                            <td>{{ $d->mobile_phone}}</td>
+                                            <td>{{ $d->office_phone}}</td>
+                                            <td>{{ $d->home_phone}}</td>
+                                            <td>{{ $d->other_phone}}</td>
                                         </tr>
                                         @endforeach   
                                     </tbody>
@@ -50,7 +50,6 @@
                                             <th >Office #</th>
                                             <th >Phone #</th>
                                             <th >Other #</th>
-                                            
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -59,9 +58,7 @@
                                 @else
                                 <h3 class="error-msg" style="color:#d0cdcd">No Valid Leads Found!</h3>
                                 @endif
-                                
                             </div>
-                           
                         </div>
                     </div>
                 </div>

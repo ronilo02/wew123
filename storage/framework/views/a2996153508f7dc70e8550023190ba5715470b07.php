@@ -21,6 +21,7 @@
                 </li>
 
                 <?php
+
                     $dashboard="";
                     $leads="";
                     $accounts="";
@@ -30,6 +31,8 @@
                     $reports="";
                     $migration="";
                     $quota = "";
+                    $company = "";
+
                     if(request()->url() == "home"){
                         $dashboard="active";   
                     }elseif(request()->url() == url("leads")){
@@ -40,6 +43,8 @@
                         $permission="active";
                     }elseif(request()->url() == url("role")){
                         $role="active";
+                    }elseif(request()->url() == url("company")){
+                        $company="active";
                     }elseif(request()->url() == url("payments")){
                         $payments="active";
                     }elseif(request()->url() == url("quota")){
@@ -65,7 +70,7 @@
                                 <li><a href="<?php echo e(url('leads')); ?>">All</a></li>
                             <?php endif; ?>    
                         <li><a href="<?php echo e(url('/leads/bucket-lists')); ?>">Bucket Lists</a></li>
-                            <?php if(auth()->user()->hasRole(['superadmin','lead.researcher'])): ?>
+                            <?php if(auth()->user()->hasRole(['superadmin','lead.researcher','administrator'])): ?>
                                 <li><a href="<?php echo e(url('leads/create')); ?>">Add New Lead</a></li>
                                 <li><a href="<?php echo e(url('leads/import')); ?>">Import</a></li>
                                 <li><a href="#">Export</a></li>
@@ -90,6 +95,13 @@
                             <li><a href="<?php echo e(url('/user/create')); ?>">Add</a></li>                        
                         </ul>              
                     </li>
+                    <li class = <?php echo e($company); ?>>
+                        <a href="#"><i class="fa fa-building"></i> <span class="nav-label">Company</span><span class="fa arrow"></span></a>                  
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="<?php echo e(url('/company')); ?>">Lists</a></li>
+                                <li><a href="#">Add</a></li>                        
+                            </ul>              
+                        </li>
                     
                     <li class = <?php echo e($quota); ?>>
                             <a href="<?php echo e(url('/quota')); ?>"><i class="fa fa-usd"></i> <span class="nav-label">Quota</span></a>                  

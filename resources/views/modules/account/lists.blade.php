@@ -52,7 +52,9 @@
                                             <label class="{{ $role->getRole->class }}">{{ $role->getRole->display_name }}</label>
                                         @endforeach
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        <label class="label @if($user->status == 1) label-primary @else label-danger @endif">{{ $user->getstatus['name']}}</label>
+                                    </td>
                                 </tr>
                              @endforeach 
                             </tbody>

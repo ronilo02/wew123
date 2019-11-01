@@ -2,7 +2,7 @@
       
       <div class="row  border-bottom white-bg dashboard-header">
                   <div class="col-md-12">
-                        <?php if(auth()->user()->can('edit.leads') || auth()->user()->hasRole('superadmin')): ?>
+                        <?php if(auth()->user()->can('edit.leads') || auth()->user()->hasRole('superadmin') || auth()->user()->hasRole('sales')): ?>
                               <a href="<?php echo e(url('leads/'.$lead->id.'/edit')); ?>" data-toggle="tooltip" data-placement="top" title="Edit Status"  class="pull-right"><i style="color:#1ab394" data-toggle="tooltip" data-placement="top" title="Edit Lead" class="fa fa-pencil"></i></a>
                         <?php endif; ?>
                           <h1><?php echo e($lead->fullName); ?></h1>                 
@@ -230,9 +230,7 @@
                                           </li>
                                           <li class="list-group-item">                                               
                                                 Book Reference
-                                                <i class="fa fa-times-circle fa-2x pull-right" id="info_close" style="cursor:pointer;"></i>
-                                                <i class="fa fa-check-circle fa-2x pull-right" id="info_save" style="cursor:pointer;"></i>
-                                                <i class="fa fa-pencil  pull-right" id="info_pencil" data-toggle="tooltip" data-placement="top" title="Edit Contact Information" style="cursor:pointer;"></i>
+                                                
                                                 <span class="pull-right" style="color:#b1aeae;">
                                                 <a href="<?php echo e($lead->getBookInformation->book_reference); ?>" target="_blank"><?php echo e(str_limit($lead->getBookInformation->book_reference,150)); ?></a>
                                                 </span>
