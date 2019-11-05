@@ -1,15 +1,12 @@
 
 <!DOCTYPE html>
 <html>
-
-
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.6/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Sep 2016 06:51:39 GMT -->
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CRM | Login</title>
+    <title>APP | Login</title>
 
     <link href="<?php echo e(asset('inspinia_admin/css/bootstrap.min.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('inspinia_admin/font-awesome/css/font-awesome.css')); ?>" rel="stylesheet">
@@ -70,13 +67,7 @@
                             
 
                             <div class="col-md-12">
-                                <input id="username" type="text" class="form-control<?php echo e($errors->has('username') ? ' is-invalid' : ''); ?>" name="username" value="<?php echo e(old('username')); ?>" required autofocus placeholder="Username">
-
-                                <?php if($errors->has('username')): ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong><?php echo e($errors->first('username')); ?></strong>
-                                    </span>
-                                <?php endif; ?>
+                               <input id="username" type="text" class="form-control<?php echo e($errors->has('username') ? ' is-invalid' : ''); ?>" name="username" value="<?php echo e(old('username')); ?>" required autofocus placeholder="Username">
                             </div>
                         </div>
 
@@ -85,12 +76,6 @@
 
                             <div class="col-md-12">
                                 <input id="password" type="password" class="form-control<?php echo e($errors->has('password') ? ' is-invalid' : ''); ?>" name="password" required placeholder="Password">
-
-                                <?php if($errors->has('password')): ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong><?php echo e($errors->first('password')); ?></strong>
-                                    </span>
-                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -112,16 +97,21 @@
                             </div>
                         </div>
                     </form>
+
             <p class="m-t"> <small style="color:white;">Powered by AdMe Marketing Services &copy; 2018</small> </p>
         </div>
-    
+        <?php echo $__env->make('auth.error_alert', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     </div>
     <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="<?php echo e(asset('inspinia_admin/js/bootstrap.min.js')); ?>"></script>
+    <script>
+      
+            $(document).ready(function(){        
+                $('#errorModal').modal();                
+            }); 
+     
+    </script>
 
 </body>
-
-
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.6/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Sep 2016 06:51:39 GMT -->
 </html>

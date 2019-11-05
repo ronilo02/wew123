@@ -71,13 +71,7 @@
                             
 
                             <div class="col-md-12">
-                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus placeholder="Username">
-
-                                @if ($errors->has('username'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
+                               <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus placeholder="Username">
                             </div>
                         </div>
 
@@ -86,12 +80,6 @@
 
                             <div class="col-md-12">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Password">
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
                             </div>
                         </div>
                         <div class="form-group row">
@@ -111,13 +99,21 @@
                             </div>
                         </div>
                     </form>
+
             <p class="m-t"> <small style="color:white;">Powered by AdMe Marketing Services &copy; 2018</small> </p>
         </div>
-    
+        @include('auth.error_alert')
     </div>
     <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="{{ asset('inspinia_admin/js/bootstrap.min.js') }}"></script>
+    <script>
+      
+            $(document).ready(function(){        
+                $('#errorModal').modal();                
+            }); 
+     
+    </script>
 
 </body>
 </html>

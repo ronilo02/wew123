@@ -140,6 +140,15 @@
                                                                     <label>Input Number of Leads</label>
                                                                <input type="number" class="form-control" name="advance_number_leads" value="0" placeholder="Number of Leads" id="advance_number_leads">
                                                              </div>
+                                                             <div class="form-group" id="advance-country">
+                                                                    <label>Select Country</label>
+                                                                    <select name="advance_country" id="advance_country" class="form-control">                               
+                                                                        <option value="0">None</option>
+                                                                        @foreach($countries as $key => $val)
+                                                                        <option value="{{ $key }}">{{ $val }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                            </div>
                                                              <div class="form-group" >
                                                                     <label>Select new status</label>
                                                                     <select name="new_advance_status" id="new_advance_status" class="form-control">                               
@@ -208,8 +217,6 @@
                                             </div>
                                         </div>
                                 </div>
-                               
-                               
                             </form>
                             </div>
                         </div>
@@ -233,7 +240,8 @@
                 // @endif
                 
                 // $('.form_assign').hide();
-                $('.filter-section').hide();                         
+                $('.filter-section').hide();     
+                $('#advance-country').hide();                    
                 $('#advance-field').hide();
                 $('#advance-field-two').hide();
                 $('#advance-field-three').hide();
@@ -256,6 +264,7 @@
                     e.preventDefault();
                 //uncheck all checkboxes
                     $(this).val(0);
+                    $('#advance-country').hide();  
                     $('#advance-field').hide(1000);
                     $('#advance-field-two').hide(1000);
                     $('#advance-field-three').hide(1000);
@@ -271,11 +280,12 @@
                     e.preventDefault();
                     //uncheck all checkboxes
                     $(this).val(1);
-                    $('#advance-field').show(1000);
+                   // $('#advance-field').show(1000);
                     $('#advance-field-two').show(1000);
                     $('#advance-field-three').show(1000);
                     $('#advance-field-four').show(1000);
                     $('#advance-field-five').hide(1000);
+                    $('#advance-country').show(1000);  
                    // $('#branch_ajax').show(1000);
                     //$('#advance-field-six').hide();
                 }); 
@@ -322,17 +332,21 @@
                     var val = $(this).val();
 
                     if(val == 1 ){
+                        $('#advance-field').hide(1000);
                         $('#advance-field-five').show(1000);
                         $('#advance-field-six').hide(1000);    
-                    }else if(val == 2){                         
+                    }else if(val == 2){       
+                        $('#advance-field').hide(1000);                  
                         $('#advance-field-five').show(1000);
                         $('#branch_ajax').hide(1000); 
                         $('#advance-field-six').hide(1000);                           
                     }else if(val == 3){
+                        $('#advance-field').show(1000);
                         $('#advance-field-six').show(1000);    
                         $('#advance-field-five').hide(1000);
                         $('#branch_ajax').hide(1000);                    
                     }else{
+                        $('#advance-field').hide(1000);
                         $('#advance-field-five').hide(1000);
                         $('#branch_ajax').hide(1000);   
                         $('#advance-field-six').hide(1000);
@@ -365,6 +379,7 @@
                             e.preventDefault();
                         //uncheck all checkboxes
                         $(this).val(0);
+                        $('#advance-country').hide();  
                         $('#advance-field').hide(1000);
                         $('#advance-field-two').hide(1000);
                         $('#advance-field-three').hide(1000);
@@ -378,7 +393,8 @@
                             e.preventDefault();
                             //uncheck all checkboxes
                             $(this).val(1);
-                            $('#advance-field').show(1000);
+                           // $('#advance-field').show(1000);
+                           $('#advance-country').show(1000);  
                             $('#advance-field-two').show(1000);
                             $('#advance-field-three').show(1000);
                             $('#advance-field-four').show(1000);
@@ -433,6 +449,7 @@
                     var leads  = [];
                     var advance_bucket = $("#advance_bucket option:selected").val();
                     var advance_status = $("#advance_status option:selected").val();
+                    var advance_country = $("#advance_country option:selected").val();
                     var advance_number_leads = $("#advance_number_leads").val();
                     var advance_assign_to = $("#advance_assigned_to option:selected").val();
                     var new_advance_status = $("#new_advance_status option:selected").val();
@@ -464,7 +481,7 @@
                     });
                     
                    if(advance != 0){
-                         if(advance_bucket != 0){
+                         
                              
                             if(advance_assigned_by != 0){
                                     
@@ -479,22 +496,24 @@
                                         });
                                         }
                                     }else if(advance_assigned_by == 3){
-                                        if(advance_assign_to != 0 && isAdvanceChecked){
-                                            
-                                            $("#assign-leads-form").submit();
-                                        }else{  
-                                            swal({
-                                                title : "Field Required!",
-                                                text  : "You should select assignee!"
-                                            });
-                                        }
+                                        if(advance_assigned_by == 3){
+                                            if(advance_assign_to != 0 && isAdvanceChecked){
+                                                
+                                                $("#assign-leads-form").submit();
+                                            }else{  
+                                                swal({
+                                                    title : "Field Required!",
+                                                    text  : "You should select assignee!"
+                                                });
+                                             }
+                                            }else{
+                                                swal({
+                                                        title : "Field Required!",
+                                                        text  : "You should select assign by!"
+                                                    });
+                                             }
                                     }
-                                 }else{
-                                     swal({
-                                            title : "Field Required!",
-                                            text  : "You should select assign by!"
-                                        });
-                                 }
+                                
                             
                          }else{
                             swal({

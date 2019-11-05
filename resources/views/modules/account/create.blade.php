@@ -31,15 +31,17 @@
                                     <div class="form-group"><label>Lastname</label> <input type="text" name="lastname" value="@if(isset($userdata)){{ ucfirst($userdata->lastname) }}@endif" placeholder="Enter Lastname" class="form-control" required></div>
                                     <div class="form-group"><label>Primary Email</label> <input type="email" name="email" value="@if(isset($userdata)){{ $userdata->email }}@endif" placeholder="Enter Primary Email" class="form-control" required></div>
                                     <div class="form-group"><label>Profile Picture</label> <input type="file" name="profile"   class="form-control" ></div>
-                                
-                                    <h4>Account Status</h4>
-                                    <select name="status" id="status" class="form-control" required>                                     
-                                        @foreach ($status as $s)
-                                            <option value="{{ $s->id }}" @if(isset($userdata) && $userdata->status == $s->id) selected="selected" @endif>
-                                                    {{ $s->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                   
+                                    @if(auth()->user()->hasRole(['superadmin','administrator','lead.researcher']))   
+                                        <h4>Account Status</h4>
+                                        <select name="status" id="status" class="form-control" required>                                     
+                                            @foreach ($status as $s)
+                                                <option value="{{ $s->id }}" @if(isset($userdata) && $userdata->status == $s->id) selected="selected" @endif>
+                                                        {{ $s->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    @endif
                             </div>
 
                             <div class="col-sm-6">

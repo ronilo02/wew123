@@ -27,7 +27,6 @@
                                             <th >Office #</th>
                                             <th >Phone #</th>
                                             <th >Other #</th>
-                                        
                                         </tr>
                                     </thead>
                                     <tbody>

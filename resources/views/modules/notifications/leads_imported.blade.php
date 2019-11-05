@@ -3,7 +3,7 @@
 @endif      
     <div class="dropdown-messages-box">
         <a href="profile.html" class="pull-left">
-        <img alt="image" class="img-circle" src="storage/files/users/{{ $notification->data['user']['avatar'] }}" style="width:50px;height:50px;">
+        <img alt="image" class="img-circle" src="/storage/files/users/{{ $notification->data['user']['avatar'] }}" style="width:50px;height:50px;">
         </a>
         <div  @if(url()->current() == url('notifications')) style="padding-left:50px;" @endif>
             <small class="pull-right"><time class="timeago" datetime="{{ $notification->created_at }}">{{ $notification->created_at->diffForhumans() }}</time>  </small>

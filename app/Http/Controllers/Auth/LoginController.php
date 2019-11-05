@@ -40,4 +40,8 @@ class LoginController extends Controller
     public function username(){
     	return 'username';
     }
+
+    public function deactivated(){
+    	return 'deactivated';
+    }
 }

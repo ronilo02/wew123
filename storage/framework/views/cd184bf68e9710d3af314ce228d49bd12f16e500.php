@@ -29,16 +29,18 @@
                                     <div class="form-group"><label>Lastname</label> <input type="text" name="lastname" value="<?php if(isset($userdata)): ?><?php echo e(ucfirst($userdata->lastname)); ?><?php endif; ?>" placeholder="Enter Lastname" class="form-control" required></div>
                                     <div class="form-group"><label>Primary Email</label> <input type="email" name="email" value="<?php if(isset($userdata)): ?><?php echo e($userdata->email); ?><?php endif; ?>" placeholder="Enter Primary Email" class="form-control" required></div>
                                     <div class="form-group"><label>Profile Picture</label> <input type="file" name="profile"   class="form-control" ></div>
-                                
-                                    <h4>Account Status</h4>
-                                    <select name="status" id="status" class="form-control" required>                                     
-                                        <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($s->id); ?>" <?php if(isset($userdata) && $userdata->status == $s->id): ?> selected="selected" <?php endif; ?>>
-                                                    <?php echo e($s->name); ?>
+                                   
+                                    <?php if(auth()->user()->hasRole(['superadmin','administrator','lead.researcher'])): ?>   
+                                        <h4>Account Status</h4>
+                                        <select name="status" id="status" class="form-control" required>                                     
+                                            <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($s->id); ?>" <?php if(isset($userdata) && $userdata->status == $s->id): ?> selected="selected" <?php endif; ?>>
+                                                        <?php echo e($s->name); ?>
 
-                                            </option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
+                                                </option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
+                                    <?php endif; ?>
                             </div>
 
                             <div class="col-sm-6">
