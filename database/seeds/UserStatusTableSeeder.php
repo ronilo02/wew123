@@ -12,9 +12,11 @@ class UserStatusTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('user_status')->truncate();
+
         $userStatus = null;
 
-        $userStatus = ['Active','Inactive'];
+        $userStatus = ['Active','Inactive','Deactivated'];
 
         foreach($userStatus as $us){
              UserStatus::create(['name'=>$us]);   

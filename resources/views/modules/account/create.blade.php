@@ -23,7 +23,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="ibox-content">
+                    <div class="ibox-content">  
                         <div class="row">
                             <div class="col-sm-6 b-r"><h3 class="m-t-none m-b">User Info</h3>
                                     <p style="color:#1ab394;">*User can change their info dynamically on their profile settings.</p>

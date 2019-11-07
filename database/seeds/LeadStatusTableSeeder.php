@@ -12,6 +12,7 @@ class LeadStatusTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('lead_status')->truncate();
         $leadStatus = null;
 
         $leadStatus = ['Assigned','Auto Disconnect','Busy','Dead Lead','Disconnected'

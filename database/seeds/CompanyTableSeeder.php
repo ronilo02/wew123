@@ -12,9 +12,11 @@ class CompanyTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('company')->truncate();
+
         $company = null;
 
-        $company = array("Author Codex","Bookspine0 Press","Folioavenue - US","Folioavenu - UK","Folioavenue - Australia");
+        $company = array("Author Codex","Bookspine Press","Folioavenue - US","Folioavenu - UK","Folioavenue - Australia");
     
         foreach($company as $c){
             Company::create(['name'=>$c]);
