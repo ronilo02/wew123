@@ -20,8 +20,18 @@
                             @endif
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
+                            @php
+                             $i = 0;   
+                            @endphp
                                 @foreach(Auth::user()->unreadNotifications as $notification)
                                     @include ('modules.notifications.' . snake_case(class_basename($notification->type)))
+                                    @php
+                                        $i += 1
+                                    @endphp 
+                                    
+                                    @if($i == 5)
+                                       @break
+                                    @endif
                                 @endforeach                      
                             <li>
                                 <div class="text-center ">

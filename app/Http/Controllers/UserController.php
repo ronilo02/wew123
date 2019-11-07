@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserStatus;
 use App\Role;
 use App\RoleUser;
+use App\Company;
 use Hash;
 use Illuminate\Http\Request;
 
@@ -18,6 +20,9 @@ class UserController extends Controller
     
         $this->roles = Role::All(); 
         $this->users  = User::All();
+        $this->company = Company::All();
+        $this->status = UserStatus::All();
+
 
         $this->middleware(function ($request,$next){
 
@@ -46,7 +51,8 @@ class UserController extends Controller
     public function create()
     {
         return view('modules.account.create')
-                ->with('roles',$this->roles);
+                ->with('roles',$this->roles)
+                ->with('status',$this->status);
     }
 
     /**
@@ -66,7 +72,7 @@ class UserController extends Controller
                         'email'     => $request->get('email'),
                         'password'  => bcrypt($request->get('password')),
                         'avatar'    => 'avatar.jpg',
-                        'status'    => null
+                        'status'    => $request->get('status')
                     ]);
 
              if($user){
@@ -125,10 +131,12 @@ class UserController extends Controller
     public function edit($user)
     {
         $userdata = User::find($user);
-
+        
        return view('modules.account.create')
                 ->with('roles',$this->roles)
-                ->with('userdata',$userdata);
+                ->with('userdata',$userdata)
+                ->with('company',$this->company)
+                ->with('status',$this->status);
     }
 
     /**
@@ -139,7 +147,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        
         $validate = $request->validate([
                 'profile'=>'image'
             ]);
@@ -149,6 +158,9 @@ class UserController extends Controller
         $user->firstname = $request->get('firstname');
         $user->lastname = $request->get('lastname');
         $user->email = $request->get('email');
+        $user->company_id = $request->get('company');
+        $user->branch_id = $request->get('branch');
+        $user->status = $request->get('status');
 
 
         if($request->hasFile('profile')){

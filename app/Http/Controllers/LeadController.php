@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BookInformation;
 use App\Countries;
+use App\Company;
 use App\Exports\FileExport;
 use App\LeadStatus;
 use App\Notes;
@@ -12,6 +13,7 @@ use App\Notifications\LeadsTransferred;
 use App\Publisher;
 use App\User;
 use App\Leads;
+use App\LimitLead;
 use Yajra\Datatables\Datatables;
 use DB;
 use Excel;
@@ -31,8 +33,10 @@ class LeadController extends Controller
             $this->publisher = Publisher::orderBy('name','asc')->pluck('name','id');
             $this->status    = LeadStatus::orderBy('name','asc')->pluck('name','id');
             $this->countries = Countries::orderBy('name','asc')->pluck('name','id');
-           
-
+            $this->company = Company::orderBy('name','asc')->pluck('name','id');
+            $this->researcher = User::withRole('lead.researcher')->where('status',1)->get();
+            $this->limit_value = LimitLead::first();
+        
             return $next($request);
          });      
 
@@ -65,7 +69,9 @@ class LeadController extends Controller
                 // ->with('leads',$this->leads)
                 ->with('status',$this->status)
                 ->with('view_edit_icon',$view_edit_icon)
-                ->with('users',$users);
+                ->with('users',$users)
+                ->with('company',$this->company)
+                ->with('countries',$this->countries);
     }
 
     public function getData()
@@ -298,7 +304,7 @@ class LeadController extends Controller
 
         DB::commit();
 
-        return redirect('leads');
+        return redirect()->back();
     }
 
     /**
@@ -778,15 +784,23 @@ class LeadController extends Controller
     public function assign_leads(Request $request)
     {
         
+        $user = auth()->user();
         $advance = $request->advance;
         $leads = $request->leads;
         $number_leads = $request->advance_number_leads;
         $advance_bucket = $request->advance_bucket;
         $advance_status = $request->advance_status;   
+        $advance_country = $request->advance_country; 
         $new_advance_status = $request->new_advance_status;     
         $advance_assigned_to = $request->advance_assigned_to;
+        $advance_assigned_by = $request->advance_assigned_by;
+        $company = $request->company;
+        $branch = $request->branch;
         $bucket_owner = User::find($advance_bucket);
         $assigned_user = User::find($advance_assigned_to);
+        $researcher = $this->researcher;
+        $errors = '';
+        $init = 0;
 
         if($advance == null){
             
@@ -808,32 +822,63 @@ class LeadController extends Controller
             
         }else{
            
-            $leads = Leads::where(function($query) use ($advance_status){
-                        $advance_status == 0?null:$query->where('status',$advance_status);
-                    })->where('assigned_to',(int) $advance_bucket)->limit($number_leads == 0?null:$number_leads)->get();
-              
+            $user_set_assign = User::withRole('sales')
+                                    ->where(function($query) use ($advance_assigned_by,$company,$branch,$advance_assigned_to){
+                                    if($advance_assigned_by == 1){
+                                        $query->where('company_id',$company)->where('branch_id',$branch);                                                                                                                                                                                                                                                                
+                                    }else if($advance_assigned_by == 2 ){
+                                        $query->where('company_id',$company);
+                                    }else if($advance_assigned_by == 3){
+                                        $query->where('id', $advance_assigned_to);
+                                    }
+                                })->get();
+
+            
+            $checkerleads = $this->checkLeadCounts($advance_bucket,$number_leads,$advance_status,$advance_assigned_by,$advance_assigned_to,$advance_country);
            
-            if($leads == null || count($leads) > 0){
-                if((int) $number_leads <= count($leads)){
-                    foreach($leads as $lead){
-                        $lead->assigned_to = $advance_assigned_to;
-                        if($new_advance_status != null && $new_advance_status != 0){                           
-                            $lead->status = $new_advance_status;
-                        }
-                        $lead->save();
-                    } 
-                        $user = auth()->user();
-                    
-                        activity()->causedBy($user)->withProperties(['icon' => count($leads)])->log(':causer.firstname :causer.lastname has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.');
-                        $message = $user->fullname() . ' has transferred ' . count($leads) . ' leads to ' . $assigned_user->fullname() . '.';
-                        Notification::send($assigned_user, new LeadsTransferred($user,$message));  
-                        session()->flash('message','Leads successfully transferred!');         
-                }else{
-                    session()->flash('error_message',$bucket_owner->fullname().' bucket list has ('.count($leads).') leads available to transfer!');       
+            $leads = $this->getRandomLeadsToAssign($advance_bucket,$advance_status,$advance_assigned_by,$number_leads,$user_set_assign,$advance_country);
+                
+            if($checkerleads == null){
+              
+                   $init = 0;
+                    $b = 1;
+                    foreach($user_set_assign as $usa)
+                    {                   
+                        if($usa->getNewLeadCounts() < $this->limit_value->limit){
+                            for($i = $init ;$i < count($leads);  $i++)
+                            {       
+                                $leads[$i]->assigned_to = $usa->id;
+                                    
+                                if($new_advance_status != null && $new_advance_status != 0){                           
+                                        $leads[$i]->status = $new_advance_status;
+                                    }
+                                
+                                $leads[$i]->save();     
+                                
+                                if(($b % $number_leads) == 0){
+                                    break;
+                                }
+
+                                $b = $b + 1;
+                            }                         
+            
+                            $init = $init + $number_leads;       
+                        
+                            activity()->causedBy($user)->withProperties(['icon' => $number_leads])->log(':causer.firstname :causer.lastname has transferred ' . $number_leads . ' leads to ' . $usa->fullname() . '.');
+                            $message = $user->fullname() . ' has assigned ' . $number_leads . ' leads to ' . $usa->fullname() . '.';
+                            Notification::send($usa, new LeadsTransferred($user,$message)); 
+                        }    
+                    }                        
+                 
+                        // session()->flash('message','Leads successfully transferred!');         
+                // }else{
+                //     session()->flash('error_message',$bucket_owner->fullname().' bucket list has ('.count($leads).') leads available to transfer!');       
                       
-                }
+                // }
+                session()->flash('message','Successfully assign leads!');       
             }else{
-                session()->flash('error_message',$bucket_owner->fullname().' bucket list has no leads available to transfer!');       
+
+                session()->flash('error_leads',$checkerleads);       
             }
                
 
@@ -851,5 +896,104 @@ class LeadController extends Controller
 
         return $user->id;
     }
+ 
+
+    public function getResearcherArray()
+    {
+        $researcher = [];
+
+        foreach($this->researcher as $r){
+            $researcher[] = $r->id;
+        }
+
+        return $researcher;
+    }
+    
+    public function getRandomLeadsToAssign($advance_bucket,$advance_status,$advance_assigned_by,$number_leads,$user_set_assign,$advance_country)
+    {
+
+      $final_array_leads = [];
+
+      $no_of_leads = $number_leads * count($user_set_assign);
+      
+        
+      $leads_evry_res = floor($no_of_leads / count($this->researcher));
+      
+      $mod = $no_of_leads % count($this->researcher);
+      
+      if($mod != 0){
+
+        $leads_evry_res = $leads_evry_res + 1;
+      
+       }
+
+       if($advance_assigned_by == 3){
+                 
+                $leads = $this->getLeads($number_leads,$advance_status,$advance_bucket,$advance_country);
+                              
+                foreach($leads as $l){            
+                    $final_array_leads[] = $l;
+                }
+        }else{
+  
+            foreach($this->researcher as $r)
+            {
+            
+                    $leads = $this->getLeads($leads_evry_res,$advance_status,$r->id,$advance_country);
+                                                      
+                    foreach($leads as $l){
+                
+                        $final_array_leads[] = $l;
+                    }
+            
+            }
+        }
+
+        return collect($final_array_leads)->shuffle()->all();
+    }
+
+    public function getLeads($leads_evry_res,$advance_status,$assigned_to,$advance_country)
+    {
+    
+        $leads = Leads::where(function($query) use ($advance_status){
+                $advance_status == 0?null:$query->where('status',$advance_status);
+            })
+            ->where('country',$advance_country)
+            ->where('assigned_to',$assigned_to)       
+            ->limit($leads_evry_res)                    
+            ->get();
+
+       return $leads;     
+    }
+
+    public function checkLeadCounts($advance_bucket,$number_leads,$advance_status,$advance_assigned_by,$advance_assigned_to,$advance_country)
+    {
+        $researcher = $this->researcher;
+        $lacking_leads_res = [];
+
+        if($advance_assigned_by == 3){
+
+                 $leads = Leads::where('assigned_to',$advance_bucket)->where('country', $advance_country)->where('status',$advance_status)->get();
+                 
+                 $bucket  = User::find($advance_bucket); 
+
+                if(count($leads) < $number_leads ){
+                    $lacking_leads_res[] = array('id'=>$bucket->id,'name'=>$bucket->fullname(),'leads'=>count($leads));
+                }
+        }else{
+
+            foreach($researcher as $r)
+            {
+                $leads = Leads::where('assigned_to',$r->id)->where('country',$advance_country)->where('status',$advance_status)->get();
+
+                if(count($leads) < $number_leads ){
+                    $lacking_leads_res[] = array('id'=>$r->id,'name'=>$r->fullname(),'leads'=>count($leads));
+                }
+            }
+        }
+
+        return $lacking_leads_res;
+    }
+
 }      
           

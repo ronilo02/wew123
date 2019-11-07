@@ -12,6 +12,8 @@ class PublisherTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('publisher')->truncate();
+        
         $publisher = null;
 
         $publisher = ['S & H Publishing','Moody Publishers','IBJ Book Publishing','Draft2Digital'

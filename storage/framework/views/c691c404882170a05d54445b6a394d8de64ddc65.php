@@ -50,7 +50,9 @@
                                             <label class="<?php echo e($role->getRole->class); ?>"><?php echo e($role->getRole->display_name); ?></label>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        <label class="label <?php if($user->status == 1): ?> label-primary <?php else: ?> label-danger <?php endif; ?>"><?php echo e($user->getstatus['name']); ?></label>
+                                    </td>
                                 </tr>
                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
                             </tbody>

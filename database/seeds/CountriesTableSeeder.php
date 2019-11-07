@@ -12,6 +12,8 @@ class CountriesTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('countries')->truncate();
+
         $countries = null;
 
         $countries = array("Afghanistan", "Albania", "Algeria", "American Samoa",
@@ -62,9 +64,12 @@ class CountriesTableSeeder extends Seeder
                                         "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", 
                                         "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands",
                                             "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe");
-   
-            foreach($countries as $c){
-                Countries::create(['name'=>$c]);
-            }    
+
+           
+
+                foreach($countries as $c){
+                    Countries::create(['name'=>$c]);
+                } 
+            
     }
 }

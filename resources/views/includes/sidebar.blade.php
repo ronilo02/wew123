@@ -21,6 +21,7 @@
                 </li>
 
                 @php
+
                     $dashboard="";
                     $leads="";
                     $accounts="";
@@ -30,6 +31,9 @@
                     $reports="";
                     $migration="";
                     $quota = "";
+                    $company = "";
+                    $limit = "";
+
                     if(request()->url() == "home"){
                         $dashboard="active";   
                     }elseif(request()->url() == url("leads")){
@@ -40,11 +44,16 @@
                         $permission="active";
                     }elseif(request()->url() == url("role")){
                         $role="active";
+                    }elseif(request()->url() == url("company")){
+                        $company="active";
                     }elseif(request()->url() == url("payments")){
                         $payments="active";
                     }elseif(request()->url() == url("quota")){
                         $quota="active";
                     }elseif(request()->url() == url("reports")){
+                        $reports="active";
+                    
+                     }elseif(request()->url() == url("limit")){
                         $reports="active";
                     }
                     elseif(request()->url() == url("migration")){
@@ -65,7 +74,7 @@
                                 <li><a href="{{ url('leads') }}">All</a></li>
                             @endif    
                         <li><a href="{{ url('/leads/bucket-lists') }}">Bucket Lists</a></li>
-                            @if(auth()->user()->hasRole(['superadmin','lead.researcher']))
+                            @if(auth()->user()->hasRole(['superadmin','lead.researcher','administrator']))
                                 <li><a href="{{ url('leads/create') }}">Add New Lead</a></li>
                                 <li><a href="{{ url('leads/import') }}">Import</a></li>
                                 <li><a href="#">Export</a></li>
@@ -90,8 +99,18 @@
                             <li><a href="{{ url('/user/create') }}">Add</a></li>                        
                         </ul>              
                     </li>
+                    <li class = {{ $limit }}>
+                            <a href="{{ url('/limit') }}"><i class="fa fa-files-o"></i> <span class="nav-label">Limit Leads</span></a>                  
+                    </li>
+                    <li class = {{ $company }}>
+                        <a href="#"><i class="fa fa-building"></i> <span class="nav-label">Company</span><span class="fa arrow"></span></a>                  
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{{ url('/company') }}">Lists</a></li>
+                                <li><a href="#">Add</a></li>                        
+                            </ul>              
+                        </li>
                     
-                    <li class = {{ $quota }}>
+                        <li class = {{ $quota }}>
                             <a href="{{ url('/quota') }}"><i class="fa fa-usd"></i> <span class="nav-label">Quota</span></a>                  
                         </li>
                         <li class = {{ $reports }}>

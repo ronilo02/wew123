@@ -20,8 +20,18 @@
                             <?php endif; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
+                            <?php
+                             $i = 0;   
+                            ?>
                                 <?php $__currentLoopData = Auth::user()->unreadNotifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <?php echo $__env->make('modules.notifications.' . snake_case(class_basename($notification->type)), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                                    <?php
+                                        $i += 1
+                                    ?> 
+                                    
+                                    <?php if($i == 5): ?>
+                                       <?php break; ?>
+                                    <?php endif; ?>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>                      
                             <li>
                                 <div class="text-center ">
