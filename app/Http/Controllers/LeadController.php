@@ -823,6 +823,7 @@ class LeadController extends Controller
         }else{
            
             $user_set_assign = User::withRole('sales')
+                                    ->where('status',1)
                                     ->where(function($query) use ($advance_assigned_by,$company,$branch,$advance_assigned_to){
                                     if($advance_assigned_by == 1){
                                         $query->where('company_id',$company)->where('branch_id',$branch);                                                                                                                                                                                                                                                                
