@@ -192,8 +192,10 @@ class UserController extends Controller
             }
         }
 
-        if(auth()->user()->hasRole(['superadmin,administrator'])){
-            RoleUser::Where('user_id',$user->id)->delete();
+        $user->save();
+        
+        if(auth()->user()->hasRole(['superadmin','administrator'])){
+           RoleUser::Where('user_id',$user->id)->delete();
             foreach($request->get("roles") as $key=>$val){
                 RoleUser::create([
                     'user_id' => $user->id,
@@ -202,7 +204,7 @@ class UserController extends Controller
             }        
         }
 
-        $user->save();
+       
 
 
         session()->flash('message','Profile settings has been updated!');
