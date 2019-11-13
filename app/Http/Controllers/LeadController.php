@@ -822,13 +822,12 @@ class LeadController extends Controller
             
         }else{
            
-            $user_set_assign = User::withRole('sales')
-                                    ->where('status',1)
+            $user_set_assign = User::where('status',1)
                                     ->where(function($query) use ($advance_assigned_by,$company,$branch,$advance_assigned_to){
                                     if($advance_assigned_by == 1){
-                                        $query->where('company_id',$company)->where('branch_id',$branch);                                                                                                                                                                                                                                                                
+                                        $query->withRole('sales')->where('company_id',$company)->where('branch_id',$branch);                                                                                                                                                                                                                                                                
                                     }else if($advance_assigned_by == 2 ){
-                                        $query->where('company_id',$company);
+                                        $query->withRole('sales')->where('company_id',$company);
                                     }else if($advance_assigned_by == 3){
                                         $query->where('id', $advance_assigned_to);
                                     }
@@ -838,14 +837,15 @@ class LeadController extends Controller
             $checkerleads = $this->checkLeadCounts($advance_bucket,$number_leads,$advance_status,$advance_assigned_by,$advance_assigned_to,$advance_country);
            
             $leads = $this->getRandomLeadsToAssign($advance_bucket,$advance_status,$advance_assigned_by,$number_leads,$user_set_assign,$advance_country);
-                
+            
             if($checkerleads == null){
-              
+                
+                DB::beginTransaction();
                    $init = 0;
                     $b = 1;
                     foreach($user_set_assign as $usa)
-                    {                   
-                        if($usa->getNewLeadCounts() < $this->limit_value->limit){
+                    {      
+                        if($advance_assigned_by == 3 || $usa->getNewLeadCounts() < $this->limit_value->limit){
                             for($i = $init ;$i < count($leads);  $i++)
                             {       
                                 $leads[$i]->assigned_to = $usa->id;
@@ -853,24 +853,31 @@ class LeadController extends Controller
                                 if($new_advance_status != null && $new_advance_status != 0){                           
                                         $leads[$i]->status = $new_advance_status;
                                     }
-                                
-                                $leads[$i]->save();     
-                                
-                                if(($b % $number_leads) == 0){
-                                    break;
-                                }
+                               
+                                if($leads[$i]->save()){     
+                                    
+                                    if(($b % $number_leads) == 0){
+                                        $b = $b + 1;
+                                        break;
+                                    }
 
-                                $b = $b + 1;
+                                    $b = $b + 1;
+                                }else{
+                                    DB::rollBack();
+                                    session()->flash('error_message','Fail to assign leads to'.$leads[$i]->fullname());       
+                                    return redirect()->back();
+                                }
                             }                         
             
                             $init = $init + $number_leads;       
-                        
+                            
                             activity()->causedBy($user)->withProperties(['icon' => $number_leads])->log(':causer.firstname :causer.lastname has transferred ' . $number_leads . ' leads to ' . $usa->fullname() . '.');
                             $message = $user->fullname() . ' has assigned ' . $number_leads . ' leads to ' . $usa->fullname() . '.';
                             Notification::send($usa, new LeadsTransferred($user,$message)); 
                         }    
-                    }                        
-                 
+                    }        
+
+                 DB::commit();
                         // session()->flash('message','Leads successfully transferred!');         
                 // }else{
                 //     session()->flash('error_message',$bucket_owner->fullname().' bucket list has ('.count($leads).') leads available to transfer!');       
