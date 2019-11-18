@@ -50,8 +50,10 @@ class UserController extends Controller
      */
     public function create()
     {
+
         return view('modules.account.create')
                 ->with('roles',$this->roles)
+                ->with('company',$this->company)
                 ->with('status',$this->status);
     }
 
