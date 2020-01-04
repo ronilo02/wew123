@@ -33,6 +33,7 @@
                     $quota = "";
                     $company = "";
                     $limit = "";
+                    $file = "";
 
                     if(request()->url() == "home"){
                         $dashboard="active";   
@@ -51,9 +52,10 @@
                     }elseif(request()->url() == url("quota")){
                         $quota="active";
                     }elseif(request()->url() == url("reports")){
-                        $reports="active";
-                    
+                        $reports="active";                    
                      }elseif(request()->url() == url("limit")){
+                        $reports="active";
+                    }elseif(request()->url() == url("file")){
                         $reports="active";
                     }
                     elseif(request()->url() == url("migration")){
@@ -109,7 +111,9 @@
                                 <li><a href="#">Add</a></li>                        
                             </ul>              
                         </li>
-                    
+                        <li class = <?php echo e($file); ?>>
+                            <a href="<?php echo e(url('/files')); ?>"><i class="fa fa-file"></i> <span class="nav-label">Files</span></a>                  
+                        </li>
                         <li class = <?php echo e($quota); ?>>
                             <a href="<?php echo e(url('/quota')); ?>"><i class="fa fa-usd"></i> <span class="nav-label">Quota</span></a>                  
                         </li>

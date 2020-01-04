@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Createtablelimitleads extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class Createtablelimitleads extends Migration
      */
     public function up()
     {
-        Schema::create('limit_leads',function (Blueprint $table){
+        Schema::create('files', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('limit');
-            $table->timestamps();         
-
+            $table->integer('user')->unsigned();
+            $table->string('name');
+            $table->string('orig_name');
+            $table->string('mime_type');
+            $table->integer('category')->unsigned();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +31,6 @@ class Createtablelimitleads extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('limit_leads');
+        Schema::dropIfExists('files');
     }
 }
