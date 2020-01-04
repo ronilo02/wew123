@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Createtablelimitleads extends Migration
+class CreateTableFileCategory extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class Createtablelimitleads extends Migration
      */
     public function up()
     {
-        Schema::create('limit_leads',function (Blueprint $table){
-            $table->increments('id');
-            $table->integer('limit');
-            $table->timestamps();         
-
-        });
+        Schema::create('file_category', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name');
+                $table->timestamps();
+            });
     }
 
     /**
@@ -28,6 +27,6 @@ class Createtablelimitleads extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('limit_leads');
+        Schema::dropIfExists('file_category');
     }
 }

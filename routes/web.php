@@ -97,6 +97,18 @@ Route::group(['prefix'=>''],function(){
 
 /*------------------------------------------End of Company-------------------------------------------------*/
 
+
+/*----------------------------------------------File -----------------------------------------------------------*/
+
+Route::group(['prefix'=>''],function(){
+    Route::get('files/proposals','FileController@proposals');
+    Route::get('files/other-files','FileController@other_files');
+    Route::post('files/download','FileController@download');
+    Route::resource('/files','FileController');
+});
+
+/*------------------------------------------End of file-------------------------------------------------*/
+
 /*----------------------------------------------User Company-----------------------------------------------------------*/
 
 Route::group(['prefix'=>''],function(){

@@ -28,18 +28,17 @@
                                             <th >Office #</th>
                                             <th >Phone #</th>
                                             <th >Other #</th>
-                                        
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $__currentLoopData = $valid_data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr style="text-align:left;">
-                                        <td><?php echo e($d->first_name." ".$d->last_name); ?></td>
-                                        <td><?php echo e($d->previous_publisher); ?></td>
-                                        <td><?php echo e($d->mobile_phone); ?></td>
-                                        <td><?php echo e($d->office_phone); ?></td>
-                                        <td><?php echo e($d->home_phone); ?></td>
-                                        <td><?php echo e($d->other_phone); ?></td>
+                                            <td><?php echo e($d->first_name." ".$d->last_name); ?></td>
+                                            <td><?php echo e($d->previous_publisher); ?></td>
+                                            <td><?php echo e($d->mobile_phone); ?></td>
+                                            <td><?php echo e($d->office_phone); ?></td>
+                                            <td><?php echo e($d->home_phone); ?></td>
+                                            <td><?php echo e($d->other_phone); ?></td>
                                         </tr>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>   
                                     </tbody>
@@ -51,7 +50,6 @@
                                             <th >Office #</th>
                                             <th >Phone #</th>
                                             <th >Other #</th>
-                                            
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -60,9 +58,7 @@
                                 <?php else: ?>
                                 <h3 class="error-msg" style="color:#d0cdcd">No Valid Leads Found!</h3>
                                 <?php endif; ?>
-                                
                             </div>
-                           
                         </div>
                     </div>
                 </div>
