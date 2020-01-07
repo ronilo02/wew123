@@ -19,6 +19,7 @@ class CreateFilesTable extends Migration
             $table->string('name');
             $table->string('orig_name');
             $table->string('mime_type');
+            $table->text('file');
             $table->integer('category')->unsigned();
             $table->timestamps();
         });

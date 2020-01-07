@@ -44,7 +44,7 @@
                                     <span class="corner"></span>
                                     @if(in_array($file->mime_type,$mime_type))
                                         <div class="image">
-                                                <img alt="image" class="img-responsive" src="{{ asset('storage/files/pfile/'.$file->orig_name) }}">
+                                                <img alt="image" class="img-responsive" src="{{ url($file->file) }}">
                                         </div>
                                     @else
                                         <div class="icon">
@@ -57,13 +57,9 @@
                                         <small>Uploaded: {{ \Carbon\Carbon::parse($file->created_at)->format('M d,Y')}} </small>
                                         <br>
                                         <br>
-                                        <form role="form" action="{{ url('files/download') }}" id="edit-lead-form" method="POST" enctype="multipart/form-data">
-                                            <input type="hidden" name="file" value="{{ $file->orig_name }}"> 
-                                            <input type="hidden" name="mime_type" value="{{ $file->mime_type }}"> 
-                                            <input type="hidden" name="name" value="{{ $file->name }}"> 
-                                            @csrf
-                                            <button class="btn btn-xs btn-primary btn-block" > <i class="fa fa-download "></i> Download</button>
-                                        </form>   
+                                      
+                                        <a href="{{ url($file->file) }}" class="btn btn-xs btn-primary btn-block" > <i class="fa fa-download "></i> Download</a>
+                                        
                                     </div>
                                 </a>
                             </div>
