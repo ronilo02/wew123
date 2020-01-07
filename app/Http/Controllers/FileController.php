@@ -82,13 +82,17 @@ class FileController extends Controller
       
              $file_orig_name = $file->getClientOriginalName();
 
-            $save_bol = $file->move('storage/files/pfile/',$file_orig_name);
-    
+            // $save_bol = $file->move('storage/files/pfile/',$file_orig_name);
+             $save_bol = Storage::putFile('files/pfile',$file);
+             
+             $save_bol = 'storage/'.$save_bol;
+
              $save_file = File::create([
                             'user' => auth()->user()->id,
                             'name' => $request->get('name'),
                             'orig_name' => $file_orig_name,
                             'mime_type' => $file->getClientMimeType(),
+                            'file'  => $save_bol,
                             'category' => $request->get('file_cat'),
                       ]);
 
@@ -159,18 +163,19 @@ class FileController extends Controller
     {
         
         //PDF file is stored under project/public/download/info.pdf
-
+     
          //$file = "storage/files/pfile/".$request->get('file');
-         $file = Storage::get("/storage/files/pfile/".$request->get('file'));
-         $headers = [
+         //$file = Storage::get("/storage/files/pfile/".$request->get('file'));
+        //  Storage::disk('public')->url($filename);
+        //  $headers = [
 
-                'Content-Type' => $request->get('mime_type'),
+        //         'Content-Type' => $request->get('mime_type'),
 
-            ];
+        //     ];
+            return Storage::get('storage/files/pfile/Capture.png');
+       // return Storage::download(asset('public/storage/files/pfile/Capture.PNG'));
 
-    
-
-          return response()->download($file, $request->get('name'), $headers);
+          //return response()->download("app/public/storage/files/pfile/Capture.png");
 
     }
 }

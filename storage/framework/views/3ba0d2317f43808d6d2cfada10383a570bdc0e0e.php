@@ -32,7 +32,7 @@
                                     <span class="corner"></span>
                                     <?php if(in_array($file->mime_type,$mime_type)): ?>
                                         <div class="image">
-                                                <img alt="image" class="img-responsive" src="<?php echo e(asset('storage/files/pfile/'.$file->orig_name)); ?>">
+                                                <img alt="image" class="img-responsive" src="<?php echo e(url($file->file)); ?>">
                                         </div>
                                     <?php else: ?>
                                         <div class="icon">
@@ -46,13 +46,9 @@
                                         <small>Uploaded: <?php echo e(\Carbon\Carbon::parse($file->created_at)->format('M d,Y')); ?> </small>
                                         <br>
                                         <br>
-                                        <form role="form" action="<?php echo e(url('files/download')); ?>" id="edit-lead-form" method="POST" enctype="multipart/form-data">
-                                            <input type="hidden" name="file" value="<?php echo e($file->orig_name); ?>"> 
-                                            <input type="hidden" name="mime_type" value="<?php echo e($file->mime_type); ?>"> 
-                                            <input type="hidden" name="name" value="<?php echo e($file->name); ?>"> 
-                                            <?php echo csrf_field(); ?>
-                                            <button class="btn btn-xs btn-primary btn-block" > <i class="fa fa-download "></i> Download</button>
-                                        </form>   
+                                      
+                                        <a href="<?php echo e(url($file->file)); ?>" class="btn btn-xs btn-primary btn-block" > <i class="fa fa-download "></i> Download</a>
+                                        
                                     </div>
                                 </a>
                             </div>
